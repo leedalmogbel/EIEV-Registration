@@ -1,0 +1,151 @@
+body {
+	font-size: 14px;
+	font-family: 'Roboto', sans-serif;
+}
+
+.wrapper { width: 100%; }
+
+.sidebar {
+	background: #13214A;
+	max-width: 300px;
+	height: 100vh;
+	padding-right: 0px;
+}
+
+.sidebar .logo {
+	margin: 50px 0;
+}
+
+.sidebar .logo img { display: block; margin: auto; width: 280px; }
+
+.side-menu {
+	border-top: 1px solid #f1f1f1;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.side-menu li {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.side-menu li a {
+	border-bottom: 1px solid #f1f1f1;
+	display: block;
+	color: #fff;
+	padding: 10px;
+	padding-left: 30px;
+}
+
+.side-menu li a:hover, .side-menu li a.active {
+	background: #fff;
+	color: #13214A;
+	text-decoration: none;
+}
+
+.side-menu li a i {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.content {
+	margin-top: 15px;
+}
+
+h1 {
+	font-size: 21px;
+}
+
+h2 { font-size: 19px; }
+.table th {
+	font-size: 12px;
+}
+
+.btn { font-size: 12px; }
+.btn-main {
+	background: #13214A !important;
+	color: #fff !important;
+}
+
+a {
+	color:  #13214A;
+	text-decoration: none;
+}
+
+a:hover {
+	color:  #13214A;
+}
+
+.hidden { display: none; }
+
+.page-link { font-size: 12px; color: #13214A; }
+.page-item.active .page-link {
+	background: #13214A;
+	border-color: #13214A;
+}
+
+.submit-btn {
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 10px;
+	width: 100%;
+}
+
+.submit-btn:hover {
+	background: #13214Add !important;
+}
+
+.create-btn {
+	padding: 10px 20px;
+}
+
+.modal-overlay {
+	display: none;
+}
+
+html body.modal-show {
+	overflow: hidden;
+}
+
+html body.modal-show .modal-overlay {
+	background: #fff;
+	display: block;
+	height: 100%;
+	left: 0;
+	position: fixed;
+	top: 0;
+	opacity: 0.3;
+	width: 100%;
+	z-index: 999;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+a:focus,
+.uneditable-input:focus {   
+  border-color: inheret;
+  box-shadow: none;
+  outline: 0 none;
+}
+
+.event-info {
+	background: #f1f1f1;
+	border: 1px solid #ccc;
+	padding: 20px;
+}
