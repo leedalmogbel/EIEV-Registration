@@ -8,16 +8,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\FederationController;
 use App\Models\PSetting;
 use App\Models\Multi;
-
-
-class RiderSyncCommand extends Command
+class HorseSyncCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:syncriders';
+    protected $signature = 'command:synchorses';
 
     /**
      * The console command description.
@@ -45,32 +43,31 @@ class RiderSyncCommand extends Command
     {
         $id = Str::uuid();
         try {
-            info("`{$id}` - Started Rider Sync");
+            info("`{$id}` - Started horse Sync");
             $settings = PSetting::first();
             info("`{$id}` - Check Sync all if enabled");
             if($settings->syncall){
 
             }else{
-                info("`{$id}` - Sync all not enabled. Check Sync Rider if enabled");
-                if($settings->syncriders){
-                    info("`{$id}` - Sync Rider enabled. Call API");
-                    $data = (new FederationController)->searchriderlist(new Request);
+                info("`{$id}` - Sync all not enabled. Check Sync horse if enabled");
+                if($settings->synchorses){
+                    info("`{$id}` - Sync horse enabled. Call API");
+                    $data = (new FederationController)->searchhorselist(new Request);
                     if($data){
                         info("`{$id}` - Check data count.");
-                        $dcount = count($data['riders']['data']);
+                        $dcount = count($data['horses']['data']);
                         if($dcount>0){
-                            Multi::insertOrUpdate($data['riders']['data'],'friders');
+                            Multi::insertOrUpdate($data['horses']['data'],'fhorses');
                             info("`{$id}` - `{$dcount}` records synced.");
                         }
                     }
                 }else{
-                    info("`{$id}` - Sync all not enabled. Sync Rider not enabled");
+                    info("`{$id}` - Sync all not enabled. Sync horse not enabled");
                 }
             }
         } catch (\Throwable $th) {
             info("Error occured in `{$id}`. Check logs.",['error'=>strval($th)]);
         }
-        info("`{$id}` - Finished Rider Sync");
-        
+        info("`{$id}` - Finished horse Sync");
     }
 }
