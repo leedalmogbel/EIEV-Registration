@@ -13,12 +13,12 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    // protected function schedule(Schedule $schedule)
-    // {
-    //     // $schedule->command('inspire')->hourly();
-    // }
+    protected function schedule(Schedule $schedule)
+    {
+        // $schedule->command('inspire')->hourly();
+    }
 
-    protected function schedule(\Spatie\ShortSchedule\ShortSchedule $schedule)
+    protected function shortSchedule(\Spatie\ShortSchedule\ShortSchedule $schedule)
     {
         $schedule->command('command:syncriders')->everySeconds(5)->withoutOverlapping();
         $schedule->command('command:synchorses')->everySeconds(5)->withoutOverlapping();
