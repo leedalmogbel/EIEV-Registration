@@ -44,7 +44,7 @@ class StableSyncCommand extends Command
         $id = Str::uuid();
         try {
             info("`{$id}` - Started stable Sync");
-            $settings = PSetting::first();
+            $settings = Psetting::first();
             info("`{$id}` - Check Sync all if enabled");
             if($settings->syncall){
 

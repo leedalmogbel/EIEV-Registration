@@ -44,7 +44,7 @@ class TrainerSyncCommand extends Command
         $id = Str::uuid();
         try {
             info("`{$id}` - Started trainer Sync");
-            $settings = PSetting::first();
+            $settings = Psetting::first();
             info("`{$id}` - Check Sync all if enabled");
             if($settings->syncall){
 

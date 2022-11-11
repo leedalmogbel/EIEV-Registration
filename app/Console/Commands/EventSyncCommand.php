@@ -44,7 +44,7 @@ class EventSyncCommand extends Command
         $id = Str::uuid();
         try {
             info("`{$id}` - Started event Sync");
-            $settings = PSetting::first();
+            $settings = Psetting::first();
             info("`{$id}` - Check Sync all if enabled");
             if($settings->syncall){
 

@@ -44,7 +44,7 @@ class HorseSyncCommand extends Command
         $id = Str::uuid();
         try {
             info("`{$id}` - Started horse Sync");
-            $settings = PSetting::first();
+            $settings = Psetting::first();
             info("`{$id}` - Check Sync all if enabled");
             if($settings->syncall){
 
