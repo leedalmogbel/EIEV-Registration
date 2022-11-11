@@ -15,7 +15,6 @@ class ChangeOwnerColFstables extends Migration
     {
         Schema::table('fstables', function (Blueprint $table) {
             //
-            $table->dropColumn('owner');
             $table->longText('owner')->nullable();
         });
     }
