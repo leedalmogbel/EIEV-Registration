@@ -287,7 +287,7 @@ class FederationController extends Controller
             return $this->extractData((string)$response->getBody(),'WSLoginResult|token',$debug); 
             break;
           case 'getStableList':
-            return $this->extractData((string)$response->getBody(),'getStableListResult|stables#Stables#LastestUpdate|lastestupdate&Stable_ID|stable_id&Name|name&Address|address&Zip|zip&City|city&Country|country&Phone|phone&Email|email&Remarks|remarks&Owner|owner&Discipline|discipline&Category|category&DIVISION|division',$debug); 
+            return $this->extractData((string)$response->getBody(),'getStableListResult|stables#Stables#LastestUpdate|lastestupdate&Stable_ID|stableid&Name|name&Address|address&Zip|zip&City|city&Country|country&Phone|phone&Email|email&Remarks|remarks&Owner|owner&Discipline|discipline&Category|category&DIVISION|division',$debug); 
             break;
         }    
     }
@@ -697,7 +697,7 @@ class FederationController extends Controller
         if(isset($request->showraw)){
           return $response->getBody();
         }
-        return $this->extractData((string)$response->getBody(),'NewDataSet|trainers#Table#Photograph|photograph&NF_x0020_LICENSE|nfx0020license&First_x0020_Name|firstx0020name&Family_x0020_Name|familyx0020name&Gender|gender&NATIONALITY|nationality&NATIONALITY_short|nationalityshort&DOB|dob&STABLE|stable&FEI_x0020_REG|feix0020reg&TELEPHONE|telephone&MOBILE|mobile&EMAIL|email&DIVISION|division&Registered_x0020_Season|registeredx0020season&Active|active&TRAINERID|trainerid&StableID|stableid&DivisionID|divisionid&adminUser|adminuser&NationalityID|nationalityid&Address|address&POBox|pobox&City|city&Country|country&Country_short|country_short&HomeAddress|homeaddress&HomeCity|homecity&HomeCountry|homecountry&HomeCountry_short|homecountry_short&Weight|weight',$debug);
+        return $this->extractData((string)$response->getBody(),'NewDataSet|trainers#Table#Photograph|photograph&NF_x0020_LICENSE|nfx0020license&First_x0020_Name|firstx0020name&Family_x0020_Name|familyx0020name&Gender|gender&NATIONALITY|nationality&NATIONALITY_short|nationalityshort&DOB|dob&STABLE|stable&FEI_x0020_REG|feix0020reg&TELEPHONE|telephone&MOBILE|mobile&EMAIL|email&DIVISION|division&Registered_x0020_Season|registeredx0020season&Active|active&TRAINERID|trainerid&StableID|stableid&DivisionID|divisionid&adminUser|adminuser&NationalityID|nationalityid&Address|address&POBox|pobox&City|city&Country|country&Country_short|countryshort&HomeAddress|homeaddress&HomeCity|homecity&HomeCountry|homecountry&HomeCountry_short|homecountryshort&Weight|weight',$debug);
     }
 
     public function userlogin(Request $request)
@@ -823,6 +823,6 @@ class FederationController extends Controller
         if(isset($request->showraw)){
             return $response->getBody();
         }
-        return $this->extractData((string)$response->getBody(),'getStableListResult|stables#Stables#LastestUpdate|lastestupdate&Stable_ID|stable_id&Name|name&Address|address&Zip|zip&City|city&Country|country&Phone|phone&Email|email&Remarks|remarks&Owner|owner&Discipline|discipline&Category|category&DIVISION|division',$debug); 
+        return $this->extractData((string)$response->getBody(),'getStableListResult|stables#Stables#LastestUpdate|lastestupdate&Stable_ID|stableid&Name|name&Address|address&Zip|zip&City|city&Country|country&Phone|phone&Email|email&Remarks|remarks&Owner|owner&Discipline|discipline&Category|category&DIVISION|division',$debug); 
     }
 }
