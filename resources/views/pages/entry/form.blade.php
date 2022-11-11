@@ -1,4 +1,4 @@
-<h2 class="text-danger">Race / Event Detail</h2>
+{{-- <h2 class="text-danger">Race / Event Detail</h2>
 @include('partials.formFields.selectFormGroup', [
     'label' => 'Race / Event',
     'name' => 'race_id',
@@ -8,7 +8,7 @@
     'placeholder' => 'Select an Event/Race',
     'options' => $races,
 ])
-<br />
+<br /> --}}
 <h2 class="text-danger">User Detail</h2>
 @include('partials.formFields.selectFormGroup', [
     'label' => 'User',
@@ -22,43 +22,44 @@
 <br />
 <h2 class="text-danger">Entry Detail</h2>
 <div class="entries">
-	@if (old('user_id'))
-	@if (old('data') && is_array(old('data')))
-		@foreach(old('data') as $index => $data)
-			<div class="row entry">
-				<div class="col">
-		   	        @include('partials.formFields.selectFormGroup', [
-                        'label' => 'Horse',
-                        'name' => "data[$index][horse]",
-                        'required' => true,
-                        'placeholder' => 'Select a Horse',
-                        'className' => 'horse-select',
-					    'keyValue' => true,
-                        'options' => $horses,
-                    ])
-				</div>
-				<div class="col">
-			        @include('partials.formFields.selectFormGroup', [
-                        'label' => 'Rider',
-                        'name' => "data[$index][rider]",
-                        'required' => true,
-                        'className' => 'rider-select',
-                        'placeholder' => 'Select a Rider',
-					    'keyValue' => true,
-                        'options' => $riders,
-                    ])
-				</div>
-				<div class="col-1">
-					<a href="#" class="btn btn-danger remove-this">&times;</a>
-				</div>
-			</div>
-		@endforeach
-	@endif
-	@else
-		<p><em>Select User First</em></p>
-	@endif
+    @if (old('user_id'))
+        @if (old('data') && is_array(old('data')))
+            @foreach (old('data') as $index => $data)
+                <div class="row entry">
+                    <div class="col">
+                        @include('partials.formFields.selectFormGroup', [
+                            'label' => 'Horse',
+                            'name' => "data[$index][horse]",
+                            'required' => true,
+                            'placeholder' => 'Select a Horse',
+                            'className' => 'horse-select',
+                            'keyValue' => true,
+                            'options' => $horses,
+                        ])
+                    </div>
+                    <div class="col">
+                        @include('partials.formFields.selectFormGroup', [
+                            'label' => 'Rider',
+                            'name' => "data[$index][rider]",
+                            'required' => true,
+                            'className' => 'rider-select',
+                            'placeholder' => 'Select a Rider',
+                            'keyValue' => true,
+                            'options' => $riders,
+                        ])
+                    </div>
+                    <div class="col-1">
+                        <a href="#" class="btn btn-danger remove-this">&times;</a>
+                    </div>
+                </div>
+            @endforeach
+        @endif
+    @else
+        <p><em>Select User First</em></p>
+    @endif
 </div>
-<a href="#" class="btn btn-main{{old('user_id') ? '' : ' hidden'}}" id="add-entry"><i class="fa-solid fa-plus"></i> Add Entry</a>
+{{-- <a href="#" class="btn btn-main{{ old('user_id') ? '' : ' hidden' }}" id="add-entry"><i
+        class="fa-solid fa-plus"></i> Add Entry</a> --}}
 
 <script type="text/tpl" id="rules-content">
  <p>Lorem ipsum dolor sit amet, possim facilisis iracundia mea ut, usu eu malorum eripuit democritum. Cu veritus facilisi mel, elit dicat expetendis ad his. In putant possim aperiri nec, ius purto corpora instructior ne. At cum tota indoctum vituperatoribus, an eius meliore conceptam his. Sea id sint nostro causae, ne eius veri nam, nam et fuisset accusamus. Partem nemore facilis mei eu, ubique officiis intellegam ei nam. Ea quo duis graeco expetenda, blandit epicurei has ad, cum modo dicat inciderint ut. Sit ea summo adipisci. Est eu mucius praesent, qui ceteros prodesset te. Duis novum dicam sea no, vim an scripta accusata vulputate. Agam eius an eos, decore cetero suscipit ne sed. Eu invidunt instructior mea, purto suavitate definiebas sed et. Nullam apeirian at eos. Veritus invidunt an eum, decore nostrum consequat quo ut. Discere delicata accusamus mea ei. Eu menandri instructior sit. Id has albucius splendide. Erant constituto ius in, legendos salutatus qui at, voluptatum assueverit sed at. Eu nihil docendi noluisse duo, cu zril petentium ius. Everti iudicabit no sit. Eu eum error eirmod, nec veri posse simul at. An animal facilis pri.</p>
@@ -94,126 +95,132 @@
 	</div>
 </script>
 @section('custom-script')
-	<script>
-	 let entryCount = 0;
-	 let horses = JSON.parse('{!!$jsonHorse!!}');
-	 let riders = JSON.parse('{!!$jsonRider!!}');
-	 
-	 const selected = function (className) {
-		 let data = [];
-		 for(let i = 0; i < $(`.${className}-select`).length; i++) {
-			 data.push($(document.getElementsByClassName(` ${className}-select`).item(i)).val());
-			 $(document.getElementsByClassName(` ${className}-select`).item(i)).find('option').prop('disabled', false);
-		 }
+    <script>
+        let entryCount = 0;
+        let horses = JSON.parse('{!! $jsonHorse !!}');
+        let riders = JSON.parse('{!! $jsonRider !!}');
 
-		 for(let i = 0; i < $(`.${className}-select`).length; i++) {
-			 for(let x in data) {
-				 if($(document.getElementsByClassName(`${className}-select`).item(i)).val() == data[x]) {
-					 continue;
-				 }
-				 
-				 $(document.getElementsByClassName(`${className}-select`).item(i)).find('option[value="'+ data[x] +'"]').prop('disabled', true);
-			 }
-			 
-			 $($(document.getElementsByClassName(`${className}-select`).item(i)).find('option')[0]).prop('disabled', true);
-		 }
-	 };
-	 
-	 const addEntry = function () {
-		 let tpl = $('#horse-rider').html().replace(/__i__/g, entryCount);
-		 let horseHtml = '<option disabled selected>Select a Horse</option>';
-		 tpl = $(tpl);
-		 
-		 for (let i in horses) {
-			 horseHtml += `<option value="${horses[i].horse_id}">${horses[i].name}</option>`
-		 }
+        const selected = function(className) {
+            let data = [];
+            for (let i = 0; i < $(`.${className}-select`).length; i++) {
+                data.push($(document.getElementsByClassName(` ${className}-select`).item(i)).val());
+                $(document.getElementsByClassName(` ${className}-select`).item(i)).find('option').prop('disabled',
+                    false);
+            }
 
-		 let riderHtml = '<option disabled selected>Select a Rider</option>';
-		 for (let i in riders) {
-			 riderHtml += `<option value="${riders[i].rider_id}">${riders[i].firstname} ${riders[i].lastname}</option>`
-		 }
-		 
-		 tpl.find('.horse-select').html(horseHtml);
-		 tpl.find('.rider-select').html(riderHtml);
-		 
-		 $('.entries').append(tpl);
-		 
-		 entryCount++;
-		 selected.call(this, 'rider');
-		 selected.call(this, 'horse');
-	 };
+            for (let i = 0; i < $(`.${className}-select`).length; i++) {
+                for (let x in data) {
+                    if ($(document.getElementsByClassName(`${className}-select`).item(i)).val() == data[x]) {
+                        continue;
+                    }
 
-	 const recalculateIndex = function () {
-		 let c = $('.entries .entry').length;
-		 for(let i = 0; i < c; i++) {
-			 $($('.entries .entry')[i]).find('.horse-select').attr('name', 'data[' + i + '][horse]');
-			 $($('.entries .entry')[i]).find('.rider-select').attr('name', 'data[' + i + '][rider]');
-         }
+                    $(document.getElementsByClassName(`${className}-select`).item(i)).find('option[value="' + data[x] +
+                        '"]').prop('disabled', true);
+                }
 
-         entryCount = c;
-	 };
+                $($(document.getElementsByClassName(`${className}-select`).item(i)).find('option')[0]).prop('disabled',
+                    true);
+            }
+        };
 
-	 $('#select-user').change(function () {
-		 
-         let userId = $(this).val();
-		 $.get(`/entry/user/${userId}`, function (res) {
-			 $('#add-entry').removeClass('hidden');
-			 $('.entries').html(''); // reset entries
-			 riders = res.riders;
-			 horses = res.horses;
-			 addEntry();
-		 }).fail(function () {
-			 $.alert('Something went wrong!');
-		 });
-	 });
+        const addEntry = function() {
+            let tpl = $('#horse-rider').html().replace(/__i__/g, entryCount);
+            let horseHtml = '<option disabled selected>Select a Horse</option>';
+            tpl = $(tpl);
 
-	 $('#add-entry').click(function (e) {
-		 e.preventDefault();
-		 addEntry();
-	 });
+            for (let i in horses) {
+                //  horseHtml += `<option value="${horses[i].horse_id}">${horses[i].name}</option>`
+                horseHtml +=
+                    `<option value="${horses[i].horseid}">${horses[i].name} / ${horses[i].nfregistration} / ${horses[i].gender} / ${horses[i].color}</option>`
+            }
 
-	 $(document).on('click', '.remove-this', function (e) {
-		 e.preventDefault();
-		 $(this).parent().parent().remove();
-		 recalculateIndex();
-		 selected.call(this, 'horse');
-		 selected.call(this, 'rider');
-	 });
-	 
-	 $(document).on('change', '.horse-select', function() {
-		 selected.call(this, 'horse');
-		 $(this).find('option').removeClass('selected');
-		 $(this).find('option[value="' + $(this).val() + '"]').addClass('selected');
-		 $('.horse-select').find('option[value="' + $(this).val() + '"]').prop('disabled', true);
-		 $(this).find('.selected').prop('disabled', false);
-	 });
-	 
-	 $(document).on('change', '.rider-select', function() {
-		 selected.call(this, 'rider');
-		 $(this).find('option').removeClass('selected');
-		 $(this).find('option[value="' + $(this).val() + '"]').addClass('selected');
-		 $('.rider-select').find('option[value="' + $(this).val() + '"]').prop('disabled', true);
-		 $(this).find('.selected').prop('disabled', false);
-	 });
-	 
-	 @if (empty(old()) && $page == 'create')
-	 $.confirm({
-		 title: 'Rules and Regulations',
-		 columnClass: 'col-md-8',
-		 content: $('#rules-content').html(),
-		 buttons: {
-			 'I Agree' : {
-				 btnClass : 'btn-main',
-				 action: function () {}
-			 },
-			 'I Disagree' : {
-				 btnClass : 'btn-danger',
-				 action : function () {
-					 history.back();
-				 }
-			 }
-		 }
-	 });
-	 @endif
-	</script>
+            let riderHtml = '<option disabled selected>Select a Rider</option>';
+            for (let i in riders) {
+                riderHtml +=
+                    `<option value="${riders[i].riderid}">${riders[i].firstx0020name} ${riders[i].familyx0020name} (${riders[i].stable}) ${riders[i].nfx0020license} / ${riders[i].feix0020reg} / ${riders[i].countryshort}</option>`
+            }
+
+            tpl.find('.horse-select').html(horseHtml);
+            tpl.find('.rider-select').html(riderHtml);
+
+            $('.entries').append(tpl);
+
+            entryCount++;
+            selected.call(this, 'rider');
+            selected.call(this, 'horse');
+        };
+
+        const recalculateIndex = function() {
+            let c = $('.entries .entry').length;
+            for (let i = 0; i < c; i++) {
+                $($('.entries .entry')[i]).find('.horse-select').attr('name', 'data[' + i + '][horse]');
+                $($('.entries .entry')[i]).find('.rider-select').attr('name', 'data[' + i + '][rider]');
+            }
+
+            entryCount = c;
+        };
+
+        $('#select-user').change(function() {
+
+            let userId = $(this).val();
+            $.get(`/entry/user/${userId}`, function(res) {
+                $('#add-entry').removeClass('hidden');
+                $('.entries').html(''); // reset entries
+                riders = res.riders;
+                horses = res.horses;
+                addEntry();
+            }).fail(function() {
+                $.alert('Something went wrong!');
+            });
+        });
+
+        $('#add-entry').click(function(e) {
+            e.preventDefault();
+            addEntry();
+        });
+
+        $(document).on('click', '.remove-this', function(e) {
+            e.preventDefault();
+            $(this).parent().parent().remove();
+            recalculateIndex();
+            selected.call(this, 'horse');
+            selected.call(this, 'rider');
+        });
+
+        $(document).on('change', '.horse-select', function() {
+            selected.call(this, 'horse');
+            $(this).find('option').removeClass('selected');
+            $(this).find('option[value="' + $(this).val() + '"]').addClass('selected');
+            $('.horse-select').find('option[value="' + $(this).val() + '"]').prop('disabled', true);
+            $(this).find('.selected').prop('disabled', false);
+        });
+
+        $(document).on('change', '.rider-select', function() {
+            selected.call(this, 'rider');
+            $(this).find('option').removeClass('selected');
+            $(this).find('option[value="' + $(this).val() + '"]').addClass('selected');
+            $('.rider-select').find('option[value="' + $(this).val() + '"]').prop('disabled', true);
+            $(this).find('.selected').prop('disabled', false);
+        });
+
+        // @if (empty(old()) && $page == 'create')
+        //     $.confirm({
+        //         title: 'Rules and Regulations',
+        //         columnClass: 'col-md-8',
+        //         content: $('#rules-content').html(),
+        //         buttons: {
+        //             'I Agree': {
+        //                 btnClass: 'btn-main',
+        //                 action: function() {}
+        //             },
+        //             'I Disagree': {
+        //                 btnClass: 'btn-danger',
+        //                 action: function() {
+        //                     history.back();
+        //                 }
+        //             }
+        //         }
+        //     });
+        // @endif
+    </script>
 @endsection

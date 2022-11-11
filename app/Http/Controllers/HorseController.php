@@ -60,7 +60,7 @@ class HorseController extends Controller
         $hasHorse = json_decode($response->getBody());
         
         $tpl_vars['eef_horses'] = $hasHorse->horses->data;
-        // dd($tpl_vars)
+
         return view(sprintf(self::LIST_TPL, $this->model), $tpl_vars);
     }
 }

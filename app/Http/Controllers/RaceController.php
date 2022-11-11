@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Race as RaceModel;
 use App\Services\ServiceProvider;
+use Str;
 
 class RaceController extends Controller
 {
@@ -26,5 +27,30 @@ class RaceController extends Controller
         $tpl_vars['stables'] = $stables;
         
         return $tpl_vars;
+    }
+
+    public function listing(Request $request) {
+        $tpl_vars = [];
+
+        $service = ServiceProvider::{$this->model}();
+        $tpl_vars[Str::plural($this->model)] = $service->listing($request->except('_token'));
+        $tpl_vars['isSearchable'] = $service->isSearchable();
+        
+        $httpClient = new \GuzzleHttp\Client();
+        $api_url = '';
+        $profile = session()->get('profile');
+
+        $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/eventlist';
+        $options = [
+            'headers' => [
+                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+            ],
+        ];
+        $response = $httpClient->request('POST', $api_url, $options);
+        $hasEvents = json_decode($response->getBody());
+
+        $tpl_vars['eef_events'] = $hasEvents->events->data;
+
+        return view(sprintf(self::LIST_TPL, $this->model), $tpl_vars);
     }
 }
