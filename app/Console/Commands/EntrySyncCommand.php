@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\FederationController;
-use App\Models\PSetting;
+use App\Models\Psetting;
 use App\Models\Multi;
 class EntrySyncCommand extends Command
 {
