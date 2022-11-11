@@ -23,14 +23,14 @@ class ChangeColnamesFtrainers extends Migration
             $table->dropColumn('registered_x0020_season');
             $table->dropColumn('country_short');
             $table->dropColumn('homecountry_short');
-            $table->string('nf_x0020_license')->nullable();
-            $table->string('first_x0020_name')->nullable();
-            $table->string('family_x0020_name')->nullable();
-            $table->string('nationality_short')->nullable();
-            $table->string('fei_x0020_reg')->nullable();
-            $table->string('registered_x0020_season')->nullable();
-            $table->string('country_short')->nullable();
-            $table->string('homecountry_short')->nullable();
+            $table->string('nfx0020license')->nullable();
+            $table->string('firstx0020name')->nullable();
+            $table->string('familyx0020name')->nullable();
+            $table->string('nationalityshort')->nullable();
+            $table->string('feix0020reg')->nullable();
+            $table->string('registeredx0020season')->nullable();
+            $table->string('countryshort')->nullable();
+            $table->string('homecountryshort')->nullable();
         });
     }
 
