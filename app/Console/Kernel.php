@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:synctrainers')->everySeconds(5)->withoutOverlapping();
         $schedule->command('command:syncowners')->everySeconds(5)->withoutOverlapping();
         $schedule->command('command:syncstables')->everySeconds(5)->withoutOverlapping();
+        $schedule->command('command:syncentries')->everySeconds(5)->withoutOverlapping();
     }
 
     /**
