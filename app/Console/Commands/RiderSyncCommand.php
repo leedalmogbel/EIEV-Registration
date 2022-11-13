@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\FederationController;
 use App\Models\Psetting;
 use App\Models\Multi;
+use Illuminate\Support\Facades\Artisan;
 
 class RiderSyncCommand extends Command
 {
