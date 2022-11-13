@@ -115,7 +115,8 @@ $adminRoutes['stable']['post:/update/{id}'][1] = ['sessionChecker:superadmin,adm
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect()->route('login');
 })->middleware(SessionChecker::class);
 
 
