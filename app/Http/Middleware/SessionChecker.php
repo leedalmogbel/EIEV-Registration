@@ -29,17 +29,17 @@ class SessionChecker
             return redirect('/login');
         }
 
-        if (!in_array(session()->get('role')->role, $roles)) {
-            // set message
-            Session::flash('message', 'You dont have permission');
-            Session::flash('message_type', 'warning');
+        // if (!in_array(session()->get('role')->role, $roles)) {
+        //     // set message
+        //     Session::flash('message', 'You dont have permission');
+        //     Session::flash('message_type', 'warning');
 
-            if (isset(session()->get('role')->home_url)) {
-                return redirect(session()->get('role')->home_url);
-            } else {
-                return redirect()->back();
-            }
-        }
+        //     if (isset(session()->get('role')->home_url)) {
+        //         return redirect(session()->get('role')->home_url);
+        //     } else {
+        //         return redirect()->back();
+        //     }
+        // }
         
         return $next($request);
     }

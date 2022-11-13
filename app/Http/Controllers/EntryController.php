@@ -94,12 +94,12 @@ class EntryController extends Controller
         $tplVars['races'] = ServiceProvider::arrayToKeyVal($races, 'race_id', 'title');
 
         $users = UserModel::where('status', 'A');
-        if (session()->get('role')->role == 'user') {
-            $users = $users->where('user_id', session()->get('user')->user_id);
-        }
+        // if (session()->get('role')->role == 'user') {
+        //     $users = $users->where('user_id', session()->get('user')->user_id);
+        // }
 
-        $users = $users->get()
-               ->toArray();
+        // $users = $users->get()
+        //        ->toArray();
         
         $tplVars['users'] = ServiceProvider::arrayToKeyVal($users, 'user_id', 'firstname|[ ]|lastname');
         $tplVars['horses'] = [];

@@ -8,7 +8,7 @@
     </tr>
     @foreach ($eef_trainers as $trainer)
         <tr>
-            <td>{{ $trainer->first_x0020_name }} {{ $trainer->family_x0020_name }}</td>
+            <td>{{ $trainer->firstx0020name }} {{ $trainer->familyx0020name }}</td>
             <td>{{ $trainer->stable }}</td>
             <td>{{ $trainer->email }}</td>
             {{-- <td>@include('partials.status', ['status' => $trainer->status])</td>

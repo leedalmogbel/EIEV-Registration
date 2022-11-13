@@ -155,7 +155,5 @@ Route::get('/logout', function () {
     return redirect('/login');
 });
 
-Route::get('/dashboard', function () {
-    return view('pages.dashboard');
-})->middleware('sessionChecker:superadmin,admin');
+Route::get('/dashboard', "DashboardController@index");
 

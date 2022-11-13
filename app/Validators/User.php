@@ -61,7 +61,6 @@ class User {
         }
         
         $role = $userModel->role()->first();
-        
         if (!$role) {
             throw new FieldException(json_encode([
                 'username' => self::ERR_NO_ROLE

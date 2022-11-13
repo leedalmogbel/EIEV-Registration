@@ -33,6 +33,7 @@ class Entry extends EntryModel {
             $model = new EntryModel([
                 'race_id' => $this->race_id,
                 'user_id' => $this->user_id,
+                // 'user_id' => session()->get('user')->user_id,
                 'horse_id' => $data['horse'],
                 'rider_id' => $data['rider'],
                 'sequence' => $sequence,

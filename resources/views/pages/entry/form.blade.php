@@ -10,7 +10,7 @@
 ])
 <br /> --}}
 <h2 class="text-danger">User Detail</h2>
-@include('partials.formFields.selectFormGroup', [
+{{-- @include('partials.formFields.selectFormGroup', [
     'label' => 'User',
     'name' => 'user_id',
     'required' => true,
@@ -18,7 +18,7 @@
     'placeholder' => 'Select a User',
     'options' => $users,
     'idName' => 'select-user',
-])
+]) --}}
 <br />
 <h2 class="text-danger">Entry Detail</h2>
 <div class="entries">

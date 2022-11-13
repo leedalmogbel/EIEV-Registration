@@ -44,7 +44,8 @@ class TrainerController extends Controller
         ];
         $response = $httpClient->request('POST', $api_url, $options);
         $hasTrainer = json_decode($response->getBody());
-        $tpl_vars['eef_trainers'] = $hasTrainer->trainer->data;
+
+        $tpl_vars['eef_trainers'] = $hasTrainer->trainers->data;
 
         return view(sprintf(self::LIST_TPL, $this->model), $tpl_vars);
     }

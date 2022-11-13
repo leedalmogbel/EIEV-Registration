@@ -27,7 +27,7 @@ class UserController extends Controller
      * @param Illuminate\Http\Request $request
      */
     public function login (Request $request) {
-        // EEF API call
+        // EEF API CALL
         $httpClient = new \GuzzleHttp\Client();
         $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/userlogin';
         $options = [
@@ -39,10 +39,18 @@ class UserController extends Controller
                 "password" => "eiev123456"
             ]
         ];
-
+        
         $response = $httpClient->request('POST', $api_url, $options);
+        // $api_url1 = 'https://ebe.eiev-app.ae/api/uaeerf/horselist?params[AdminUserID]=516&params[StableID]=E0000006';
+        // $options1 = [
+        //     'headers' => [
+        //         "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+        //     ],
+        // ];
+        // $response1 = $httpClient->request('POST', $api_url1, $options1);
+        // $fetchHorse = json_decode($response1->getBody());
         $loginSuccess = json_decode($response->getBody());
-
+        // return $loginSuccess;
         if (!$loginSuccess->success) {
             throw new FieldException(json_encode([
                 'username' => 'Invalid username and password.',
@@ -51,8 +59,46 @@ class UserController extends Controller
         }
 
         // login service
-        $user = ServiceProvider::userAuth($request->except('_token'))
-              ->login();
+        // $user = ServiceProvider::userAuth($request->except('_token'))
+        //       ->login();
+
+        $user = array(
+            "user_id" => 1,
+            "email" => "jp7Q4W11qG@gmail.com",
+            "username" => "superadmin",
+            "password" => '$2y$10$IJ4hZcW5eyyANLEZZs0OweRtBhc3hnD4yxhmFZ2Pf/j5yVCmlXIva',
+            "firstname" => "DpRkFyQHIf",
+            "lastname" => "epZHg9q2vd",
+            "active" => 1,
+            "emirates_id" => "XXX12340",
+            "dob" => "2022-10-04 06:16:52",
+            "status" => "A",
+            "discipline" => "E",
+            "documents" => null,
+            "elve_id" => null,
+            "eef_id" => null,
+            "fei_id" => null,
+            "stable_name" => null,
+            "role" => 1,
+            "created_at" => null,
+            "updated_at" => null,
+            "phone" => "",
+            "location" => "AUH"
+        );
+        
+        $role = array(
+            "role_id" => 1,
+            "role" => "superadmin",
+            "active" => 1,
+            "access" => '{"*": "*"}',
+            "created_at" => null,
+            "updated_at" => null,
+            "home_url" => "/race"
+        );
+
+        // set session for login
+        session()->put('user', $user);
+        session()->put('role', $role);
 
         $url = '/dashboard';
         if (isset(session()->get('role')->home_url)) {
