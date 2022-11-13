@@ -15,7 +15,7 @@ class TrainerSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:synctrainers';
+    protected $signature = 'command:synctrainers {--ip=} {--host=}';
 
     /**
      * The console command description.
@@ -44,25 +44,35 @@ class TrainerSyncCommand extends Command
         $id = Str::uuid();
         try {
             info("`{$id}` - Started trainer Sync");
-            $settings = Psetting::first();
-            info("`{$id}` - Check Sync all if enabled");
-            if($settings->syncall){
-
-            }else{
-                info("`{$id}` - Sync all not enabled. Check Sync trainer if enabled");
-                if($settings->synctrainers){
-                    info("`{$id}` - Sync trainer enabled. Call API");
-                    $data = (new FederationController)->searchtrainerlist(new Request);
-                    if($data){
-                        info("`{$id}` - Check data count.");
-                        $dcount = count($data['trainers']['data']);
-                        if($dcount>0){
-                            Multi::insertOrUpdate($data['trainers']['data'],'ftrainers');
-                            info("`{$id}` - `{$dcount}` records synced.");
+            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->first();
+            if($settings){
+                if(!$settings->processing_trainers){
+                    info("`{$id}` - Check Sync all if enabled");
+                    if($settings->syncall){
+                        
+                    }else{
+                        info("`{$id}` - Sync all not enabled. Check Sync trainer if enabled");
+                        if($settings->synctrainers){
+                            info("`{$id}` - Sync trainer enabled. Call API");
+                            $settings->processing_trainers = 1;
+                            $settings->save();
+                            $data = (new FederationController)->searchtrainerlist(new Request);
+                            if($data){
+                                info("`{$id}` - Check data count.");
+                                $dcount = count($data['trainers']['data']);
+                                if($dcount>0){
+                                    Multi::insertOrUpdate($data['trainers']['data'],'ftrainers');
+                                    info("`{$id}` - `{$dcount}` records synced.");
+                                }
+                            }
+                            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->update(['processing_trainers'=>0]);
+                        }else{
+                            info("`{$id}` - Sync all not enabled. Sync trainer not enabled");
                         }
+
                     }
                 }else{
-                    info("`{$id}` - Sync all not enabled. Sync trainer not enabled");
+                    info("`{$id}` - Trainer Sync command already processing. Sync cancelled.");
                 }
             }
         } catch (\Throwable $th) {

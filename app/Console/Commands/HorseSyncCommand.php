@@ -15,7 +15,7 @@ class HorseSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:synchorses';
+    protected $signature = 'command:synchorses {--ip=} {--host=}';
 
     /**
      * The console command description.
@@ -44,25 +44,34 @@ class HorseSyncCommand extends Command
         $id = Str::uuid();
         try {
             info("`{$id}` - Started horse Sync");
-            $settings = Psetting::first();
-            info("`{$id}` - Check Sync all if enabled");
-            if($settings->syncall){
-
-            }else{
-                info("`{$id}` - Sync all not enabled. Check Sync horse if enabled");
-                if($settings->synchorses){
-                    info("`{$id}` - Sync horse enabled. Call API");
-                    $data = (new FederationController)->searchhorselist(new Request);
-                    if($data){
-                        info("`{$id}` - Check data count.");
-                        $dcount = count($data['horses']['data']);
-                        if($dcount>0){
-                            Multi::insertOrUpdate($data['horses']['data'],'fhorses');
-                            info("`{$id}` - `{$dcount}` records synced.");
+            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->first();
+            if($settings){
+                if(!$settings->processing_horses){
+                    info("`{$id}` - Check Sync all if enabled");
+                    if($settings->syncall){
+        
+                    }else{
+                        info("`{$id}` - Sync all not enabled. Check Sync horse if enabled");
+                        if($settings->synchorses){
+                            info("`{$id}` - Sync horse enabled. Call API");
+                            $settings->processing_horses = 1;
+                            $settings->save();
+                            $data = (new FederationController)->searchhorselist(new Request);
+                            if($data){
+                                info("`{$id}` - Check data count.");
+                                $dcount = count($data['horses']['data']);
+                                if($dcount>0){
+                                    Multi::insertOrUpdate($data['horses']['data'],'fhorses');
+                                    info("`{$id}` - `{$dcount}` records synced.");
+                                }
+                            }
+                            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->update(['processing_horses'=>0]);
+                        }else{
+                            info("`{$id}` - Sync all not enabled. Sync horse not enabled");
                         }
                     }
                 }else{
-                    info("`{$id}` - Sync all not enabled. Sync horse not enabled");
+                    info("`{$id}` - Horse Sync command already processing. Sync cancelled.");
                 }
             }
         } catch (\Throwable $th) {

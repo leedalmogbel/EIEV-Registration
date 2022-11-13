@@ -15,7 +15,7 @@ class ProfileSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:syncprofiles';
+    protected $signature = 'command:syncprofiles {--ip=} {--host=}';
 
     /**
      * The console command description.
@@ -44,25 +44,34 @@ class ProfileSyncCommand extends Command
         $id = Str::uuid();
         try {
             info("`{$id}` - Started profile Sync");
-            $settings = Psetting::first();
-            info("`{$id}` - Check Sync all if enabled");
-            if($settings->syncall){
-
-            }else{
-                info("`{$id}` - Sync all not enabled. Check Sync profile if enabled");
-                if($settings->syncprofiles){
-                    info("`{$id}` - Sync profile enabled. Call API");
-                    $data = (new FederationController)->getuserprofile(new Request);
-                    if($data){
-                        info("`{$id}` - Check data count.");
-                        $dcount = count($data['profiles']['data']);
-                        if($dcount>0){
-                            Multi::insertOrUpdate($data['profiles']['data'],'userprofiles');
-                            info("`{$id}` - `{$dcount}` records synced.");
+            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->first();
+            if($settings){
+                if(!$settings->processing_profiles){
+                    info("`{$id}` - Check Sync all if enabled");
+                    if($settings->syncall){
+                        
+                    }else{
+                        info("`{$id}` - Sync all not enabled. Check Sync profile if enabled");
+                        if($settings->syncprofiles){
+                            info("`{$id}` - Sync profile enabled. Call API");
+                            $settings->processing_profiles = 1;
+                            $settings->save();
+                            $data = (new FederationController)->getuserprofile(new Request);
+                            if($data){
+                                info("`{$id}` - Check data count.");
+                                $dcount = count($data['profiles']['data']);
+                                if($dcount>0){
+                                    Multi::insertOrUpdate($data['profiles']['data'],'userprofiles');
+                                    info("`{$id}` - `{$dcount}` records synced.");
+                                }
+                            }
+                            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->update(['processing_profiles'=>0]);
+                        }else{
+                            info("`{$id}` - Sync all not enabled. Sync profile not enabled");
                         }
                     }
                 }else{
-                    info("`{$id}` - Sync all not enabled. Sync profile not enabled");
+                    info("`{$id}` - Rider Sync command already processing. Sync cancelled.");
                 }
             }
         } catch (\Throwable $th) {

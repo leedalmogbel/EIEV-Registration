@@ -15,7 +15,7 @@ class OwnerSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:syncowners';
+    protected $signature = 'command:syncowners {--ip=} {--host=}';
 
     /**
      * The console command description.
@@ -44,25 +44,34 @@ class OwnerSyncCommand extends Command
         $id = Str::uuid();
         try {
             info("`{$id}` - Started owner Sync");
-            $settings = Psetting::first();
-            info("`{$id}` - Check Sync all if enabled");
-            if($settings->syncall){
-
-            }else{
-                info("`{$id}` - Sync all not enabled. Check Sync owner if enabled");
-                if($settings->syncowners){
-                    info("`{$id}` - Sync owner enabled. Call API");
-                    $data = (new FederationController)->searchownerlist(new Request);
-                    if($data){
-                        info("`{$id}` - Check data count.");
-                        $dcount = count($data['owners']['data']);
-                        if($dcount>0){
-                            Multi::insertOrUpdate($data['owners']['data'],'fowners');
-                            info("`{$id}` - `{$dcount}` records synced.");
+            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->first();
+            if($settings){
+                if(!$settings->processing_owners){
+                    info("`{$id}` - Check Sync all if enabled");
+                    if($settings->syncall){
+        
+                    }else{
+                        info("`{$id}` - Sync all not enabled. Check Sync owner if enabled");
+                        if($settings->syncowners){
+                            info("`{$id}` - Sync owner enabled. Call API");
+                            $settings->processing_owners = 1;
+                            $settings->save();
+                            $data = (new FederationController)->searchownerlist(new Request);
+                            if($data){
+                                info("`{$id}` - Check data count.");
+                                $dcount = count($data['owners']['data']);
+                                if($dcount>0){
+                                    Multi::insertOrUpdate($data['owners']['data'],'fowners');
+                                    info("`{$id}` - `{$dcount}` records synced.");
+                                }
+                            }
+                            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->update(['processing_owners'=>0]);
+                        }else{
+                            info("`{$id}` - Sync all not enabled. Sync owner not enabled");
                         }
                     }
                 }else{
-                    info("`{$id}` - Sync all not enabled. Sync owner not enabled");
+                    info("`{$id}` - Owner Sync command already processing. Sync cancelled.");
                 }
             }
         } catch (\Throwable $th) {

@@ -15,7 +15,7 @@ class StableSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:syncstables';
+    protected $signature = 'command:syncstables {--ip=} {--host=}';
 
     /**
      * The console command description.
@@ -44,25 +44,34 @@ class StableSyncCommand extends Command
         $id = Str::uuid();
         try {
             info("`{$id}` - Started stable Sync");
-            $settings = Psetting::first();
-            info("`{$id}` - Check Sync all if enabled");
-            if($settings->syncall){
-
-            }else{
-                info("`{$id}` - Sync all not enabled. Check Sync stable if enabled");
-                if($settings->syncstables){
-                    info("`{$id}` - Sync stable enabled. Call API");
-                    $data = (new FederationController)->getstablelist(new Request);
-                    if($data){
-                        info("`{$id}` - Check data count.");
-                        $dcount = count($data['stables']['data']);
-                        if($dcount>0){
-                            Multi::insertOrUpdate($data['stables']['data'],'fstables');
-                            info("`{$id}` - `{$dcount}` records synced.");
+            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->first();
+            if($settings){
+                if(!$settings->processing_stables){
+                    info("`{$id}` - Check Sync all if enabled");
+                    if($settings->syncall){
+        
+                    }else{
+                        info("`{$id}` - Sync all not enabled. Check Sync stable if enabled");
+                        if($settings->syncstables){
+                            $settings->processing_stables = 1;
+                            $settings->save();
+                            info("`{$id}` - Sync stable enabled. Call API");
+                            $data = (new FederationController)->getstablelist(new Request);
+                            if($data){
+                                info("`{$id}` - Check data count.");
+                                $dcount = count($data['stables']['data']);
+                                if($dcount>0){
+                                    Multi::insertOrUpdate($data['stables']['data'],'fstables');
+                                    info("`{$id}` - `{$dcount}` records synced.");
+                                }
+                            }
+                            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->update(['processing_stables'=>0]);
+                        }else{
+                            info("`{$id}` - Sync all not enabled. Sync stable not enabled");
                         }
                     }
                 }else{
-                    info("`{$id}` - Sync all not enabled. Sync stable not enabled");
+                    info("`{$id}` - Stable Sync command already processing. Sync cancelled.");
                 }
             }
         } catch (\Throwable $th) {

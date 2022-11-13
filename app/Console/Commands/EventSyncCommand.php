@@ -15,7 +15,7 @@ class EventSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:syncevents';
+    protected $signature = 'command:syncevents {--ip=} {--host=}';
 
     /**
      * The console command description.
@@ -44,25 +44,34 @@ class EventSyncCommand extends Command
         $id = Str::uuid();
         try {
             info("`{$id}` - Started event Sync");
-            $settings = Psetting::first();
-            info("`{$id}` - Check Sync all if enabled");
-            if($settings->syncall){
-
-            }else{
-                info("`{$id}` - Sync all not enabled. Check Sync event if enabled");
-                if($settings->syncevents){
-                    info("`{$id}` - Sync event enabled. Call API");
-                    $data = (new FederationController)->geteieveventlist(new Request);
-                    if($data){
-                        info("`{$id}` - Check data count.");
-                        $dcount = count($data['events']['data']);
-                        if($dcount>0){
-                            Multi::insertOrUpdate($data['events']['data'],'fevents');
-                            info("`{$id}` - `{$dcount}` records synced.");
+            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->first();
+            if($settings){
+                if(!$settings->processing_events){
+                    info("`{$id}` - Check Sync all if enabled");
+                    if($settings->syncall){
+        
+                    }else{
+                        info("`{$id}` - Sync all not enabled. Check Sync event if enabled");
+                        if($settings->syncevents){
+                            info("`{$id}` - Sync event enabled. Call API");
+                            $settings->processing_events = 1;
+                            $settings->save();
+                            $data = (new FederationController)->geteieveventlist(new Request);
+                            if($data){
+                                info("`{$id}` - Check data count.");
+                                $dcount = count($data['events']['data']);
+                                if($dcount>0){
+                                    Multi::insertOrUpdate($data['events']['data'],'fevents');
+                                    info("`{$id}` - `{$dcount}` records synced.");
+                                }
+                            }
+                            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->update(['processing_events'=>0]);
+                        }else{
+                            info("`{$id}` - Sync all not enabled. Sync event not enabled");
                         }
                     }
                 }else{
-                    info("`{$id}` - Sync all not enabled. Sync event not enabled");
+                    info("`{$id}` - Event Sync command already processing. Sync cancelled.");
                 }
             }
         } catch (\Throwable $th) {

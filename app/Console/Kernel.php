@@ -20,14 +20,14 @@ class Kernel extends ConsoleKernel
 
     protected function shortSchedule(\Spatie\ShortSchedule\ShortSchedule $schedule)
     {
-        $schedule->command('command:syncriders')->everySeconds(5)->withoutOverlapping();
-        $schedule->command('command:synchorses')->everySeconds(5)->withoutOverlapping();
-        $schedule->command('command:synctrainers')->everySeconds(5)->withoutOverlapping();
-        $schedule->command('command:syncowners')->everySeconds(5)->withoutOverlapping();
-        $schedule->command('command:syncstables')->everySeconds(5)->withoutOverlapping();
-        $schedule->command('command:syncentries')->everySeconds(5)->withoutOverlapping();
-        $schedule->command('command:syncevents')->everySeconds(5)->withoutOverlapping();
-        $schedule->command('command:syncprofiles')->everySeconds(5)->withoutOverlapping();
+        // $schedule->command('command:syncriders')->everySeconds(5)->withoutOverlapping();
+        // $schedule->command('command:synchorses')->everySeconds(5)->withoutOverlapping();
+        // $schedule->command('command:synctrainers')->everySeconds(5)->withoutOverlapping();
+        // $schedule->command('command:syncowners')->everySeconds(5)->withoutOverlapping();
+        // $schedule->command('command:syncstables')->everySeconds(5)->withoutOverlapping();
+        // $schedule->command('command:syncentries')->everySeconds(5)->withoutOverlapping();
+        // $schedule->command('command:syncevents')->everySeconds(5)->withoutOverlapping();
+        // $schedule->command('command:syncprofiles')->everySeconds(5)->withoutOverlapping();
     }
 
     /**
