@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Psetting;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Crypt;
 class FederationSyncController extends Controller
 {
     public function syncentries(Request $request)
@@ -17,8 +20,7 @@ class FederationSyncController extends Controller
         ob_end_flush();
         flush();
         $ip = $request->ip();
-        $host_agent = Hash::make(Str::of(Str::remove(' ',$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT')))->trim());
-        return $host_agent;
+        $host_agent = Str::slug(Str::of($request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
         $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
         if($settings){
             if($settings->allowed){
@@ -43,8 +45,7 @@ class FederationSyncController extends Controller
         ob_end_flush();
         flush();
         $ip = $request->ip();
-        $host_agent = Hash::make(Str::of(Str::remove(' ',$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT')))->trim());
-        return $host_agent;
+        $host_agent = Str::slug(Str::of($request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
         $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
         if($settings){
             if($settings->allowed){
@@ -69,8 +70,7 @@ class FederationSyncController extends Controller
         ob_end_flush();
         flush();
         $ip = $request->ip();
-        $host_agent = Hash::make(Str::of(Str::remove(' ',$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT')))->trim());
-        return $host_agent;
+        $host_agent = Str::slug(Str::of($request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
         $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
         if($settings){
             if($settings->allowed){
@@ -95,8 +95,7 @@ class FederationSyncController extends Controller
         ob_end_flush();
         flush();
         $ip = $request->ip();
-        $host_agent = Hash::make(Str::of(Str::remove(' ',$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT')))->trim());
-        return $host_agent;
+        $host_agent = Str::slug(Str::of($request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
         $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
         if($settings){
             if($settings->allowed){
@@ -121,8 +120,7 @@ class FederationSyncController extends Controller
         ob_end_flush();
         flush();
         $ip = $request->ip();
-        $host_agent = Hash::make(Str::of(Str::remove(' ',$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT')))->trim());
-        return $host_agent;
+        $host_agent = Str::slug(Str::of($request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
         $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
         if($settings){
             if($settings->allowed){
@@ -147,8 +145,7 @@ class FederationSyncController extends Controller
         ob_end_flush();
         flush();
         $ip = $request->ip();
-        $host_agent = Hash::make(Str::of(Str::remove(' ',$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT')))->trim());
-        return $host_agent;
+        $host_agent = Str::slug(Str::of($request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
         $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
         if($settings){
             if($settings->allowed){
@@ -173,8 +170,7 @@ class FederationSyncController extends Controller
         ob_end_flush();
         flush();
         $ip = $request->ip();
-        $host_agent = Hash::make(Str::of(Str::remove(' ',$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT')))->trim());
-        return $host_agent;
+        $host_agent = Str::slug(Str::of($request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
         $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
         if($settings){
             if($settings->allowed){
@@ -199,8 +195,7 @@ class FederationSyncController extends Controller
         ob_end_flush();
         flush();
         $ip = $request->ip();
-        $host_agent = Hash::make(Str::of(Str::remove(' ',$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT')))->trim());
-        return $host_agent;
+        $host_agent = Str::slug(Str::of($request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
         $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
         if($settings){
             if($settings->allowed){

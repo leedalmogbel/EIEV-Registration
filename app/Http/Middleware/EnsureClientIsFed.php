@@ -16,7 +16,7 @@ class EnsureClientIsFed
      */
     public function handle(Request $request, Closure $next)
     {
-        if (($request->header('cYknyb99NOY9VwsAbQS9')) != null && in_array($request->header("38948f839e704e8dbd4ea2650378a388"), [
+        if (($request->header('cYknyb99NOY9VwsAbQS9')) != null && in_array($request->header("cYknyb99NOY9VwsAbQS9"), [
         "gpJ745poNFKkZK44irpB",
         "1eA7pK4ZEOx174NPRwqT",
         "uwtdCE3qjOYCA5jiDNYo",
