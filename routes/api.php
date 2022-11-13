@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FederationController;
+use App\Http\Controllers\FederationSyncController;
 use App\Http\Middleware\EnsureClientIsValid;
 use App\Http\Middleware\EnsureClientIsFed;
 use Illuminate\Support\Facades\Artisan;
@@ -37,12 +38,12 @@ Route::group(['middleware'=>[EnsureClientIsValid::class],'prefix'=>'uaeerf'],fun
 });
 
 Route::group(['middleware'=>[EnsureClientIsFed::class],'prefix'=>'sync'],function () {
-    Route::post('GetEIEVEventList', [FederationController::class, 'syncevents']);
-    Route::post('GetEntries', [FederationController::class, 'syncentries']);
-    Route::post('GetUserProfile', [FederationController::class, 'syncprofiles']);
-    Route::post('SearchHorseListV5', [FederationController::class, 'synchorses']);
-    Route::post('SearchOwnerListV5', [FederationController::class, 'syncowners']);
-    Route::post('SearchRiderListV5', [FederationController::class, 'syncriders']);
-    Route::post('SearchTrainerListV5', [FederationController::class, 'synctrainers']);
-    Route::post('getStableList',[FederationController::class, 'syncstables']);
+    Route::post('GetEIEVEventList', [FederationSyncController::class, 'syncevents']);
+    Route::post('GetEntries', [FederationSyncController::class, 'syncentries']);
+    Route::post('GetUserProfile', [FederationSyncController::class, 'syncprofiles']);
+    Route::post('SearchHorseListV5', [FederationSyncController::class, 'synchorses']);
+    Route::post('SearchOwnerListV5', [FederationSyncController::class, 'syncowners']);
+    Route::post('SearchRiderListV5', [FederationSyncController::class, 'syncriders']);
+    Route::post('SearchTrainerListV5', [FederationSyncController::class, 'synctrainers']);
+    Route::post('getStableList',[FederationSyncController::class, 'syncstables']);
 });
