@@ -19,6 +19,8 @@ class DashboardController extends Controller
             $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/stablestats?params[AdminUserID]='.$profile->userid;
         }
         $apiEvents_url = 'https://ebe.eiev-app.ae/api/uaeerf/eventlist';
+        $apiEntries_url = 'https://ebe.eiev-app.ae/api/uaeerf/entries?params[SearchUserID]='.$profile->userid.'&params[SearchEventID]=0003900';
+
         $options = [
             'headers' => [
                 "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
@@ -34,10 +36,20 @@ class DashboardController extends Controller
         $hasEvents = json_decode($eventRes->getBody());
         $events = $hasEvents->events->data;
 
+        $entryRes = $httpClient->request('POST', $apiEntries_url, $options);
+        $hasEntries = json_decode($entryRes->getBody());
+        $entries = $hasEntries->entries->data;
+
+        usort($entries, function($a, $b)
+        {
+            return strcmp($a->code, $b->code);
+        });
+
         return view('pages.dashboard', [
             'modelName' => $modelName,
             'dashcount' => $dashcount,
-            'events' => $events
+            'events' => $events,
+            'entries' => $entries
         ]);
     }
 }

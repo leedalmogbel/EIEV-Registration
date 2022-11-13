@@ -67,11 +67,11 @@ class EntryController extends Controller
 
     public function create(Request $request) {
         $profile = session()->get('profile');
-        $data = $request->data;
+        $reqData = $request->data;
         $httpClient = new \GuzzleHttp\Client();
         $raceid = $request->get('raceid');
-        $horseid = $data[0]['horse'];
-        $riderid = $data[0]['rider'];
+        $horseid = $reqData[0]['horse'];
+        $riderid = $reqData[0]['rider'];
         $entry_url = "https://ebe.eiev-app.ae/api/uaeerf/addentry?params[EventID]={$raceid}&params[HorseID]={$horseid}&params[RiderID]={$riderid}&params[UserID]=".$profile->userid;
         $options = [
             'headers' => [
@@ -94,9 +94,13 @@ class EntryController extends Controller
         $tplVars['races'] = ServiceProvider::arrayToKeyVal($races, 'race_id', 'title');
 
         $users = UserModel::where('status', 'A');
+
         // if (session()->get('role')->role == 'user') {
         //     $users = $users->where('user_id', session()->get('user')->user_id);
         // }
+        if (session()->get('role')['role'] == 'user') {
+            $users = $users->where('user_id', session()->get('user')->user_id);
+        }
 
         $users = $users->get()
                ->toArray();
