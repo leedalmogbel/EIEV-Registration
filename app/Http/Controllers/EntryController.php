@@ -11,6 +11,8 @@ use App\Models\User as UserModel;
 
 use App\Services\ServiceProvider;
 use Str;
+use App\Models\Multi;
+use Illuminate\Support\Facades\URL;
 
 class EntryController extends Controller
 {
@@ -86,6 +88,10 @@ class EntryController extends Controller
 
         $entryCode = array();
         foreach ($reqData as $key => $value) {
+            if (!isset($horseid) || !isset($riderid)) {
+                $this->flashMsg(sprintf('%s must not be empty', ucwords($this->model)), 'warning');
+                return redirect(URL::current());
+            }
             $horseid = $reqData[$key]['horse'];
             $riderid = $reqData[$key]['rider'];
             $entry_url = "https://ebe.eiev-app.ae/api/uaeerf/addentry?params[EventID]={$raceid}&params[HorseID]={$horseid}&params[RiderID]={$riderid}&params[UserID]=".$profile->userid;
@@ -93,7 +99,16 @@ class EntryController extends Controller
             $entryCode[$key]['horse'] = $horseid;
             $entryCode[$key]['rider'] = $riderid;
             $entryCode[$key]['entry'] = json_decode($entryResponse->getBody());
+            $fEntries[$key] = array(
+                "riderid" => $riderid,
+                "horseid" => $horseid,
+                "userid" => $profile->userid,
+                "code" => $entryCode[$key]['entry']->entrycode,
+                "eventcode" => $raceid
+            );
         }
+
+        Multi::insertOrUpdate($fEntries, 'fentries');
 
         // foreach ($entryCode as $key => $value) {
         //     $this->flashMsg(sprintf('%s Horse '.$entryCode[$key]['horse'].' and '.$entryCode[$key]['rider'].' created successfully', ucwords($this->model)), 'success');
@@ -164,8 +179,8 @@ class EntryController extends Controller
         if (empty($request->get('raceid'))){
             return redirect(sprintf('/%s', 'dashboard'));
         }
-        $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/entries?params[SearchEventID]='.$request->get('raceid');
-        // $api_url = 'http://192.168.1.161:8000/api/uaeerf/entries?params[SearchEventID]='.$request->get('raceid');
+        // $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/entries?params[SearchEventID]='.$request->get('raceid');
+        $api_url = 'http://192.168.1.161:8000/api/uaeerf/entries?params[SearchEventID]='.$request->get('raceid');
 
         $options = [
             'headers' => [
@@ -188,8 +203,8 @@ class EntryController extends Controller
 
         $httpClient = new \GuzzleHttp\Client();
         $api_url = '';
-        $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/updateentry?params[EventID]='.$raceid.'&params[SearchEntryID]='.$entrycode.'&params[Entrystatus]='.$status.'&params[Remarks]=Withdrawn';
-        // $api_url = 'http://192.168.1.161:8000/api/uaeerf/updateentry?params[EventID]='.$raceid.'&params[SearchEntryID]='.$entrycode.'&params[Entrystatus]='.$status.'&params[Remarks]=Withdrawn';
+        // $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/updateentry?params[EventID]='.$raceid.'&params[SearchEntryID]='.$entrycode.'&params[Entrystatus]='.$status.'&params[Remarks]=Withdrawn';
+        $api_url = 'http://192.168.1.161:8000/api/uaeerf/updateentry?params[EventID]='.$raceid.'&params[SearchEntryID]='.$entrycode.'&params[Entrystatus]='.$status.'&params[Remarks]=Withdrawn';
 
         $options = [
             'headers' => [
