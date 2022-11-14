@@ -18,7 +18,8 @@
                 <br /><br />
                 @if ($page == 'detail')
                 @else
-                    <button type="submit" class="btn btn-main submit-btn">{{ strtoupper($page) }}</button>
+                    {{-- <button type="submit" class="btn btn-main submit-btn">{{ strtoupper($page) }}</button> --}}
+                    <button type="submit" class="btn btn-main submit-btn">SUBMIT</button>
                 @endif
             </form>
             <br /><br />

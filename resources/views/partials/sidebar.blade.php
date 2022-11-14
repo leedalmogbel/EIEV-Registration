@@ -1,5 +1,5 @@
 <div class="sidebar px-0 col">
-    <div class="logo"><img src="/assets/images/dash-logo.png" /></div>
+    <div class="logo"><img src="/assets/images/dash-logo-white.png" /></div>
     <ul class="side-menu">
         <li>
             <a href="/dashboard" class="{{ $modelName == 'dashboard' ? 'active' : '' }}">
@@ -18,7 +18,7 @@
         </li> --}}
         <li>
             <a href="/race" class="{{ $modelName == 'race' ? 'active' : '' }}">
-                <i class="fa fa-flag-checkered" aria-hidden="true"></i> Races
+                <i class="fa fa-flag-checkered" aria-hidden="true"></i> Rides+Entries
             </a>
         </li>
         {{-- <li>
