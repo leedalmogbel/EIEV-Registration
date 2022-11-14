@@ -46,11 +46,11 @@ class DashboardController extends Controller
             return strcmp($a->code, $b->code);
         });
 
-        $events = array_filter($events, function($obj){
-            if ($obj->statusname !== "Pending") {
-                return $obj;
-            } 
-        });
+        // $events = array_filter($events, function($obj){
+        //     if ($obj->statusname !== "Pending") {
+        //         return $obj;
+        //     } 
+        // });
 
         return view('pages.dashboard', [
             'modelName' => $modelName,

@@ -50,11 +50,11 @@ class RaceController extends Controller
         $hasEvents = json_decode($response->getBody());
         $events = $hasEvents->events->data;
 
-        $events = array_filter($events, function($obj){
-            if ($obj->statusname !== "Pending") {
-                return $obj;
-            } 
-        });
+        // $events = array_filter($events, function($obj){
+        //     if ($obj->statusname !== "Pending") {
+        //         return $obj;
+        //     } 
+        // });
 
         $tpl_vars['eef_events'] = $events;
 
