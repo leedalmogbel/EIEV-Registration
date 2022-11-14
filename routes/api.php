@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FederationController;
 use App\Http\Controllers\FederationSyncController;
+use App\Http\Controllers\FriderController;
 use App\Http\Middleware\EnsureClientIsValid;
 use App\Http\Middleware\EnsureClientIsFed;
 
@@ -17,6 +18,11 @@ use App\Http\Middleware\EnsureClientIsFed;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::group(['prefix'=>'ajax'],function ()
+{
+    Route::get('searchrider',[FriderController::class,'index']);
+});
 
 Route::group(['middleware'=>[EnsureClientIsValid::class],'prefix'=>'uaeerf'],function () {
     Route::post('addentry', [FederationController::class, 'addentry']);
