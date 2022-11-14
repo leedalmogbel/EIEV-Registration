@@ -115,8 +115,10 @@ $adminRoutes['stable']['post:/update/{id}'][1] = ['sessionChecker:superadmin,adm
 */
 
 Route::get('/', function () {
-    // return view('welcome');
-    return redirect()->route('login');
+    if(session()->get('user')==null){
+        return redirect('/login');
+    }
+    return redirect('/dashboard');
 })->middleware(SessionChecker::class);
 
 
@@ -148,6 +150,16 @@ foreach ($adminRoutes as $modelControl => $routes) {
     Route::get("/$route/update/{id}", "{$controller}@updateForm");
     Route::post("/$route/update/{id}", "{$controller}@update");*/
 }
+
+Route::group(['middleware'=>sessionChecker::class],function ()
+{
+    Route::group(['prefix'=>'rideslist'],function ()
+    {
+        Route::get('/',[FentryControler::class,'getlists']);
+        Route::get('/approve',[FentryControler::class,'getlists']);
+        Route::get('/reject',[FentryControler::class,'getlists']);
+    });
+});
 
 // custom routes
 Route::get('/entry/user/{userId}', "EntryController@horseRider");
