@@ -112,7 +112,7 @@ class FriderController extends Controller
      * @param  \App\Models\Frider  $frider
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Frider $frider)
+    public function update(Request $request, $id)
     {
         //
     }
