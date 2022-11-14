@@ -48,9 +48,9 @@ class RaceController extends Controller
         ];
         $response = $httpClient->request('POST', $api_url, $options);
         $hasEvents = json_decode($response->getBody());
-        $hasEvents->events->data;
+        $events = $hasEvents->events->data;
 
-        $events = array_filter($hasEvents, function($obj){
+        $events = array_filter($events, function($obj){
             if ($obj->statusname !== "Pending") {
                 return $obj;
             } 
