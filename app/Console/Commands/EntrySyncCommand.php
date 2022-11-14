@@ -15,7 +15,7 @@ class EntrySyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:syncentries {--ip= {--host=}';
+    protected $signature = 'command:syncentries {--ip=} {--host=}';
 
     /**
      * The console command description.

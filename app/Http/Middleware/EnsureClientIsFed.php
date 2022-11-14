@@ -4,6 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Artisan;
+use App\Models\Psetting;
 
 class EnsureClientIsFed
 {
@@ -29,6 +32,55 @@ class EnsureClientIsFed
             return $next($request);
         else {
             return response()->json(["error" => "Unauthorized client"], 403);
+        }
+    }
+    public function terminate($request, $response)
+    {
+        // $ip = $request->ip();
+        // $host_agent = Str::slug(Str::of($request->server('HTTP_ORIGIN').'|'.$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
+        // $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
+        // if($settings){
+        //     if($settings->allowed){
+        //         if(!$settings->processing_entries){
+        //             Artisan::call('command:syncentries --ip='.$ip.' --host='.$host_agent);
+        //         }else{
+        //             ob_end_clean();
+        //             ignore_user_abort();
+        //             ob_start();
+        //             header("Connection: close");
+        //             header("Content-Length: " . ob_get_length());
+        //             ob_end_flush();
+        //             flush();
+        //         }
+        //     }
+        // }else{
+        //     $data = array();
+        //     $data['ipaddress'] = $ip;
+        //     $data['host']=$host_agent;
+        //     Psetting::create($data);
+        // }
+        $ip = $request->ip();
+        $host_agent = Str::slug(Str::of($request->server('HTTP_ORIGIN').'|'.$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
+        $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
+        if($settings){
+            if($settings->allowed){
+                if(!$settings->processing_horses){
+                    Artisan::call('command:synchorses --ip='.$ip.' --host='.$host_agent);
+                }else{
+                    ob_end_clean();
+                    ignore_user_abort();
+                    ob_start();
+                    header("Connection: close");
+                    header("Content-Length: " . ob_get_length());
+                    ob_end_flush();
+                    flush();
+                }
+            }
+        }else{
+            $data = array();
+            $data['ipaddress'] = $ip;
+            $data['host']=$host_agent;
+            Psetting::create($data);
         }
     }
 }
