@@ -70,16 +70,19 @@ class EntryController extends Controller
         $reqData = $request->data;
         $httpClient = new \GuzzleHttp\Client();
         $raceid = $request->get('raceid');
-        $horseid = $reqData[0]['horse'];
-        $riderid = $reqData[0]['rider'];
-        $entry_url = "https://ebe.eiev-app.ae/api/uaeerf/addentry?params[EventID]={$raceid}&params[HorseID]={$horseid}&params[RiderID]={$riderid}&params[UserID]=".$profile->userid;
         $options = [
             'headers' => [
                 "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
             ],
         ];
-// dd($entry_url);
-        $entryResponse = $httpClient->request('POST', $entry_url, $options);
+
+        foreach ($reqData as $key => $value) {
+            $horseid = $value['horse'];
+            $riderid = $value['rider'];
+            $entry_url = "https://ebe.eiev-app.ae/api/uaeerf/addentry?params[EventID]={$raceid}&params[HorseID]={$horseid}&params[RiderID]={$riderid}&params[UserID]=".$profile->userid;
+            $entryResponse = $httpClient->request('POST', $entry_url, $options);
+        }
+
 // echo '<pre>'; print_r($entryResponse); exit;
         // ServiceProvider::{$this->model}($request->except('_token'))->createNew();
         

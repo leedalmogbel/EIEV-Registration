@@ -1,3 +1,5 @@
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 {{-- <h2 class="text-danger">Race / Event Detail</h2>
 @include('partials.formFields.selectFormGroup', [
     'label' => 'Race / Event',
@@ -8,9 +10,9 @@
     'placeholder' => 'Select an Event/Race',
     'options' => $races,
 ])
-<br /> --}}
+<br />
 <h2 class="text-danger">User Detail</h2>
-{{-- @include('partials.formFields.selectFormGroup', [
+@include('partials.formFields.selectFormGroup', [
     'label' => 'User',
     'name' => 'user_id',
     'required' => true,
@@ -18,13 +20,14 @@
     'placeholder' => 'Select a User',
     'options' => $users,
     'idName' => 'select-user',
-]) --}}
+    --}}
 <br />
 <h2 class="text-danger">Entry Detail</h2>
 <div class="entries">
     @if (old('user_id'))
         @if (old('data') && is_array(old('data')))
             @foreach (old('data') as $index => $data)
+            {{$index}}
                 <div class="row entry">
                     <div class="col">
                         @include('partials.formFields.selectFormGroup', [
@@ -32,7 +35,7 @@
                             'name' => "data[$index][horse]",
                             'required' => true,
                             'placeholder' => 'Select a Horse',
-                            'className' => 'horse-select',
+                            'className' => 'horse-select select-2-basic',
                             'keyValue' => true,
                             'options' => $horses,
                         ])
@@ -42,7 +45,7 @@
                             'label' => 'Rider',
                             'name' => "data[$index][rider]",
                             'required' => true,
-                            'className' => 'rider-select',
+                            'className' => 'rider-select select-2-basic',
                             'placeholder' => 'Select a Rider',
                             'keyValue' => true,
                             'options' => $riders,
@@ -55,11 +58,11 @@
             @endforeach
         @endif
     @else
-        <p><em>Select User First</em></p>
+        <p><em>Fetching horses and riders...</em></p>
     @endif
 </div>
-{{-- <a href="#" class="btn btn-main{{ old('user_id') ? '' : ' hidden' }}" id="add-entry"><i
-        class="fa-solid fa-plus"></i> Add Entry</a> --}}
+<a href="#" class="btn btn-main{{ old('user_id') ? '' : ' hidden' }}" id="add-entry"><i
+        class="fa-solid fa-plus"></i> Add Entry</a> 
 
 <script type="text/tpl" id="rules-content">
  <p>Lorem ipsum dolor sit amet, possim facilisis iracundia mea ut, usu eu malorum eripuit democritum. Cu veritus facilisi mel, elit dicat expetendis ad his. In putant possim aperiri nec, ius purto corpora instructior ne. At cum tota indoctum vituperatoribus, an eius meliore conceptam his. Sea id sint nostro causae, ne eius veri nam, nam et fuisset accusamus. Partem nemore facilis mei eu, ubique officiis intellegam ei nam. Ea quo duis graeco expetenda, blandit epicurei has ad, cum modo dicat inciderint ut. Sit ea summo adipisci. Est eu mucius praesent, qui ceteros prodesset te. Duis novum dicam sea no, vim an scripta accusata vulputate. Agam eius an eos, decore cetero suscipit ne sed. Eu invidunt instructior mea, purto suavitate definiebas sed et. Nullam apeirian at eos. Veritus invidunt an eum, decore nostrum consequat quo ut. Discere delicata accusamus mea ei. Eu menandri instructior sit. Id has albucius splendide. Erant constituto ius in, legendos salutatus qui at, voluptatum assueverit sed at. Eu nihil docendi noluisse duo, cu zril petentium ius. Everti iudicabit no sit. Eu eum error eirmod, nec veri posse simul at. An animal facilis pri.</p>
@@ -73,7 +76,7 @@
                 'name' => 'data[__i__][horse]',
                 'required' => true,
                 'placeholder' => 'Select a Horse',
-                'className' => 'horse-select',
+                'className' => 'horse-select select-2-basic',
                 'keyValue' => true,
                 'options' => [],
             ])
@@ -83,7 +86,7 @@
                 'label' => 'Rider',
                 'name' => 'data[__i__][rider]',
                 'required' => true,
-                'className' => 'rider-select',
+                'className' => 'rider-select select-2-basic',
                 'placeholder' => 'Select a Rider',
                 'keyValue' => true,
                 'options' => [],
@@ -148,6 +151,8 @@
             entryCount++;
             selected.call(this, 'rider');
             selected.call(this, 'horse');
+            
+            $('.select-2-basic').select2();
         };
 
         const recalculateIndex = function() {
@@ -202,6 +207,19 @@
             $('.rider-select').find('option[value="' + $(this).val() + '"]').prop('disabled', true);
             $(this).find('.selected').prop('disabled', false);
         });
+        
+        let userId = "{{session()->get('user')['user_id']}}";
+        $.get(`/entry/user/${userId}`, function(res) {
+            $('#add-entry').removeClass('hidden');
+            $('.entries').html(''); // reset entries
+            riders = res.riders;
+            horses = res.horses;
+            addEntry();
+        }).fail(function() {
+            $.alert('Something went wrong!');
+        });
+
+  $('.select-2-basic').select2();
 
         // @if (empty(old()) && $page == 'create')
         //     $.confirm({
@@ -222,5 +240,6 @@
         //         }
         //     });
         // @endif
+        
     </script>
 @endsection

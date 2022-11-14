@@ -1,7 +1,7 @@
 @extends('partials.frame')
 @section('content')
     <div class="content col-9">
-        <div class="btn-toolbar mb-3 float-end" role="toolbar" aria-label="Toolbar with button groups">
+        {{-- <div class="btn-toolbar mb-3 float-end" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group mr-2" role="group" aria-label="First group">
                 <a href="/{{ $modelName }}/create" class="btn btn-main create-btn">
                     <i class="fa fa-plus"></i> Create {{ ucwords($modelName) }}
@@ -19,7 +19,7 @@
                     </a>
                 </div>
             @endif
-        </div>
+        </div> --}}
         <h1>{{ ucwords(\Str::plural($modelName)) }}</h1>
         <br />
         <div class="listing-content">

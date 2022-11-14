@@ -68,36 +68,40 @@
                     {{-- START: RECENT ENTRIES --}}
                     @if ($entries)
                         <table id="recentEntries" class="table table-striped table-bordered" style="width:100%">
-                            <tr>
-                                <th>#</th>
-                                <th>Horse</th>
-                                <th>Rider</th>
-                                <th>Trainer</th>
-                                <th>Status</th>
-                                <th>Remarks</th>
-                            </tr>
-                            @foreach ($entries as $entry)
+                            <thead>
                                 <tr>
-                                    <td>{{ $loop->index + 1 }}</td>
-                                    <td>
-                                        {{ $entry->horsename }}
-                                        {{ $entry->horsenfid }}
-                                        {{ $entry->horsefeiid }}
-                                    </td>
-                                    <td>
-                                        {{ $entry->ridername }}
-                                        {{ $entry->ridernfid }}
-                                        {{ $entry->riderfeiid }}
-                                    </td>
-                                    <td>
-                                        {{ $entry->trainername }}
-                                        {{ $entry->trainernfid }}
-                                        {{ $entry->trainerfeiid }}
-                                    </td>
-                                    <td>{{ $entry->status }}</td>
-                                    <td>{{ $entry->remarks }}</td>
+                                    <th>#</th>
+                                    <th>Horse</th>
+                                    <th>Rider</th>
+                                    <th>Trainer</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody>
+                                @foreach ($entries as $entry)
+                                    <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>
+                                            {{ $entry->horsename }}
+                                            {{ $entry->horsenfid }}
+                                            {{ $entry->horsefeiid }}
+                                        </td>
+                                        <td>
+                                            {{ $entry->ridername }}
+                                            {{ $entry->ridernfid }}
+                                            {{ $entry->riderfeiid }}
+                                        </td>
+                                        <td>
+                                            {{ $entry->trainername }}
+                                            {{ $entry->trainernfid }}
+                                            {{ $entry->trainerfeiid }}
+                                        </td>
+                                        <td>{{ $entry->status }}</td>
+                                        <td>{{ $entry->remarks }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                     @else
                         No Entries

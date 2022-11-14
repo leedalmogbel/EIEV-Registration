@@ -15,17 +15,12 @@ class Entry {
     
     protected $requiredFields = [
         'race_id' => 'Race',
-        'user_id' => 'User',
     ];
 
     protected $modelShouldExist = [
         'race_id' => [
             'Race',
             \App\Services\Race::class,
-        ],
-        'user_id' => [
-            'Race',
-            \App\Services\User::class,
         ],
     ];
 
