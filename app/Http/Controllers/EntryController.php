@@ -34,6 +34,8 @@ class EntryController extends Controller
         $httpClient = new \GuzzleHttp\Client();
         $horse_url = '';
         $rider_url = '';
+        $stableId = '';
+        $userId = '';
         $profile = session()->get('profile');
         
 
@@ -42,12 +44,20 @@ class EntryController extends Controller
             $horse_url = 'https://ebe.eiev-app.ae/api/uaeerf/horselist?params[AdminUserID]='.$profile->userid;
         }
 
-        $rider_url = 'https://ebe.eiev-app.ae/api/uaeerf/riderlist';
+        $rider_url = 'https://ebe.eiev-app.ae/api/uaeerf/riderlist?params[StableID]='.$profile->stableid;
+        if (isset($profile->stableid) && $profile->stableid == "E0000014") {
+            $rider_url = 'https://ebe.eiev-app.ae/api/uaeerf/riderlist?params[AdminUserID]='.$profile->userid;
+        }
+
+        $userId = $profile->userid;
+        $stableId = $profile->stableid;
+
         $options = [
             'headers' => [
                 "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
             ],
         ];
+
         $horseResponse = $httpClient->request('POST', $horse_url, $options);
         $riderResponse = $httpClient->request('POST', $rider_url, $options);
         $horsesJson = json_decode($horseResponse->getBody());
@@ -58,7 +68,8 @@ class EntryController extends Controller
 
         return [
             'riders' => $riders,
-            'horses' => $horses
+            'horses' => $horses,
+            'user' => ['userid' => $userId, 'stableid' => $stableId]
         ];
     }
 
@@ -108,12 +119,12 @@ class EntryController extends Controller
 
         $users = UserModel::where('status', 'A');
 
-        // if (session()->get('role')->role == 'user') {
-        //     $users = $users->where('user_id', session()->get('user')->user_id);
-        // }
-        if (session()->get('role')['role'] == 'user') {
+        if (session()->get('role')->role == 'user') {
             $users = $users->where('user_id', session()->get('user')->user_id);
         }
+        // if (session()->get('role')['role'] == 'user') {
+        //     $users = $users->where('user_id', session()->get('user')->user_id);
+        // }
 
         $users = $users->get()
                ->toArray();
@@ -123,11 +134,14 @@ class EntryController extends Controller
         $tplVars['riders'] = [];
         $tplVars['jsonHorse'] = '{}';
         $tplVars['jsonRider'] = '{}';
-        
+        $tplVars['jsonUser'] = '{}';
+
         if (old('user_id')) {
             $horseRider = $this->horseRider(old('user_id'));
             $tplVars['jsonHorse'] = json_encode($horseRider['horses']);
             $tplVars['jsonRider'] = json_encode($horseRider['riders']);
+            $tplVars['jsonUser'] = json_encode($horseRider['user']);
+
             
             $tplVars['horses'] = ServiceProvider::arrayToKeyVal($horseRider['horses'], 'horse_id', 'name | nfregistration | gender | color');
             $tplVars['riders'] = ServiceProvider::arrayToKeyVal($horseRider['riders'], 'rider_id', 'firstname|[ ]|lastname');
