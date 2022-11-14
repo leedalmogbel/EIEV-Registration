@@ -13,6 +13,7 @@ use App\Services\ServiceProvider;
 use Str;
 use App\Models\Multi;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Artisan;
 
 class EntryController extends Controller
 {
@@ -115,7 +116,9 @@ class EntryController extends Controller
         }
 
         Multi::insertOrUpdate($fEntries, 'fentries');
-
+        foreach($fEntries as $key => $val) {
+            Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$fEntries['code']);
+        }
         // foreach ($entryCode as $key => $value) {
         //     $this->flashMsg(sprintf('%s Horse '.$entryCode[$key]['horse'].' and '.$entryCode[$key]['rider'].' created successfully', ucwords($this->model)), 'success');
         //     if($entryCode[$key]['entry']->entrycode === '0') {
