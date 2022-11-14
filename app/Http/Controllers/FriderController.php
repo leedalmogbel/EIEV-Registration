@@ -28,6 +28,9 @@ class FriderController extends Controller
         if($request->StableID){
             $riders = $riders->where('stableid','like',"%".$request->StableID."%");
         }
+        if($request->SearchFullName){
+            $riders = $riders->where('firstx0020name','like',"%".$request->SearchFullName."%")->orwhere('familyx0020name','like',"%".$request->SearchFullName."%");
+        }
         if($request->SearchFirstName){
             $riders = $riders->where('firstx0020name','like',"%".$request->SearchFirstName."%");
         }

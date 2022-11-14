@@ -705,6 +705,60 @@ class FederationController extends Controller
         }
         return $this->extractData((string)$response->getBody(),'NewDataSet|trainers#Table#Photograph|photograph&NF_x0020_LICENSE|nfx0020license&First_x0020_Name|firstx0020name&Family_x0020_Name|familyx0020name&Gender|gender&NATIONALITY|nationality&NATIONALITY_short|nationalityshort&DOB|dob&STABLE|stable&FEI_x0020_REG|feix0020reg&TELEPHONE|telephone&MOBILE|mobile&EMAIL|email&DIVISION|division&Registered_x0020_Season|registeredx0020season&Active|active&TRAINERID|trainerid&StableID|stableid&DivisionID|divisionid&adminUser|adminuser&NationalityID|nationalityid&Address|address&POBox|pobox&City|city&Country|country&Country_short|countryshort&HomeAddress|homeaddress&HomeCity|homecity&HomeCountry|homecountry&HomeCountry_short|homecountryshort&Weight|weight',$debug);
     }
+    public function updateentry(Request $request)
+    {
+      $debug= false;
+      $validator = Validator::make($request->all(),[
+        'params.EventID'=>'required',
+        'params.SearchEntryID'=>'required',
+        'params.Entrystatus'=>'required|in:withdrawn,accepted,rejected',
+        'params.Remarks'=>'required',
+      ]);
+      if($validator->fails()){
+        return response()->json(["error" => $validator->errors()]);
+      }
+        $xml='<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+        <soap:Header>
+          <SecuredToken xmlns="http://ws.uaeerf.ae/">
+            <username>?</username>
+            <password>?</password>
+            <AuthenticationToken>'.$this->wslogin()['token'].'</AuthenticationToken>
+          </SecuredToken>
+        </soap:Header>
+        <soap:Body>
+        <UpdateEntryStatus xmlns="http://ws.uaeerf.ae/">';
+          if(isset($request->params)){
+            if(!is_array($request->params)){
+              return response()->json(['error'=>'Unexpected value.'], 400);
+            }
+            $keys = array_keys($request->params);
+            foreach ($keys as $key) {
+                $xml.='<'.$key.'>'.$request->params[$key].'</'.$key.'>';
+            }
+          }
+          $xml.='<msg></msg>
+          </UpdateEntryStatus>
+          </soap:Body>
+        </soap:Envelope>';
+        
+        $options = [
+            'headers' => [
+                'Content-Type' => 'text/xml; charset=utf-8',
+                "SOAPAction"=>"http://ws.uaeerf.ae/UpdateEntryStatus",
+                "User-Agent" => "EIEV/1.0",
+                "Accept"=>"*/*",
+                "Host"=>"ws.uaeerf.ae"
+            ],
+            'body' => $xml
+        ];
+       
+        $client = new Client();
+        $response = $client->post(env("UAEERF_BASE_URL"), $options);
+        if(isset($request->showraw)){
+            return $response->getBody();
+        }
+        return $this->extractData((string)$response->getBody(),'UpdateEntryStatusResult|updateresult',$debug);
+    }
 
     public function userlogin(Request $request)
     {

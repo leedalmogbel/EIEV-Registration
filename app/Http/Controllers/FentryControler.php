@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Fentry;
 use Illuminate\Http\Request;
+use App\Http\Controllers\FederationController;
+use Illuminate\Support\Facades\Artisan;
 
 class FentryControler extends Controller
 {
@@ -54,7 +56,7 @@ class FentryControler extends Controller
         }
         $fentries = Fentry::query();
         if($request->SearchEventID){
-            $fentries = $fentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',1)->where('status', 'Accepted');
+            $fentries = $fentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('status', 'Accepted');
         }
         $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
 
@@ -65,24 +67,73 @@ class FentryControler extends Controller
         $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
         $pentries = Fentry::query();
         if($request->SearchEventID){
-            $pentries = $pentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',3);
+            $pentries = $pentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',3)->where('status', 'Pending')->where('review','1');
         }
         $pentries =isset($request->ppage)? $pentries->paginate($ppage): $pentries->get();
 
         $pcentries = Fentry::query();
         if(isset($request->presidentcup)){
             if($request->SearchEventID){
-                $pcentries = $pcentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',4);
+                $pcentries = $pcentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',4)->where('status', 'Pending')->where('review','1');
             }
             $pcentries =isset($request->ppage)? $pcentries->paginate($ppage): $pcentries->get();
-            return response()->json(['modelName'=>'entry','entries'=>['final entry'=>$fentries,'main entry'=>$eentries,'private entry'=>$pentries,'royal entry'=>$pcentries]]);
+            return response()->json(['modelName'=>'entry','entries'=>['final'=>$fentries,'main '=>$eentries,'private'=>$pentries,'royal'=>$pcentries]]);
         }
         // return response()->json(['modelName'=>'entry','entries'=>['final entry'=>$fentries,'pending entry'=>$pentries]]);
         // dd(['entries'=>['final entry'=>$fentries,'pending entry'=>$pentries]]);
         // if(session()->get('role')->role_id != 1){
         //     return redirect('/dashboard');
         // }
-        return view('tempadmin.tlists',['modelName'=>'entry','entries'=>['final entry'=>$fentries,'main entry'=>$eentries,'private entry'=>$pentries]]);
+        return view('tempadmin.tlists',['modelName'=>'entry','entries'=>['final'=>$fentries,'main'=>$eentries,'private'=>$pentries]]);
+    }
+
+    public function accept(Request $request)
+    {
+        $entry = Fentry::where('code',$request->entrycode)->first();
+        if($entry){
+            $myRequest = new \Illuminate\Http\Request();
+            $myRequest->setMethod('POST');
+            $myRequest->request->add(['params' => [
+                'EventID'=>$entry->eventcode,
+                'SearchEntryID'=>$entry->code,
+                'Entrystatus'=>'accepted',
+                'Remarks'=>'Accepted Entry for Final List by Admin',]]);
+            $data = (new FederationController)->updateentry($myRequest);
+            Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
+        }
+        return redirect('/rideslist?SearchEventID='.$entry->eventcode);
+    }
+    public function reject(Request $request)
+    {
+        $entry = Fentry::where('code',$request->entrycode)->first();
+        if($entry){
+            $myRequest = new \Illuminate\Http\Request();
+            $myRequest->setMethod('POST');
+            $myRequest->request->add(['params' => [
+                'EventID'=>$entry->eventcode,
+                'SearchEntryID'=>$entry->code,
+                'Entrystatus'=>'rejected',
+                'Remarks'=>'Rejected Entry by Admin',]]);
+            $data = (new FederationController)->updateentry($myRequest);
+            Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
+        }
+        return redirect('/rideslist?SearchEventID='.$entry->eventcode);
+    }
+    public function withdraw(Request $request)
+    {
+        $entry = Fentry::where('code',$request->entrycode)->first();
+        if($entry){
+            $myRequest = new \Illuminate\Http\Request();
+            $myRequest->setMethod('POST');
+            $myRequest->request->add(['params' => [
+                'EventID'=>$entry->eventcode,
+                'SearchEntryID'=>$entry->code,
+                'Entrystatus'=>'withdrawn',
+                'Remarks'=>'Withdrawn by Admin',]]);
+            $data = (new FederationController)->updateentry($myRequest);
+            Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
+        }
+        return redirect('/rideslist?SearchEventID='.$entry->eventcode);
     }
 
     /**

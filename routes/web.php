@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\SessionChecker;
-
+use App\Http\Controllers\FentryControler;
 $defaultRoutes = [
     'get:/create' => [
         'createForm',
@@ -156,8 +156,9 @@ Route::group(['middleware'=>sessionChecker::class],function ()
     Route::group(['prefix'=>'rideslist'],function ()
     {
         Route::get('/',[FentryControler::class,'getlists']);
-        Route::get('/approve',[FentryControler::class,'getlists']);
-        Route::get('/reject',[FentryControler::class,'getlists']);
+        Route::get('/accept',[FentryControler::class,'accept']);
+        Route::get('/reject',[FentryControler::class,'reject']);
+        Route::get('/withdraw',[FentryControler::class,'withdraw']);
     });
 });
 
