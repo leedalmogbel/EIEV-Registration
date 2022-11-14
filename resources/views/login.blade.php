@@ -33,7 +33,7 @@
 
         .sidebar {
             background: url('/assets/images/bg-sidebar.png');
-            height: 100vh;
+            min-height: 100vh;
             max-width: 460px;
         }
 
@@ -113,7 +113,7 @@
             </div>
             <div class="col-lg main-div">
                 <div class="row login-form">
-                    <div class="col-8 form">
+                    <div class="col-7 form">
                         <h1>Login into your account</h1>
                         <form method="post" action="/login">
                             <!-- Info Alert -->
@@ -135,11 +135,24 @@
                                 'placeholder' => 'Enter your password',
                                 'type' => 'password',
                             ])
-                            <div>
-                                <button class="btn btn-main" type="submit">LOGIN MY ACCOUNT</button>
+                            <div class="py-3">
+                                <button class="btn btn-main col-12" type="submit">LOGIN MY ACCOUNT</button>
+                            </div>
+							<div class="py-3 text-center">
+								<a href="https://portal.uaeerf.ae/forgot_password.php" target="_blank">
+									<p class=" ">FORGOT PASSWORD?</p>
+								</a>
                             </div>
                         </form>
+						
                     </div>
+					<div class="col-5">
+						<div class="eiev-inquiry">
+							<h4>For any inquiries or questions with the EIEV Registration:</h4>
+							<p>Please call us @ <a href="tel:+971563338562">0563338562</a></p>
+							<p>Or Email us @<a href="mailto:registration@eiev.ae">registration@eiev.ae</a></p>
+						</div>
+					</div>
                 </div>
             </div>
         </div>
