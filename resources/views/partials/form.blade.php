@@ -4,7 +4,11 @@
     <div class="content col-9">
         <div class="container">
             <div class="float-end">
-                <a href="/{{ $modelName }}" class="btn btn-secondary">&lt; Back to Listing</a>
+                @if ($modelName === 'entry')
+                    <a href="/race" class="btn btn-secondary">&lt; Back to Listing</a>
+                @else
+                    <a href="/{{ $modelName }}" class="btn btn-secondary">&lt; Back to Listing</a>
+                @endif
             </div>
             <h1>{{ ucwords($page) }} {{ ucwords($modelName) }}</h1>
             @if ($$modelName->status)
