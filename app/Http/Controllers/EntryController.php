@@ -186,7 +186,7 @@ class EntryController extends Controller
         $response = $httpClient->request('POST', $api_url, $options);
         $withdrawEntry = json_decode($response->getBody());
         // $entries = $hasEntries->entries->data;
-        dd($withdrawEntry);
-        return redirect(sprintf('/%s', 'entry?racei='.$raceid));
+
+        return redirect(sprintf('/%s', 'entry?raceid='.$raceid));
     }
 }
