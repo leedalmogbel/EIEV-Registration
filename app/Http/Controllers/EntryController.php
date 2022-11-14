@@ -10,6 +10,7 @@ use App\Models\Rider as RiderModel;
 use App\Models\User as UserModel;
 
 use App\Services\ServiceProvider;
+use Str;
 
 class EntryController extends Controller
 {
@@ -94,8 +95,8 @@ class EntryController extends Controller
         // ServiceProvider::{$this->model}($request->except('_token'))->createNew();
         
         // $this->flashMsg(sprintf('%s created successfully', ucwords($this->model)), 'success');
-        // return redirect(sprintf('/%s', $this->model));
-        return redirect(sprintf('/%s', 'dashboard'));
+        return redirect(sprintf('/%s?raceid='.$raceid, $this->model));
+        // return redirect(sprintf('/%s', 'dashboard'));
         
     }
     
@@ -133,5 +134,59 @@ class EntryController extends Controller
         }
 
         return $tplVars;
+    }
+
+    public function listing(Request $request) {
+        $tpl_vars = [];
+
+        $service = ServiceProvider::{$this->model}();
+        $tpl_vars[Str::plural($this->model)] = $service->listing($request->except('_token'));
+        $tpl_vars['isSearchable'] = $service->isSearchable();
+        
+        $httpClient = new \GuzzleHttp\Client();
+        $api_url = '';
+        $profile = session()->get('profile');
+
+        if (empty($request->get('raceid'))){
+            return redirect(sprintf('/%s', 'dashboard'));
+        }
+        $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/entries?params[SearchEventID]='.$request->get('raceid');
+        // $api_url = 'http://192.168.1.161:8000/api/uaeerf/entries?params[SearchEventID]='.$request->get('raceid');
+
+        $options = [
+            'headers' => [
+                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+            ],
+        ];
+        $response = $httpClient->request('POST', $api_url, $options);
+        $hasEntries = json_decode($response->getBody());
+        $entries = $hasEntries->entries->data;
+
+        $tpl_vars['eef_entries'] = $entries;
+
+        return view(sprintf(self::LIST_TPL, $this->model), $tpl_vars);
+    }
+
+    public function withdrawn(Request $request) {
+        $raceid = $request->get('raceid');
+        $entrycode = $request->get('entrycode');
+        $status = $request->get('status');
+
+        $httpClient = new \GuzzleHttp\Client();
+        $api_url = '';
+        $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/updateentry?params[EventID]='.$raceid.'&params[SearchEntryID]='.$entrycode.'&params[Entrystatus]='.$status.'&params[Remarks]=Withdrawn';
+        // $api_url = 'http://192.168.1.161:8000/api/uaeerf/updateentry?params[EventID]='.$raceid.'&params[SearchEntryID]='.$entrycode.'&params[Entrystatus]='.$status.'&params[Remarks]=Withdrawn';
+
+        $options = [
+            'headers' => [
+                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+            ],
+        ];
+       
+        $response = $httpClient->request('POST', $api_url, $options);
+        $withdrawEntry = json_decode($response->getBody());
+        // $entries = $hasEntries->entries->data;
+        dd($withdrawEntry);
+        return redirect(sprintf('/%s', 'entry?racei='.$raceid));
     }
 }

@@ -1,5 +1,5 @@
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 {{-- <h2 class="text-danger">Race / Event Detail</h2>
 @include('partials.formFields.selectFormGroup', [
     'label' => 'Race / Event',
@@ -27,7 +27,7 @@
     @if (old('user_id'))
         @if (old('data') && is_array(old('data')))
             @foreach (old('data') as $index => $data)
-            {{$index}}
+                {{ $index }}
                 <div class="row entry">
                     <div class="col">
                         @include('partials.formFields.selectFormGroup', [
@@ -62,41 +62,41 @@
     @endif
 </div>
 <a href="#" class="btn btn-main{{ old('user_id') ? '' : ' hidden' }}" id="add-entry"><i
-        class="fa-solid fa-plus"></i> Add Entry</a> 
+        class="fa-solid fa-plus"></i> Add Another</a>
 
 <script type="text/tpl" id="rules-content">
- <p>Lorem ipsum dolor sit amet, possim facilisis iracundia mea ut, usu eu malorum eripuit democritum. Cu veritus facilisi mel, elit dicat expetendis ad his. In putant possim aperiri nec, ius purto corpora instructior ne. At cum tota indoctum vituperatoribus, an eius meliore conceptam his. Sea id sint nostro causae, ne eius veri nam, nam et fuisset accusamus. Partem nemore facilis mei eu, ubique officiis intellegam ei nam. Ea quo duis graeco expetenda, blandit epicurei has ad, cum modo dicat inciderint ut. Sit ea summo adipisci. Est eu mucius praesent, qui ceteros prodesset te. Duis novum dicam sea no, vim an scripta accusata vulputate. Agam eius an eos, decore cetero suscipit ne sed. Eu invidunt instructior mea, purto suavitate definiebas sed et. Nullam apeirian at eos. Veritus invidunt an eum, decore nostrum consequat quo ut. Discere delicata accusamus mea ei. Eu menandri instructior sit. Id has albucius splendide. Erant constituto ius in, legendos salutatus qui at, voluptatum assueverit sed at. Eu nihil docendi noluisse duo, cu zril petentium ius. Everti iudicabit no sit. Eu eum error eirmod, nec veri posse simul at. An animal facilis pri.</p>
- <p class="alert alert-warning" role="alert"><i class="fa-solid fa-circle-info"></i> If you agree on this, All of the rules here will be accepted by you.</p>
-</script>
+     <p>Lorem ipsum dolor sit amet, possim facilisis iracundia mea ut, usu eu malorum eripuit democritum. Cu veritus facilisi mel, elit dicat expetendis ad his. In putant possim aperiri nec, ius purto corpora instructior ne. At cum tota indoctum vituperatoribus, an eius meliore conceptam his. Sea id sint nostro causae, ne eius veri nam, nam et fuisset accusamus. Partem nemore facilis mei eu, ubique officiis intellegam ei nam. Ea quo duis graeco expetenda, blandit epicurei has ad, cum modo dicat inciderint ut. Sit ea summo adipisci. Est eu mucius praesent, qui ceteros prodesset te. Duis novum dicam sea no, vim an scripta accusata vulputate. Agam eius an eos, decore cetero suscipit ne sed. Eu invidunt instructior mea, purto suavitate definiebas sed et. Nullam apeirian at eos. Veritus invidunt an eum, decore nostrum consequat quo ut. Discere delicata accusamus mea ei. Eu menandri instructior sit. Id has albucius splendide. Erant constituto ius in, legendos salutatus qui at, voluptatum assueverit sed at. Eu nihil docendi noluisse duo, cu zril petentium ius. Everti iudicabit no sit. Eu eum error eirmod, nec veri posse simul at. An animal facilis pri.</p>
+     <p class="alert alert-warning" role="alert"><i class="fa-solid fa-circle-info"></i> If you agree on this, All of the rules here will be accepted by you.</p>
+    </script>
 <script type="text/tpl" id="horse-rider">
-	<div class="row entry">
-		<div class="col">
-			@include('partials.formFields.selectFormGroup', [
-                'label' => 'Horse',
-                'name' => 'data[__i__][horse]',
-                'required' => true,
-                'placeholder' => 'Select a Horse',
-                'className' => 'horse-select select-2-basic',
-                'keyValue' => true,
-                'options' => [],
-            ])
-		</div>
-		<div class="col">
-			@include('partials.formFields.selectFormGroup', [
-                'label' => 'Rider',
-                'name' => 'data[__i__][rider]',
-                'required' => true,
-                'className' => 'rider-select select-2-basic',
-                'placeholder' => 'Select a Rider',
-                'keyValue' => true,
-                'options' => [],
-            ])
-		</div>
-        <div class="col-1">
-			<a href="#" class="btn btn-danger remove-this">&times;</a>
-		</div>
-	</div>
-</script>
+        <div class="row entry">
+            <div class="col">
+                @include('partials.formFields.selectFormGroup', [
+                    'label' => 'Horse',
+                    'name' => 'data[__i__][horse]',
+                    'required' => true,
+                    'placeholder' => 'Select a Horse',
+                    'className' => 'horse-select select-2-basic',
+                    'keyValue' => true,
+                    'options' => [],
+                ])
+            </div>
+            <div class="col">
+                @include('partials.formFields.selectFormGroup', [
+                    'label' => 'Rider',
+                    'name' => 'data[__i__][rider]',
+                    'required' => true,
+                    'className' => 'rider-select select-2-basic',
+                    'placeholder' => 'Select a Rider',
+                    'keyValue' => true,
+                    'options' => [],
+                ])
+            </div>
+            <div class="col-1">
+                <a href="#" class="btn btn-danger remove-this">&times;</a>
+            </div>
+        </div>
+    </script>
 @section('custom-script')
     <script>
         let entryCount = 0;
@@ -151,7 +151,7 @@
             entryCount++;
             selected.call(this, 'rider');
             selected.call(this, 'horse');
-            
+
             $('.select-2-basic').select2();
         };
 
@@ -207,8 +207,8 @@
             $('.rider-select').find('option[value="' + $(this).val() + '"]').prop('disabled', true);
             $(this).find('.selected').prop('disabled', false);
         });
-        
-        let userId = "{{session()->get('user')['user_id']}}";
+
+        let userId = "{{ session()->get('user')['user_id'] }}";
         $.get(`/entry/user/${userId}`, function(res) {
             $('#add-entry').removeClass('hidden');
             $('.entries').html(''); // reset entries
@@ -219,27 +219,30 @@
             $.alert('Something went wrong!');
         });
 
-  $('.select-2-basic').select2();
+        // $('.select-2-basic').select2({
+        //     minimumInputLength: 3
+        // });
 
-        // @if (empty(old()) && $page == 'create')
-        //     $.confirm({
-        //         title: 'Rules and Regulations',
-        //         columnClass: 'col-md-8',
-        //         content: $('#rules-content').html(),
-        //         buttons: {
-        //             'I Agree': {
-        //                 btnClass: 'btn-main',
-        //                 action: function() {}
-        //             },
-        //             'I Disagree': {
-        //                 btnClass: 'btn-danger',
-        //                 action: function() {
-        //                     history.back();
-        //                 }
-        //             }
-        //         }
-        //     });
-        // @endif
-        
+        $(document).on('click', '#swap-rider', function(e) {
+            console.log('ssss')
+            e.preventDefault();
+            $.confirm({
+                title: 'Rules and Regulations',
+                columnClass: 'col-md-8',
+                content: $('#rules-content').html(),
+                buttons: {
+                    'I Agree': {
+                        btnClass: 'btn-main',
+                        action: function() {}
+                    },
+                    'I Disagree': {
+                        btnClass: 'btn-danger',
+                        action: function() {
+                            history.back();
+                        }
+                    }
+                }
+            });
+        });
     </script>
 @endsection

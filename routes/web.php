@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\SessionChecker;
-use App\Http\Controllers\FentryControler;
 
 $defaultRoutes = [
     'get:/create' => [
@@ -150,8 +149,6 @@ foreach ($adminRoutes as $modelControl => $routes) {
     Route::post("/$route/update/{id}", "{$controller}@update");*/
 }
 
-Route::get('/rideslist',[FentryControler::class,'getlists']);
-
 // custom routes
 Route::get('/entry/user/{userId}', "EntryController@horseRider");
 Route::get('/logout', function () {
@@ -161,3 +158,4 @@ Route::get('/logout', function () {
 
 Route::get('/dashboard', "DashboardController@index");
 Route::get('/generate-pdf', "DashboardController@entriesPDF");
+Route::get('/entry/withdrawn', "EntryController@withdrawn");
