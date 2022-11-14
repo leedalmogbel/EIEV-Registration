@@ -41,11 +41,11 @@
                 <i class="fa fa-paw" aria-hidden="true"></i> Trainers
             </a>
         </li>
-        <li>
+        {{-- <li>
             <a href="/season" class="{{ $modelName == 'season' ? 'active' : '' }}">
                 <i class="fa fa-cloud" aria-hidden="true"></i> Seasons
             </a>
-        </li>
+        </li> --}}
         <li>
             <a href="/owner" class="{{ $modelName == 'owner' ? 'active' : '' }}">
                 <i class="fa fa-user" aria-hidden="true"></i> Owners
@@ -61,5 +61,11 @@
                 <i class="fa fa-home" aria-hidden="true"></i> Stables
             </a>
         </li> --}}
+        <li>
+            <a href="/logout" class="">
+                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>Logout
+                {{-- <i class="fa fa-user" aria-hidden="true"></i> --}}
+            </a>
+        </li>
     </ul>
 </div>
