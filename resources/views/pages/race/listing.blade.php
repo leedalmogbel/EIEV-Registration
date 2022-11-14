@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th width="300">Race</th>
-            <th>Event</th>
+            <th>Location</th>
             {{-- <th>Contact</th> --}}
             <td>Race Dates</td>
             {{-- <th>STATUS</th>

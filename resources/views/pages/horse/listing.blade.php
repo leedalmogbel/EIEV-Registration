@@ -1,10 +1,10 @@
 <table id="horseListing" class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th width="300">HORSE NAME</th>
-            <th>BREED</th>
-            <th>COUNthY</th>
-            <th>MICROCHIP NO</th>
+            <th width="300">Horse</th>
+            <th>Breed</th>
+            <th>Country</th>
+            <th>Microchip NO</th>
         </tr>
         {{-- <th>STATUS</th>
         <th width="100" style="text-align:right">ACTIONS</th> --}}

@@ -1,10 +1,10 @@
 <table id="trainer-list" class="table table-striped table-bordered">
     <tr>
         <th>Name</th>
+        <th>Stable</th>
         <th>Email</th>
-        <th>Visa</th>
-        <th>Status</th>
-        <th width="100" style="text-align:right">ACTIONS</th>
+        {{-- <th>Status</th>
+        <th width="100" style="text-align:right">ACTIONS</th> --}}
     </tr>
     @foreach ($eef_trainers as $trainer)
         <tr>

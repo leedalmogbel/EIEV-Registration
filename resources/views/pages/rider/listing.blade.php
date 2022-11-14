@@ -3,7 +3,7 @@
         <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Visa</th>
+            <th>Stable</th>
             {{-- <th>Status</th>
             <th width="100" style="text-align:right">ACTIONS</th> --}}
         </tr>
