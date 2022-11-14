@@ -5,26 +5,32 @@
         <div class="row counts py-5">
             <div class="col-md-4">
                 <div class="card image-container-horses">
-                    <div class="card-block p-3 text-center">
-                        <h4 class="card-title">Horses</h4>
-                        <h6 class="card-subtitle text-muted">{{ $dashcount->horses }}</h6>
-                    </div>
+                    <a href="/horse">
+                        <div class="card-block p-3 text-center">
+                            <h4 class="card-title">Horses</h4>
+                            <h6 class="card-subtitle text-muted">{{ $dashcount->horses }}</h6>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card image-container-riders">
-                    <div class="card-block p-3 text-center">
-                        <h4 class="card-title">Riders</h4>
-                        <h6 class="card-subtitle text-muted">{{ $dashcount->riders }}</h6>
-                    </div>
+                    <a href="/rider">
+                        <div class="card-block p-3 text-center">
+                            <h4 class="card-title">Riders</h4>
+                            <h6 class="card-subtitle text-muted">{{ $dashcount->riders }}</h6>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card image-container-trainers">
-                    <div class="card-block p-3 text-center">
-                        <h4 class="card-title">Trainers</h4>
-                        <h6 class="card-subtitle text-muted">{{ $dashcount->trainers }}</h6>
-                    </div>
+                    <a href="/trainer">
+                        <div class="card-block p-3 text-center">
+                            <h4 class="card-title">Trainers</h4>
+                            <h6 class="card-subtitle text-muted">{{ $dashcount->trainers }}</h6>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
