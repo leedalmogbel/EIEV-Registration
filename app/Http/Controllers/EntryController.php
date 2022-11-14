@@ -88,7 +88,7 @@ class EntryController extends Controller
 dd($reqData);
         $entryCode = array();
         foreach ($reqData as $key => $value) {
-            if (!isset($horseid) || !isset($riderid)) {
+            if (!isset($reqData[$key]['horse']) || !isset($reqData[$key]['rider'])) {
                 $this->flashMsg(sprintf('%s must not be empty', ucwords($this->model)), 'warning');
                 return redirect(URL::current());
             }
