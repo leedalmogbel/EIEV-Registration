@@ -46,6 +46,12 @@ class DashboardController extends Controller
             return strcmp($a->code, $b->code);
         });
 
+        $entries = array_filter($entries, function($obj){
+            if ($obj->statusname === "Pending") {
+                return $obj;
+            } 
+        });
+
         return view('pages.dashboard', [
             'modelName' => $modelName,
             'dashcount' => $dashcount,
