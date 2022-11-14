@@ -18,7 +18,7 @@
         </li> --}}
         <li>
             <a href="/race" class="{{ $modelName == 'race' ? 'active' : '' }}">
-                <i class="fa fa-flag-checkered" aria-hidden="true"></i> Races
+                <i class="fa fa-flag-checkered" aria-hidden="true"></i> Rides + Entries
             </a>
         </li>
         {{-- <li>
