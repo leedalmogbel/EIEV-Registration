@@ -99,6 +99,12 @@ class EntryController extends Controller
             $entryCode[$key]['horse'] = $horseid;
             $entryCode[$key]['rider'] = $riderid;
             $entryCode[$key]['entry'] = json_decode($entryResponse->getBody());
+
+            if($entryCode[$key]['entry']->entrycode === '0') {
+                $this->flashMsg(sprintf('%s', $entryCode[$key]['entry']->msgs[0]), 'warning');
+                return redirect(URL::current());
+            }
+
             $fEntries[$key] = array(
                 "riderid" => $riderid,
                 "horseid" => $horseid,
