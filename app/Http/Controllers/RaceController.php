@@ -48,8 +48,15 @@ class RaceController extends Controller
         ];
         $response = $httpClient->request('POST', $api_url, $options);
         $hasEvents = json_decode($response->getBody());
+        $hasEvents->events->data;
 
-        $tpl_vars['eef_events'] = $hasEvents->events->data;
+        $events = array_filter($hasEvents, function($obj){
+            if ($obj->statusname !== "Pending") {
+                return $obj;
+            } 
+        });
+
+        $tpl_vars['eef_events'] = $events;
 
         return view(sprintf(self::LIST_TPL, $this->model), $tpl_vars);
     }
