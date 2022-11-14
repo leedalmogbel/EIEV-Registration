@@ -85,7 +85,7 @@ class EntryController extends Controller
                 "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
             ],
         ];
-dd($reqData);
+
         $entryCode = array();
         foreach ($reqData as $key => $value) {
             if (!isset($reqData[$key]['horse']) || !isset($reqData[$key]['rider'])) {
