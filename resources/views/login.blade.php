@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet" href="/components/font-awesome/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="/components/@fortawesome/fontawesome-free/css/all.min.css" />
     <link type="text/css" rel="stylesheet" href="/components/toastr/build/toastr.css" />
     <link type="text/css" rel="stylesheet" href="/components/jquery-confirm/dist/jquery-confirm.min.css" />
     <link type="text/css" rel="stylesheet" href="/components/pace-js/themes/green/pace-theme-material.css" />
@@ -109,13 +109,18 @@
     <div class="login-wrapper">
         <div class="row">
             <div class="col-md sidebar">
-                <img src="/assets/images/eiv-logo.png" class="login-logo" />
+                <img src="/assets/images/eiev-logo.png" class="login-logo" />
             </div>
             <div class="col-lg main-div">
                 <div class="row login-form">
-                    <div class="col-6 form">
+                    <div class="col-8 form">
                         <h1>Login into your account</h1>
                         <form method="post" action="/login">
+                            <!-- Info Alert -->
+                            <div class="alert alert-info alert-dismissible d-flex align-items-center fade show justify-content-center">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <strong class="mx-2">LOGIN WITH YOUR UAEERF REGISTERED CREDENTIALS.</strong>
+                            </div>
                             @csrf
                             @include('partials.formFields.inputFormGroup', [
                                 'name' => 'username',
@@ -143,8 +148,7 @@
         <script type="text/javascript">
             toastr["{{ Session::has('message_type') ? Session::get('message_type') : 'info' }}"](
                 '{{ __(Session::get('message')) }}');
-        </script>
-    @endif
+        </script> @endif
 </body>
 
 </html>
