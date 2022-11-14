@@ -34,13 +34,14 @@ Route::group(['middleware'=>[EnsureClientIsValid::class],'prefix'=>'uaeerf'],fun
     Route::post('execute', [FederationController::class, 'execute']);
 });
 
-Route::group(['middleware'=>[EnsureClientIsFed::class],'prefix'=>'sync'],function () {
-    Route::post('GetEIEVEventList', [FederationSyncController::class, 'syncevents']);
-    Route::post('GetEntries', [FederationSyncController::class, 'syncentries']);
-    Route::post('GetUserProfile', [FederationSyncController::class, 'syncprofiles']);
-    Route::post('SearchHorseListV5', [FederationSyncController::class, 'synchorses']);
-    Route::post('SearchOwnerListV5', [FederationSyncController::class, 'syncowners']);
-    Route::post('SearchRiderListV5', [FederationSyncController::class, 'syncriders']);
-    Route::post('SearchTrainerListV5', [FederationSyncController::class, 'synctrainers']);
-    Route::post('getStableList',[FederationSyncController::class, 'syncstables']);
+Route::group(['middleware'=>[EnsureClientIsFed::class],'prefix'=>'uaeerf'],function () {
+    Route::post('/sync', [FederationSyncController::class, 'syncdata']);
+    // Route::post('GetEIEVEventList', [FederationSyncController::class, 'syncevents']);
+    // Route::post('GetEntries', [FederationSyncController::class, 'syncentries']);
+    // Route::post('GetUserProfile', [FederationSyncController::class, 'syncprofiles']);
+    // Route::post('SearchHorseListV5', [FederationSyncController::class, 'synchorses']);
+    // Route::post('SearchOwnerListV5', [FederationSyncController::class, 'syncowners']);
+    // Route::post('SearchRiderListV5', [FederationSyncController::class, 'syncriders']);
+    // Route::post('SearchTrainerListV5', [FederationSyncController::class, 'synctrainers']);
+    // Route::post('getStableList',[FederationSyncController::class, 'syncstables']);
 });

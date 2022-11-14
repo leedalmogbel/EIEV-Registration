@@ -7,9 +7,42 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Validator;
+
 class FederationSyncController extends Controller
 {
+
+    public function syncdata(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'SearchEntryID'=>'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        ob_end_clean();
+        ignore_user_abort();
+        ob_start();
+        header("Connection: close");
+        header("Content-Length: " . ob_get_length());
+        ob_end_flush();
+        flush();
+        $ip = $request->ip();
+        $host_agent = Str::slug(Str::of($request->server('HTTP_ORIGIN').'|'.$request->server('HTTP_HOST') .'|'.$request->server('HTTP_USER_AGENT'))->trim(),'|');
+        $settings = Psetting::where('ipaddress',$ip)->where('host',$host_agent)->first();
+        if($settings){
+            if($settings->allowed){
+                if(!$settings->processing_entries){
+                    Artisan::call('command:syncentries --ip='.$ip.' --host='.$host_agent.' --entryid='.$request->SearchEntryID);
+                }
+            }
+        }else{
+            $data = array();
+            $data['ipaddress'] = $ip;
+            $data['host']=$host_agent;
+            Psetting::create($data);
+        }
+    }
     public function syncentries(Request $request)
     {
         ob_end_clean();

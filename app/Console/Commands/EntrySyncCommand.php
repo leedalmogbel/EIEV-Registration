@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\FederationController;
 use App\Models\Psetting;
 use App\Models\Multi;
+use Illuminate\Support\Facades\Artisan;
+
 class EntrySyncCommand extends Command
 {
     /**
@@ -15,7 +17,7 @@ class EntrySyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:syncentries {--ip=} {--host=}';
+    protected $signature = 'command:syncentries {--ip=} {--host=} {--entryid=null}';
 
     /**
      * The console command description.
@@ -56,13 +58,26 @@ class EntrySyncCommand extends Command
                             info("`{$id}` - Sync entry enabled. Call API");
                             $settings->processing_entries = 1;
                             $settings->save();
-                            $data = (new FederationController)->getentries(new Request);
+                            $data = (new FederationController)->getentries(new Request,$this->option('entryid'));
                             if($data){
                                 info("`{$id}` - Check data count.");
                                 $dcount = count($data['entries']['data']);
                                 if($dcount>0){
                                     Multi::insertOrUpdate($data['entries']['data'],'fentries');
                                     info("`{$id}` - `{$dcount}` records synced.");
+                                    //synchorses
+                                    
+                                    if($this->option('entryid') != 'null'){
+                                        $data = $data['entries']['data'][0];
+                                        $hcmd ='command:synchorses --ip='.$this->option('ip').' --host='.$this->option('host');
+                                        $hcmd.=' --horseid='.$data['horseid'];
+                                        $hcmd .=' --id='.$id;
+                                        Artisan::call($hcmd);
+                                        $rcmd ='command:syncriders --ip='.$this->option('ip').' --host='.$this->option('host');
+                                        $rcmd.=' --riderid='.$data['riderid'];
+                                        $rcmd .=' --id='.$id;
+                                        Artisan::call($rcmd);
+                                    }
                                 }
                             }
                             $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->update(['processing_entries'=>0]);
