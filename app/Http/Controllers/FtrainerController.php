@@ -56,7 +56,7 @@ class FtrainerController extends Controller
             $trainers = $trainers->where('divisionid','like',"%".$request->SearchDisciplineID."%");
         }
         $trainers = $trainers->paginate($ppage);
-        return responses()->json(['trainers'=>$trainers]);
+        return response()->json(['trainers'=>$trainers]);
     }
 
     /**

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\SessionChecker;
+use App\Http\Controllers\FentryControler;
 
 $defaultRoutes = [
     'get:/create' => [
@@ -148,6 +149,8 @@ foreach ($adminRoutes as $modelControl => $routes) {
     Route::get("/$route/update/{id}", "{$controller}@updateForm");
     Route::post("/$route/update/{id}", "{$controller}@update");*/
 }
+
+Route::get('/rideslist',[FentryControler::class,'getlists']);
 
 // custom routes
 Route::get('/entry/user/{userId}', "EntryController@horseRider");

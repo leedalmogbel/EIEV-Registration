@@ -23,7 +23,7 @@ class FstableController extends Controller
             $stables = $stables->where('stableid','like',"%".$request->StableID."%");
         }
         $stables = $stables->paginate($ppage);
-        return responses()->json(['stables'=>$stables]);
+        return response()->json(['stables'=>$stables]);
     }
 
     /**

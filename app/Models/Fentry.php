@@ -51,5 +51,7 @@ class Fentry extends Model
         "withdrawdate",
         "substidate",
         "docsuploaded",
+        'startno',
+        'qr'
     ];
 }

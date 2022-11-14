@@ -22,27 +22,56 @@ class FentryControler extends Controller
           $ppage = $request->ppage;
       }
       $entries = Fentry::query();
-      if($request->SearchEntryID){
+      if(isset($request->SearchEntryID)){
           $entries = $entries->where('code','like',"%".$request->SearchEntryID."%");
       }
-      if($request->SearchEventID){
+      if(isset($request->SearchEventID)){
           $entries = $entries->where('eventcode','like',"%".$request->SearchEventID."%");
       }
-      if($request->SearchHorseID){
+      if(isset($request->SearchHorseID)){
           $entries = $entries->where('horseid','like',"%".$request->SearchHorseID."%");
       }
-      if($request->SearchRiderID){
+      if(isset($request->SearchRiderID)){
           $entries = $entries->where('riderid','like',"%".$request->SearchRiderID."%");
       }
-      if($request->SearchUserID){
+      if(isset($request->SearchUserID)){
           $entries = $entries->where('userid','like',"%".$request->SearchUserID."%");
       }
-      if($request->SearchStableID){
+      if(isset($request->SearchStableID)){
           $entries = $entries->where('stableid','like',"%".$request->SearchStableID."%");
       }
       $entries = $entries->paginate($ppage);
-      return responses()->json(['entries'=>$entries]);
+      return response()->json(['entries'=>$entries]);
 
+    }
+
+    public function getlists(Request $request)
+    {
+        $fieldlist = ["SearchEventID",'ClassCode'];
+        $ppage= 15;
+        if(isset($request->ppage)){
+            $ppage = $request->ppage;
+        }
+        $fentries = Fentry::query();
+        if($request->SearchEventID){
+            $fentries = $fentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',1);
+        }
+        $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
+        $pentries = Fentry::query();
+        if($request->SearchEventID){
+            $pentries = $pentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',3);
+        }
+        $pentries =isset($request->ppage)? $pentries->paginate($ppage): $pentries->get();
+
+        $pcentries = Fentry::query();
+        if(isset($request->presidentcup)){
+            if($request->SearchEventID){
+                $pcentries = $pcentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',4);
+            }
+            $pcentries =isset($request->ppage)? $pcentries->paginate($ppage): $pcentries->get();
+            return response()->json(['final_list'=>$fentries,'pvt_list'=>$pentries,'royal_list']);
+        }
+        return view('tempadmin.tlists',['modelName'=>'rlist','final_list'=>$fentries,'pending_list'=>$pentries]);
     }
 
     /**
@@ -50,7 +79,7 @@ class FentryControler extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -95,7 +124,7 @@ class FentryControler extends Controller
      * @param  \App\Models\Fentry  $fentry
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Fentry $fentry)
+    public function update(Request $request, $id)
     {
         //
     }
