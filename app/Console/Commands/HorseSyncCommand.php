@@ -15,7 +15,7 @@ class HorseSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:synchorses {--ip=} {--host=}';
+    protected $signature = 'command:synchorses {--ip=} {--host=} {--horseid=null} {--id=null}';
 
     /**
      * The console command description.
@@ -41,7 +41,7 @@ class HorseSyncCommand extends Command
      */
     public function handle()
     {
-        $id = Str::uuid();
+        $id =  $this->option('id') == "null"?$this->option('id'): Str::uuid();
         try {
             info("`{$id}` - Started horse Sync");
             $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->first();
@@ -56,7 +56,7 @@ class HorseSyncCommand extends Command
                             info("`{$id}` - Sync horse enabled. Call API");
                             $settings->processing_horses = 1;
                             $settings->save();
-                            $data = (new FederationController)->searchhorselist(new Request);
+                            $data = (new FederationController)->searchhorselist(new Request,$this->option('horseid'));
                             if($data){
                                 info("`{$id}` - Check data count.");
                                 $dcount = count($data['horses']['data']);

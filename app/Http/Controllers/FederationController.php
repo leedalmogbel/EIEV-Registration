@@ -393,7 +393,7 @@ class FederationController extends Controller
       return $this->extractData((string)$response->getBody(),'GetEIEVEventListResult|events#Events#StatusID|statusid&StatusName|statusname&TypeID|typeid&TypeName|typename&DivisionID|divisionid&DivisionName|divisionname&RaceCity|racecity&RaceCountry|racecountry&SeasonID|seasonid&SeasonName|seasonname&RaceID|raceid&RaceName|racename&RaceLocation|racelocation&RaceClub|raceclub&RaceFromDate|racefromdate&RaceTOdate|racetodate',$debug);
     }
 
-    public function getentries(Request $request)
+    public function getentries(Request $request,$entryid=null)
     {
       $debug= false;
       $fieldlist = ["SearchEntryID","SearchEventID","SearchHorseID","SearchRiderID","SearchUserID","SearchStableID"];
@@ -414,6 +414,9 @@ class FederationController extends Controller
         </soap:Header>
         <soap:Body>
           <GetEntries xmlns="http://ws.uaeerf.ae/">';
+          if($entryid!= null && $entryid!="null"){
+            $xml.='<SearchEntryID>'.$entryid.'</SearchEntryID>';
+          }
           if(isset($request->params)){
             $keys = array_keys($request->params);
             foreach ($keys as $key) {
@@ -434,7 +437,6 @@ class FederationController extends Controller
             ],
             'body' => $xml
         ];
-       
         $client = new Client();
         $response = $client->post(env("UAEERF_BASE_URL"), $options);
         if(isset($request->showraw)){
@@ -496,7 +498,7 @@ class FederationController extends Controller
         return $this->extractData((string)$response->getBody(),'!GetUserProfileResult|uprofile-LastestUpdate|latestupdate-IsActive|isactive-Email|email-UserId|userid-Fname|fname-Lname|lname-MobileNo|mobileno-Dob|bday-Stable_ID|stableid',$debug);
     }
 
-    public function searchhorselist(Request $request)
+    public function searchhorselist(Request $request,$horseid=null)
     {
       $debug= false;
       $fieldlist = ["options","HorseID","AdminUserID","StableID","SearchName","SearchFEIID","SearchEEFID","SearchOwner","SearchTrainer","SearchStable","SearchNFPassport","SearchMicrochip","SearchDiscipline","SearchDisciplineID",];
@@ -517,6 +519,9 @@ class FederationController extends Controller
         </soap:Header>
         <soap:Body>
           <SearchHorseListV5 xmlns="http://ws.uaeerf.ae/">';
+          if($horseid!=null && $horseid!='null'){
+            $xml.='<HorseID>'.$horseid.'</HorseID>';
+          }
           if(isset($request->params)){
             $keys = array_keys($request->params);
             foreach ($keys as $key) {
@@ -596,7 +601,7 @@ class FederationController extends Controller
         return $this->extractData((string)$response->getBody(),'NewDataSet|owners#Table#ownerID|ownerid&adminUser|adminuser&NF_x0020_LICENSE|nfx0020license&First_x0020_Name|firstx0020name&Family_x0020_Name|familyx0020name&Gender|gender&NATIONALITY|nationality&NATIONALITY_Short|nationalityshort&DOB|dob&STABLE|stable&FEI_x0020_REG|feix0020reg&TELEPHONE|telephone&MOBILE|mobile&EMAIL|email&DIVISION|division&RegisteredSeasonCode|registeredseasoncode&Registered_x0020_Season|registeredx0020season&Active|active&RIDERID|riderid&StableID|stableid&DivisionID|divisionid&NationalityID|nationalityid&Address|address&POBox|pobox&City|city&Country|country&Country_short|countryshort&HomeAddress|homeaddress&HomeCity|homecity&HomeCountry|homecountry&HomeCountry_short|homecountryshort',$debug); 
     }
 
-    public function searchriderlist(Request $request)
+    public function searchriderlist(Request $request,$riderid=null)
     {
       $debug= false;
       $fieldlist = ["options","RiderID","AdminUserID","StableID","SearchFirstName","SearchLastName","SearchFEIID","SearchEEFID","SearchStable","SearchNationality","SearchGender","SearchDiscipline","SearchDisciplineID",];
@@ -618,6 +623,9 @@ class FederationController extends Controller
         </soap:Header>
         <soap:Body>
           <SearchRiderListV5 xmlns="http://ws.uaeerf.ae/">';
+          if($riderid!=null && $riderid!="null"){
+            $xml.='<RiderID>'.$riderid.'</RiderID>';
+          }
           if(isset($request->params)){
             $keys = array_keys($request->params);
             foreach ($keys as $key) {
@@ -642,9 +650,7 @@ class FederationController extends Controller
         ];
         $client = new Client();
         $response = $client->post(env("UAEERF_BASE_URL"), $options);
-        if(isset($request->showraw)){
-          $xxl = simplexml_load_string((string)$response->getBody(),'SimpleXMLElement',LIBXML_COMPACT);
-          return $xxl;  
+        if(isset($request->showraw)){ 
           return $response->getBody();
         }
         return $this->extractData((string)$response->getBody(),'NewDataSet|riders#Table#adminUser|adminuser&NF_x0020_LICENSE|nfx0020license&First_x0020_Name|firstx0020name&Family_x0020_Name|familyx0020name&Gender|gender&NATIONALITY|nationality&NATIONALITY_Short|nationalityshort&DOB|dob&STABLE|stable&FEI_x0020_REG|feix0020reg&TELEPHONE|telephone&MOBILE|mobile&EMAIL|email&DIVISION|division&RegisteredSeasonCode|registeredseasoncode&Registered_x0020_Season|registeredx0020season&Active|active&RIDERID|riderid&StableID|stableid&DivisionID|divisionid&NationalityID|nationalityid&Address|address&POBox|pobox&City|city&Country|country&Country_short|countryshort&HomeAddress|homeaddress&HomeCity|homecity&HomeCountry|homecountry&HomeCountry_short|homecountryshort',$debug,isset($request->params['options']));

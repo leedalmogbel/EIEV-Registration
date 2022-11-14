@@ -15,7 +15,7 @@ class RiderSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:syncriders {--ip=} {--host=}';
+    protected $signature = 'command:syncriders {--ip=} {--host=} {--riderid=null} {--id=null}';
 
     /**
      * The console command description.
@@ -41,7 +41,7 @@ class RiderSyncCommand extends Command
      */
     public function handle()
     {
-        $id = Str::uuid();
+        $id =  $this->option('id') == "null"?$this->option('id'): Str::uuid();
         try {
             info("`{$id}` - Started Rider Sync");
             $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->first();
@@ -56,7 +56,7 @@ class RiderSyncCommand extends Command
                             info("`{$id}` - Sync Rider enabled. Call API");
                             $settings->processing_riders = 1;
                             $settings->save();
-                            $data = (new FederationController)->searchriderlist(new Request);
+                            $data = (new FederationController)->searchriderlist(new Request,$this->option('riderid'));
                             if($data){
                                 info("`{$id}` - Check data count.");
                                 $dcount = count($data['riders']['data']);
