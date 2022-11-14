@@ -1,4 +1,4 @@
-<table class="table table-striped table-bordered">
+<table id="trainer-list" class="table table-striped table-bordered">
     <tr>
         <th>Name</th>
         <th>Email</th>
@@ -16,3 +16,9 @@
         </tr>
     @endforeach
 </table>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#trainer-listing').DataTable();
+    });
+</script>

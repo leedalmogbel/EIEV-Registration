@@ -25,7 +25,7 @@
         <div class="listing-content">
             @include("pages.$modelName.listing")
             <br />
-            @include('partials.pagination', ['object' => ${Str::plural($modelName)}])
+            {{-- @include('partials.pagination', ['object' => ${Str::plural($modelName)}]) --}}
         </div>
         <script>
             $('.approve-action').click(function(e) {
