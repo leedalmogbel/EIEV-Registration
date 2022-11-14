@@ -59,7 +59,7 @@ class FhorseController extends Controller
             $horses = $horses->where('divisionid','like',"%".$request->SearchDisciplineID."%");
         }
         $horses = $horses->paginate($ppage);
-        return responses()->json(['horses'=>$horses]);
+        return response()->json(['horses'=>$horses]);
     }
 
     /**

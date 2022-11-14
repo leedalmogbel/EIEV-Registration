@@ -56,7 +56,7 @@ class FownerController extends Controller
             $owners = $owners->where('divisionid','like',"%".$request->SearchDisciplineID."%");
         }
         $owners = $owners->paginate($ppage);
-        return responses()->json(['owners'=>$owners]);
+        return response()->json(['owners'=>$owners]);
     }
 
     /**

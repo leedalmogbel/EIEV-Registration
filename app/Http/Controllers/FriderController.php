@@ -56,7 +56,7 @@ class FriderController extends Controller
             $riders = $riders->where('divisionid','like',"%".$request->SearchDisciplineID."%");
         }
         $riders = $riders->paginate($ppage);
-        return responses()->json(['riders'=>$riders]);
+        return response()->json(['riders'=>$riders]);
     }
 
     /**

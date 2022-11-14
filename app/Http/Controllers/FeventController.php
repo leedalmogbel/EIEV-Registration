@@ -27,7 +27,7 @@ class FeventController extends Controller
 					$events = $events->where('raceid','like',"%".$request->SearchEventCode."%");
 			}
 			$events = $events->paginate($ppage);
-			return responses()->json(['events'=>$events]);
+			return response()->json(['events'=>$events]);
     }
 
     /**
