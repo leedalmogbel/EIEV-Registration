@@ -41,11 +41,7 @@ class EntryController extends Controller
             $horse_url = 'https://ebe.eiev-app.ae/api/uaeerf/horselist?params[AdminUserID]='.$profile->userid;
         }
 
-        $rider_url = 'https://ebe.eiev-app.ae/api/uaeerf/riderlist?params[StableID]='.$profile->stableid;
-        if (isset($profile->stableid) && $profile->stableid == "E0000014") {
-            $rider_url = 'https://ebe.eiev-app.ae/api/uaeerf/riderlist?params[AdminUserID]='.$profile->userid;
-        }
-
+        $rider_url = 'https://ebe.eiev-app.ae/api/uaeerf/riderlist';
         $options = [
             'headers' => [
                 "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
@@ -76,18 +72,31 @@ class EntryController extends Controller
             ],
         ];
 
+        $entryCode = array();
         foreach ($reqData as $key => $value) {
-            $horseid = $value['horse'];
-            $riderid = $value['rider'];
+            $horseid = $reqData[$key]['horse'];
+            $riderid = $reqData[$key]['rider'];
             $entry_url = "https://ebe.eiev-app.ae/api/uaeerf/addentry?params[EventID]={$raceid}&params[HorseID]={$horseid}&params[RiderID]={$riderid}&params[UserID]=".$profile->userid;
             $entryResponse = $httpClient->request('POST', $entry_url, $options);
+            $entryCode[$key]['horse'] = $horseid;
+            $entryCode[$key]['rider'] = $riderid;
+            $entryCode[$key]['entry'] = json_decode($entryResponse->getBody());
         }
+
+        // foreach ($entryCode as $key => $value) {
+        //     $this->flashMsg(sprintf('%s Horse '.$entryCode[$key]['horse'].' and '.$entryCode[$key]['rider'].' created successfully', ucwords($this->model)), 'success');
+        //     if($entryCode[$key]['entry']->entrycode === '0') {
+        //         $this->flashMsg(sprintf('%s Horse '.$entryCode[$key]['horse'].' and '.$entryCode[$key]['rider'].' failed', ucwords($this->model)), 'warning');
+        //     }
+        // }
 
 // echo '<pre>'; print_r($entryResponse); exit;
         // ServiceProvider::{$this->model}($request->except('_token'))->createNew();
         
-        $this->flashMsg(sprintf('%s created successfully', ucwords($this->model)), 'success');
-        return redirect(sprintf('/%s', $this->model));
+        // $this->flashMsg(sprintf('%s created successfully', ucwords($this->model)), 'success');
+        // return redirect(sprintf('/%s', $this->model));
+        return redirect(sprintf('/%s', 'dashboard'));
+        
     }
     
     public function prepTPLVars() {

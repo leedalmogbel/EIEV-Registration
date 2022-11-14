@@ -42,9 +42,17 @@
                                     <a href="/entry/create?raceid={{ $event->raceid }}">
                                         <div class="card">
                                             <div class="card-block p-3">
-                                                <h4 class="card-title">{{ $event->racename }}</h4>
-                                                <h6 class="card-title">{{ $event->racelocation }} {{ $event->racecountry }}
-                                                </h6>
+                                                <div class="card-block-info">
+                                                    <h4 class="card-title">{{ $event->racename }}</h4>
+                                                    <h6 class="card-title">{{ $event->racelocation }}
+                                                        {{ $event->racecountry }}
+                                                    </h6>
+                                                </div>
+                                                <div class="card-block-print">
+                                                    <a
+                                                        href="{{ action('DashboardController@entriesPDF', ['raceid' => $event->raceid]) }}">Download
+                                                        PDF</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </a>
@@ -64,7 +72,11 @@
         <div class="row recent-entries">
             <div class="col">
                 <div class="recent-entries__wrapper">
-                    <h4>Recent Entries</h4>
+                    <div class="recent-entries__head">
+                        <div class="recent-entries__title">
+                            <h4>Recent Entries</h4>
+                        </div>
+                    </div>
                     {{-- START: RECENT ENTRIES --}}
                     @if ($entries)
                         <table id="recentEntries" class="table table-striped table-bordered" style="width:100%">

@@ -157,4 +157,4 @@ Route::get('/logout', function () {
 });
 
 Route::get('/dashboard', "DashboardController@index");
-
+Route::get('/generate-pdf', "DashboardController@entriesPDF");

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PDF;
 
 class DashboardController extends Controller
 {
@@ -51,5 +52,36 @@ class DashboardController extends Controller
             'events' => $events,
             'entries' => $entries
         ]);
+    }
+
+    public function entriesPDF(Request $request) {
+        $httpClient = new \GuzzleHttp\Client();
+        $profile = session()->get('profile');
+        $apiEntries_url = 'https://ebe.eiev-app.ae/api/uaeerf/entries?params[SearchUserID]='.$profile->userid.'&params[SearchEventID]=0003900';
+
+        $options = [
+            'headers' => [
+                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+            ],
+        ];
+
+        $entryRes = $httpClient->request('POST', $apiEntries_url, $options);
+        $hasEntries = json_decode($entryRes->getBody());
+        $entries = $hasEntries->entries->data;
+
+        usort($entries, function($a, $b)
+        {
+            return strcmp($a->code, $b->code);
+        });
+
+        $entries = array_filter($entries, function($obj){
+            if ($obj->status === "Eligible") {
+                return $obj;
+            } 
+        });
+
+        $pdf = PDF::loadView('partials.entriesPdf', compact('entries'));
+        
+        return $pdf->download('entries.pdf');
     }
 }
