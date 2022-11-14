@@ -54,9 +54,15 @@ class FentryControler extends Controller
         }
         $fentries = Fentry::query();
         if($request->SearchEventID){
-            $fentries = $fentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',1);
+            $fentries = $fentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',1)->where('status', 'Accepted');
         }
         $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
+
+        $eentries = Fentry::query();
+        if($request->SearchEventID){
+            $eentries = $eentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',1)->where('status', 'Eligible');
+        }
+        $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
         $pentries = Fentry::query();
         if($request->SearchEventID){
             $pentries = $pentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',3);
@@ -69,9 +75,14 @@ class FentryControler extends Controller
                 $pcentries = $pcentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',4);
             }
             $pcentries =isset($request->ppage)? $pcentries->paginate($ppage): $pcentries->get();
-            return response()->json(['final_list'=>$fentries,'pvt_list'=>$pentries,'royal_list']);
+            return response()->json(['modelName'=>'entry','entries'=>['final entry'=>$fentries,'main entry'=>$eentries,'private entry'=>$pentries,'royal entry'=>$pcentries]]);
         }
-        return view('tempadmin.tlists',['modelName'=>'rlist','final_list'=>$fentries,'pending_list'=>$pentries]);
+        // return response()->json(['modelName'=>'entry','entries'=>['final entry'=>$fentries,'pending entry'=>$pentries]]);
+        // dd(['entries'=>['final entry'=>$fentries,'pending entry'=>$pentries]]);
+        // if(session()->get('role')->role_id != 1){
+        //     return redirect('/dashboard');
+        // }
+        return view('tempadmin.tlists',['modelName'=>'entry','entries'=>['final entry'=>$fentries,'main entry'=>$eentries,'private entry'=>$pentries]]);
     }
 
     /**

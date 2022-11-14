@@ -237,7 +237,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/".$request->action,
                 "User-Agent" => "EIEV/1.0",
                 "Accept"=>"*/*",
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
@@ -331,7 +331,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/AddEntry",
                 "User-Agent" => "EIEV/1.0",
                 "Accept"=>"*/*",
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
@@ -381,7 +381,7 @@ class FederationController extends Controller
               "SOAPAction"=>"http://ws.uaeerf.ae/GetEIEVEventList",
               "User-Agent" => "EIEV/1.0",
               "Accept"=>"*/*",
-              "Host"=>"wsdev.uaeerf.ae"
+              "Host"=>"ws.uaeerf.ae"
           ],
           'body' => $xml
       ];
@@ -433,7 +433,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/GetEntries",
                 "User-Agent" => "EIEV/1.0",
                 "Accept"=>"*/*",
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
@@ -483,7 +483,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/GetUserProfile",
                 "User-Agent" => "EIEV/1.0",
                 "Accept"=>"*/*",
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
@@ -539,7 +539,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/SearchHorseListV5",
                 "User-Agent" => "EIEV/1.0",
                 "Accept"=>"*/*",
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
@@ -589,7 +589,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/SearchOwnerListV5",
                 "User-Agent" => "EIEV/1.0",
                 "Accept"=>"*/*",
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
@@ -644,7 +644,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/SearchRiderListV5",
                 "User-Agent" => "EIEV/1.0",
                 'Accept' => '*/*',
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
@@ -694,7 +694,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/SearchTrainerListV5",
                 "User-Agent" => "EIEV/1.0",
                 "Accept"=>"*/*",
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
@@ -740,7 +740,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/UserLogin",
                 "User-Agent" => "EIEV/1.0",
                 "Accept"=>"*/*",
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
@@ -773,7 +773,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/WSLogin",
                 "User-Agent" => "EIEV/1.0",
                 "Accept"=>"*/*",
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
@@ -820,7 +820,7 @@ class FederationController extends Controller
                 "SOAPAction"=>"http://ws.uaeerf.ae/getStableList",
                 "User-Agent" => "EIEV/1.0",
                 "Accept"=>"*/*",
-                "Host"=>"wsdev.uaeerf.ae"
+                "Host"=>"ws.uaeerf.ae"
             ],
             'body' => $xml
         ];
