@@ -1,12 +1,14 @@
 @extends('layouts.tapp')
 @section('content')
 <div class="col-9">
+    @php
+    $titles= ['final'=>'Final List','pfa'=>'Pending for Acceptance','prov'=>'Provisional Entries','royprov'=>'Royal Provisional Entries','pfr'=>'Pending for Review','re'=>'Rejected Entries'];
+    @endph
 @foreach (${Str::plural($modelName)} as $key => $lists)
-<h1>{{Str::title($key). ' Entries - ' }}{{count($lists)}}</h1>
+<h1>{{Str::upper($titles[$key]). ' - Total Entries : ' }}{{count($lists)}}</h1>
 <table id={{$key}} class="table table-striped table-bordered">
     <thead>
         <tr>
-            <!-- <th width="300">Race</th> -->
             <th>START NO</th>
             <th>STABLE</th>
             <th>OWNER</th>
@@ -19,9 +21,15 @@
             <th>RIDER</th>
             <th>EEF ID|FEI ID</th>
             <th>GENDER</th>
+            @if($key != "re")
             <th>QR</th>
+            @else
+            <th>Remarks</th>
+            @endif
             <th>Status</th>
-          <th width="100" style="text-align:right">ACTIONS</th> 
+            @if($key!= "re")
+          <th width="100" style="text-align:right">ACTIONS</th>
+          @endif 
         </tr>
     </thead>
     <tbody>
@@ -65,11 +73,18 @@
                 <td class="text-center">
                 {{$entry->rgender ?? 'UNK'}}
                 </td>
+                @if($key != "re")
                 <td class="text-center">
                 {{$entry->qrval ?? 'UNK'}}
                 </td>
+                @else
+                <td class="text-center">
+                {{$entry->remarks ?? 'UNK'}}
+                </td>
+                @endif
                 <td class="text-center">
                 {{$entry->status ?? 'UNK'}}
+                @if($key!= "re")
                 </td>
                   <td class="text-center">
                     <div>
@@ -83,6 +98,7 @@
                                 class="fa-solid fa-eject"></i></a>
                     </div>
                 </td>
+                @endif
             </tr>
         @endforeach
     </tbody>
