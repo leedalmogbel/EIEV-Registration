@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\SessionChecker;
 use App\Http\Controllers\FentryControler;
+use App\Http\Controllers\FeventController;
 $defaultRoutes = [
     'get:/create' => [
         'createForm',

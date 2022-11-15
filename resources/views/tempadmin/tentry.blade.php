@@ -42,8 +42,8 @@
         </td>
         <td class="text-center">
           <div>
-            <a id="select-data" href={{($profile->stableid == "E0000014" ? 'AdminUserID|'.$profile->userid :
-              'StableID|'.$profile->stableid )}} class="btn btn-main">SELECT</a>
+            <a id="select-data" href={{($profile->stableid == "E0000014" ? 'AdminUserID|'.$profile->userid.'|'.$profile->userid :
+              'StableID|'.$profile->stableid.'|'.$profile->userid )}} class="btn btn-main">SELECT</a>
           </div>
         </td>
       </tr>
@@ -104,19 +104,17 @@
     $('#submitentry').DataTable();
 
     $(document).on('click', '#entry-submit', function (e) {
+      let uid = 0;
       e.preventDefault();
       let self = this;
       let href = $(self).attr('href');
-      href = `https://registration.eiev-app.ae/${href}?params[`
-      console.log($('.horse-select.select-2-basic').val());
-      console.log($('.rider-select.select-2-basic').val());
-
-      $validator = Validator::make($request->all(),[
-        'params.EventID'=>'required',
-        'params.HorseID'=>'required',
-        'params.RiderID'=>'required',
-        'params.UserID'=>'required',
-      ]);
+      const eid = $('.event-select.select-2-basic').val();
+      const hid = $('.horse-select.select-2-basic').val();
+      const rid = $('.rider-select.select-2-basic').val();
+      if(uid >0){
+        href = `https://registration.eiev-app.ae/${href}?params[EventID]=${eid}&params[HorseID]=${hid}&params[RiderID]=${rid}&params[UserID]=${uid}`;
+        window.location.href = href
+      }
     });
 
     $(document).on('click', '#select-data', function (e) {
@@ -126,6 +124,7 @@
       const ddata = href.split("|");
       const dkey = ddata[0];
       const dval = ddata[1];
+      uid = ddata[2];
       $('.horse-select.select-2-basic').val(null).trigger('change');
       $('.rider-select.select-2-basic').val(null).trigger('change');
       $('.horse-select.select-2-basic').select2({
