@@ -89,9 +89,9 @@ class FentryControler extends Controller
         if(isset($request->presidentcup)){
             $pcentries = $pcentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0');
             $pcentries =isset($request->ppage)? $pcentries->paginate($ppage): $pcentries->get();
-            return response()->json(['modelName'=>'entry','entries'=>['final'=>$fentries,'pfa'=>$eentries,'prov'=>$pentries,'royprov'=>$pcentries,'pfr'=>$reventries,'re'=>$reventries]]);
+            return response()->json(['modelName'=>'entry','entries'=>['final'=>$fentries,'pfa'=>$eentries,'prov'=>$pentries,'royprov'=>$pcentries,'pfr'=>$reventries,'re'=>$rentries]]);
         }
-        return view('tempadmin.tlists',['modelName'=>'entry','entries'=>['final'=>$fentries,'pfa'=>$eentries,'prov'=>$pentries,'pfr'=>$reventries,'re'=>$reventries]]);
+        return view('tempadmin.tlists',['modelName'=>'entry','entries'=>['final'=>$fentries,'pfa'=>$eentries,'prov'=>$pentries,'pfr'=>$reventries,'re'=>$rentries]]);
     }
 
     public function accept(Request $request)
