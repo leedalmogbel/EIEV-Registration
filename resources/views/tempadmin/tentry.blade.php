@@ -94,7 +94,7 @@
               "results": $.map(data.events.data, function (obj) {
                 obj.id = obj.raceid || obj.raceid;
                 obj.text = obj.text ||
-                  `${obj.racename}" - ${obj.location} | ${obj.racefromdate}`;
+                  `${obj.racename}" - ${obj.racelocation} | ${obj.racefromdate}`;
 
                 return obj;
               })
