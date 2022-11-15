@@ -150,7 +150,7 @@ foreach ($adminRoutes as $modelControl => $routes) {
     Route::get("/$route/update/{id}", "{$controller}@updateForm");
     Route::post("/$route/update/{id}", "{$controller}@update");*/
 }
-
+//domain('devregistration.eiev-app.ae')->
 Route::group(['middleware'=>sessionChecker::class],function ()
 {
     Route::group(['prefix'=>'rideslist'],function ()
@@ -159,6 +159,11 @@ Route::group(['middleware'=>sessionChecker::class],function ()
         Route::get('/accept',[FentryControler::class,'accept']);
         Route::get('/reject',[FentryControler::class,'reject']);
         Route::get('/withdraw',[FentryControler::class,'withdraw']);
+    });
+    Route::group(['prefix'=>'submitentry'],function ()
+    {
+        Route::get('/',[FentryControler::class,'entryadd']);
+        Route::get('/add',[FentryControler::class,'addentry']);
     });
 });
 

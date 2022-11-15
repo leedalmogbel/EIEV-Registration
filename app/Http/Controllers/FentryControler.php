@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fentry;
+use App\Models\Userprofile;
+use App\Models\Multi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\FederationController;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Validator;
 
 class FentryControler extends Controller
 {
@@ -49,7 +52,14 @@ class FentryControler extends Controller
 
     public function getlists(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'SearchEventID'=>'required',
+          ]);
+          if($validator->fails()){
+            return response()->json(["error" => $validator->errors()]);
+          }
         $fieldlist = ["SearchEventID",'ClassCode'];
+        
         $ppage= 15;
         if(isset($request->ppage)){
             $ppage = $request->ppage;
@@ -119,6 +129,7 @@ class FentryControler extends Controller
         }
         return redirect('/rideslist?SearchEventID='.$entry->eventcode);
     }
+
     public function withdraw(Request $request)
     {
         $entry = Fentry::where('code',$request->entrycode)->first();
@@ -134,6 +145,47 @@ class FentryControler extends Controller
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
         }
         return redirect('/rideslist?SearchEventID='.$entry->eventcode);
+    }
+
+    public function addentry(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'params.EventID'=>'required',
+            'params.HorseID'=>'required',
+            'params.RiderID'=>'required',
+            'params.UserID'=>'required',
+          ]);
+          if($validator->fails()){
+            return response()->json(["error" => $validator->errors()]);
+          }
+        $myRequest = new \Illuminate\Http\Request();
+        $myRequest->setMethod('POST');
+        $myRequest->request->add(['params' => [
+            'EventID'=>$request->params['EventID'],
+            'HorseID'=>$request->params['HorseID'],
+            'RiderID'=>$request->params['RiderID'],
+            'UserID'=>$request->params['UserID'],]]);
+        $data = (new FederationController)->addentry($myRequest);
+        if(intval($data['entrycode']??'0') > "0"){
+            Multi::insertOrUpdate([["riderid"=>$request->params['RiderID'],"horseid"=>$request->params['HorseID'],"userid"=>$request->params['UserID'],"code"=>$data['entrycode'],"eventcode"=>$request->params['EventID']]],'fentries');
+            Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$data['entrycode']);
+        }
+        return redirect('/entry'.$entry->eventcode);
+    }
+    
+
+    public function entryadd(Request $request)
+    {
+        $ppage= 15;
+        if(isset($request->ppage)){
+            $ppage = $request->ppage;
+        }
+        $profiles = Userprofile::query();
+        if($request->SearchEmail){
+            $profiles = $profiles->where('eventcode','like',"%".$request->SearchEventID."%")->where('status', 'Accepted');
+        }
+        $profiles =isset($request->ppage)? $profiles->paginate($ppage): $profiles->get();
+        return view('tempadmin.tentry',['modelName'=>'submitentry','profiles'=>$profiles]);
     }
 
     /**

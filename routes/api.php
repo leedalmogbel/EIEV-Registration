@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FederationController;
 use App\Http\Controllers\FederationSyncController;
 use App\Http\Controllers\FriderController;
+use App\Http\Controllers\FhorseController;
 use App\Http\Middleware\EnsureClientIsValid;
 use App\Http\Middleware\EnsureClientIsFed;
 
@@ -22,6 +23,7 @@ use App\Http\Middleware\EnsureClientIsFed;
 Route::group(['prefix'=>'ajax'],function ()
 {
     Route::get('searchrider',[FriderController::class,'index']);
+    Route::get('searchhorse',[FhorseController::class,'index']);
 });
 
 Route::group(['middleware'=>[EnsureClientIsValid::class],'prefix'=>'uaeerf'],function () {

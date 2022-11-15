@@ -7,7 +7,7 @@
             </a>
         </li>
         <li>
-            <a href="/addentry" class="{{ $modelName == 'aentry' ? 'active' : '' }}">
+            <a href="/submitentry" class="{{ $modelName == 'submitentry' ? 'active' : '' }}">
                 <i class="fa fa-list" aria-hidden="true"></i> Add Entry
             </a>
         </li>

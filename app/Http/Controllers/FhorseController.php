@@ -67,7 +67,7 @@ class FhorseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -112,7 +112,7 @@ class FhorseController extends Controller
      * @param  \App\Models\Fhorse  $fhorse
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Fhorse $fhorse)
+    public function update(Request $request, $id)
     {
         //
     }

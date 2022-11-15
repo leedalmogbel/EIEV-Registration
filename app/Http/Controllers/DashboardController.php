@@ -14,7 +14,9 @@ class DashboardController extends Controller
         $httpClient = new \GuzzleHttp\Client();
         $api_url = '';
         $profile = session()->get('profile');
-
+        if(!$profile){
+            return redirect('login');
+        }
         $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/stablestats?params[StableID]='.$profile->stableid;
         if (isset($profile->stableid) && $profile->stableid == "E0000014") {
             $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/stablestats?params[AdminUserID]='.$profile->userid;
