@@ -5,11 +5,15 @@ namespace App\Validators;
 use App\Models\User as UserModel;
 use App\Exceptions\FieldException;
 use App\Exceptions\MsgException;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Hash;
 
-class User {
-    
+class User extends Authenticatable{
+    use HasApiTokens, HasFactory, Notifiable;
+    protected $primaryKey = 'user_id';
     // LOGIN ERROR MESSAGES
     const ERR_EMPTY_EMAIL = 'Username / Email cannot be empty.';
     const ERR_EMPTY_PASS = 'Password cannot be empty.';
