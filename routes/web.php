@@ -152,7 +152,7 @@ foreach ($adminRoutes as $modelControl => $routes) {
     Route::post("/$route/update/{id}", "{$controller}@update");*/
 }
 //
-Route::domain('devregistration.eiev-app.ae')->group(['middleware'=>sessionChecker::class],function ()
+Route::domain('devregistration.eiev-app.ae')->group(function ()
 {
     Route::group(['prefix'=>'rideslist'],function ()
     {
