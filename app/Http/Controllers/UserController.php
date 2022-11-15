@@ -69,7 +69,12 @@ class UserController extends Controller
                 'emirates_id' => '123456789'
             );
 
-            UserModel::create($newUser);
+            $checkIfExist = UserModel::create($newUser);
+            
+        }
+        try {
+            Auth::login($user,$request->has('remember'));
+        } catch (\Throwable $th) {
         }
 
 
