@@ -77,7 +77,7 @@ class FentryControler extends Controller
         $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
         $pentries = Fentry::query();
         if($request->SearchEventID){
-            $pentries = $pentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',3)->where('status', 'Pending')->where('review','1');
+            $pentries = $pentries->where('eventcode','like',"%".$request->SearchEventID."%")->where('classcode',3)->where('status', 'Pending')->where('review','<>','0');
         }
         $pentries =isset($request->ppage)? $pentries->paginate($ppage): $pentries->get();
 
