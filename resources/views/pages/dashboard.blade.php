@@ -49,7 +49,7 @@
                                         <div class="card">
                                             <div class="card-block p-3">
                                                 <div class="card-block-info">
-                                                    <h4 class="card-title">{{ $event->racename }} {{$event->statusname}} Status</h4>
+                                                    <h4 class="card-title">{{ $event->racename }} <small>({{$event->statusname}} Status)</small></h4>
                                                     <h6 class="card-title">{{ $event->racelocation }}
                                                         {{ $event->racecountry }}
                                                     </h6>
