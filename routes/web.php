@@ -116,10 +116,14 @@ $adminRoutes['stable']['post:/update/{id}'][1] = ['sessionChecker:superadmin,adm
 */
 
 Route::get('/', function () {
-    if(session()->get('user')==null){
-        return redirect('/login');
+    if (Auth::viaRemember() || Auth::check()) {
+        return redirect()->intended('dashboard');
+    }else{
+        if(session()->get('user')==null){
+            return redirect('/login');
+        }
+        return redirect('/dashboard');
     }
-    return redirect('/dashboard');
 })->middleware(SessionChecker::class);
 
 

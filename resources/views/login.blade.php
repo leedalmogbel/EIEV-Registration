@@ -135,6 +135,13 @@
                                 'placeholder' => 'Enter your password',
                                 'type' => 'password',
                             ])
+                            <div class="py-1">
+                            <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember"> Remember Me
+                                    </label>
+                                </div>
+                            </div>
                             <div class="py-3">
                                 <button class="btn btn-main col-12" type="submit">LOGIN MY ACCOUNT</button>
                             </div>

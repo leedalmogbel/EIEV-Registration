@@ -30,6 +30,7 @@
                 {{ $index }}
                 <div class="row entry">
                     <div class="col">
+                        <div><small class="text-danger">You can't select expired horses</small></div>
                         @include('partials.formFields.selectFormGroup', [
                             'label' => 'Horse',
                             'name' => "data[$index][horse]",
@@ -41,6 +42,7 @@
                         ])
                     </div>
                     <div class="col">
+                    <div><small class="text-danger">You can't select expired rider</small></div>
                         @include('partials.formFields.selectFormGroup', [
                             'label' => 'Rider',
                             'name' => "data[$index][rider]",

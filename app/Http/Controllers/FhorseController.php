@@ -58,7 +58,7 @@ class FhorseController extends Controller
         if($request->SearchDisciplineID){
             $horses = $horses->where('divisionid','like',"%".$request->SearchDisciplineID."%");
         }
-        $horses = $horses->paginate($ppage);
+        $horses = $horses->whereIn('registeredx0020seasonn',['2022-2023'])->paginate($ppage);
         return response()->json(['horses'=>$horses]);
     }
 

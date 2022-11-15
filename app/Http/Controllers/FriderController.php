@@ -58,7 +58,7 @@ class FriderController extends Controller
         if($request->SearchDisciplineID){
             $riders = $riders->where('divisionid','like',"%".$request->SearchDisciplineID."%");
         }
-        $riders = $riders->paginate($ppage);
+        $riders = $riders->whereIn('registeredseasoncode',[13])->paginate($ppage);
         return response()->json(['riders'=>$riders]);
     }
 

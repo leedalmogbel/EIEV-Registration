@@ -548,7 +548,7 @@ class FederationController extends Controller
         if(isset($request->showraw)){
             return $response->getBody();
         }
-        return $this->extractData((string)$response->getBody(),'NewDataSet|horses#Table#NFPassportNumber|nfpassportnumber&Active|active&HorseID|horseid&NF_Registration|nfregistration&Name|name&Breed|breed&Country_Origin|countryorigin&Country_Origin_SHORT|countryoriginshort&DOB|dob&Gender|gender&Colour|color&Trainer|trainer&OWNER|owner&Stable|stable&FEIPassport|feipassport&MicrochipNo|microchip&DIVISION|division&StableID|stableid&DivisionID|divisionid&AdminUser|adminuser&breedid|breedid&colourid|colourid&genderid|genderid&CountryOfOriginID|countryoforiginid&trainerid|trainerid&ownerid|ownerid',$debug,isset($request->params['options']));
+        return $this->extractData((string)$response->getBody(),'NewDataSet|horses#Table#NFPassportNumber|nfpassportnumber&Active|active&HorseID|horseid&NF_Registration|nfregistration&Name|name&Breed|breed&Country_Origin|countryorigin&Country_Origin_SHORT|countryoriginshort&DOB|dob&Gender|gender&Colour|color&Trainer|trainer&OWNER|owner&Stable|stable&FEIPassport|feipassport&MicrochipNo|microchip&DIVISION|division&StableID|stableid&DivisionID|divisionid&AdminUser|adminuser&breedid|breedid&colourid|colourid&genderid|genderid&CountryOfOriginID|countryoforiginid&trainerid|trainerid&ownerid|ownerid&Registered_x0020_Season|registeredx0020season',$debug,isset($request->params['options']));
     }
 
     public function searchownerlist(Request $request)
