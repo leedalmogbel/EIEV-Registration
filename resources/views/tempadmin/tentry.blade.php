@@ -75,7 +75,7 @@
     <div class="row entry">
       <div class="col">
         <div class="form-group mb-3">
-          <a id="entry-submit" class="btn btn-main col-12" href="/submitentry/add">SUBMIT</a>
+          <a id="entry-submit" class="btn btn-main col-12" href="submitentry/add">SUBMIT</a>
         </div>
       </div>
     </div>
