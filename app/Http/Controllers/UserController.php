@@ -9,6 +9,8 @@ use App\Exceptions\FieldException;
 use App\Services\ServiceProvider;
 use Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class UserController extends Controller
