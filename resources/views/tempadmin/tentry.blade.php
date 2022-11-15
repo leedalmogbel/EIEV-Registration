@@ -65,7 +65,15 @@
       </div>
     </div>
   </div>
-
+  <div class="entries">
+    <div class="row entry">
+      <div class="col">
+        <div class="form-group mb-3">
+          <a class="btn btn-main col-12" href="/submitentry/add">SUBMIT</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <script type="text/javascript">
   $(document).ready(function () {
@@ -93,19 +101,14 @@
             return query;
           },
           processResults: function (data) {
-            results = [myathletes, {
-              'id': 'others' || 'other',
-              'text': 'Other Athletes',
-              'children': $.map(data.horse.data, function (obj) {
+            return {
+              "results": $.map(data.horse.data, function (obj) {
                 obj.id = obj.horseid || obj.horseid;
                 obj.text = obj.text ||
                   `${obj.horseid}">${obj.name} / ${obj.nfregistration} / ${obj.gender} / ${obj.color}`;
 
                 return obj;
               })
-            },];
-            return {
-              "results": results
             }
           }
         }
