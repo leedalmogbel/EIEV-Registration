@@ -8,6 +8,9 @@
         <tr>
             <!-- <th width="300">Race</th> -->
             <th>START NO</th>
+            <th>STABLE</th>
+            <th>OWNER</th>
+            <th>TRAINER</th>
             <th>HORSE</th>
             <td>EEF ID|FEI ID</td>
             <th>GENDER</th>
@@ -24,8 +27,17 @@
     <tbody>
         @foreach ($lists as $entry)
             <tr>
-                <td class="text-center">
+            <td class="text-center">
                 {{$entry->startno ?? 'N/A'}}
+                </td>
+                <td class="text-center">
+                {{$entry->stablename ?? 'N/A'}}
+                </td>
+                <td class="text-center">
+                {{$entry->ownername ?? 'N/A'}}
+                </td>
+                <td class="text-center">
+                {{$entry->trainername ?? 'N/A'}}
                 </td>
                 <td class="text-center"><strong>{{ $entry->horsename }}</strong></td>
                 <td class="text-center">
