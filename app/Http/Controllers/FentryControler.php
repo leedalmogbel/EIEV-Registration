@@ -166,7 +166,7 @@ class FentryControler extends Controller
             'RiderID'=>$request->params['RiderID'],
             'UserID'=>$request->params['UserID'],]]);
         $data = (new FederationController)->addentry($myRequest);
-        if(intval($data['entrycode']??'0') > "0"){
+        if(intval($data['entrycode']??'0') > 0){
             Multi::insertOrUpdate([["riderid"=>$request->params['RiderID'],"horseid"=>$request->params['HorseID'],"userid"=>$request->params['UserID'],"code"=>$data['entrycode'],"eventcode"=>$request->params['EventID']]],'fentries');
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$data['entrycode']);
         }
