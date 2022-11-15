@@ -108,9 +108,11 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#final').DataTable();
-        $('#main').DataTable();
-        $('#private').DataTable();
-        $('#royal').DataTable();
+        $('#pfa').DataTable();
+        $('#prov').DataTable();
+        $('#royprov').DataTable();
+        $('#pfr').DataTable();
+        $('#re').DataTable();
     });
 </script>
 <script>
