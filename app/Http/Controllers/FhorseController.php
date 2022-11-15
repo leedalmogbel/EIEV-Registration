@@ -29,7 +29,8 @@ class FhorseController extends Controller
             $horses = $horses->where('stableid','like',"%".$request->StableID."%");
         }
         if($request->SearchName){
-            $horses = $horses->where('name','like',"%".$request->SearchName."%");
+            $horses = $horses->where('name','like',"%".$request->SearchName."%")->orwhere('nfregistration','like',"%".$request->SearchName."%")
+            ->orwhere('feipassport','like',"%".$request->SearchName."%");
         }
         if($request->SearchFEIID){
             $horses = $horses->where('feipassport','like',"%".$request->SearchFEIID."%");
