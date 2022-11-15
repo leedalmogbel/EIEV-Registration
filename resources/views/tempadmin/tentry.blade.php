@@ -83,6 +83,7 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function () {
+    let uid = 0;
     $('.event-select.select-2-basic').select2({
         ajax: {
           url: 'https://registration.eiev-app.ae/api/ajax/searchevent',
@@ -104,7 +105,7 @@
     $('#submitentry').DataTable();
 
     $(document).on('click', '#entry-submit', function (e) {
-      let uid = 0;
+      
       e.preventDefault();
       let self = this;
       let href = $(self).attr('href');
