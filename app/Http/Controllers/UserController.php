@@ -8,6 +8,8 @@ use App\Models\User as UserModel;
 use App\Exceptions\FieldException;
 use App\Services\ServiceProvider;
 use Hash;
+use Illuminate\Support\Facades\Validator;
+
 
 class UserController extends Controller
 {
@@ -29,6 +31,17 @@ class UserController extends Controller
      */
     public function login (Request $request) {
         // EEF API CALL
+
+        $validator = Validator::make($request->all(), [
+            'username'=>'required',
+            'password'=>'required',
+        ]);
+        if ($validator->fails()) {
+            throw new FieldException(json_encode([
+                'username' => 'Invalid username and password.',
+                'password' => 'Invalid username and password.',
+            ]));
+        }
         $httpClient = new \GuzzleHttp\Client();
         $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/userlogin';
         $options = [
