@@ -188,7 +188,7 @@ class EntryController extends Controller
         if (empty($request->get('raceid'))){
             return redirect(sprintf('/%s', 'dashboard'));
         }
-        $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/entries?params[SearchEventID]='.$request->get('raceid');
+        $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/entries?params[SearchEventID]='.$request->get('raceid').'&params[SearchUserID]='.$profile->userid;
         // $api_url = 'http://192.168.1.161:8000/api/uaeerf/entries?params[SearchEventID]='.$request->get('raceid');
 
         $options = [
