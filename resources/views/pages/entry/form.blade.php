@@ -1,5 +1,10 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<style>
+    /* .select2-container--default .select2-results>.select2-results__options {
+        max-height: 700px;
+    } */
+</style>
 {{-- <h2 class="text-danger">Race / Event Detail</h2>
 @include('partials.formFields.selectFormGroup', [
     'label' => 'Race / Event',
@@ -42,7 +47,7 @@
                         ])
                     </div>
                     <div class="col">
-                    <div><small class="text-danger">You can't select expired riders</small></div>
+                        <div><small class="text-danger">You can't select expired riders</small></div>
                         @include('partials.formFields.selectFormGroup', [
                             'label' => 'Rider',
                             'name' => "data[$index][rider]",
@@ -305,5 +310,8 @@
         // $('.select-2-basic').select2({
         //     minimumInputLength: 3
         // });
+
+
+        $('.select2-container--default .select2-results>.select2-results__options').css('max-width', '650px');
     </script>
 @endsection

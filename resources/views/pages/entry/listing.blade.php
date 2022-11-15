@@ -38,7 +38,9 @@
             <td>
                 {{-- @include('partials.actions', ['object' => $entry]) --}}
                 <div>
-                    @if ($entry->status == 'Eligible' || $entry->status == 'Accepted')
+                    @if ($entry->status == 'Eligible' ||
+                        $entry->status == 'Accepted' ||
+                        ($entry->status == 'Pending' && $entry->review != '0'))
                         <a id="withdrawn"
                             href="/entry/withdrawn?raceid={{ $entry->eventcode }}&entrycode={{ $entry->code }}&status=withdrawn"
                             class="btn btn-danger">

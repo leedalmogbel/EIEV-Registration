@@ -51,7 +51,8 @@ class User extends Authenticatable
         'discipline',
         'emirates_id',
         'username',
-        'password'
+        'password',
+        'pwd'
     ];
 
     /**
