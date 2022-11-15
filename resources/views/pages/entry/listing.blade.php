@@ -32,7 +32,14 @@
             </td>
             <td>
                 {{-- @include('partials.status', ['status' => $entry->status]) --}}
-                {{ $entry->status }}
+
+                @if ($entry->status == 'Pending' && $entry->review == '0')
+                    {{ 'Pending for review' }}
+                @elseif ($entry->status == 'Pending' && $entry->review != '0')
+                    {{ 'Pending for acceptance' }}
+                @else
+                    {{ $entry->status }}
+                @endif
             </td>
             <td>{{ $entry->remarks }}</td>
             <td>
@@ -48,7 +55,7 @@
                             Withdrawn
                         </a>
                     @else
-                        No Withdrawn Required
+                        No Action Available
                     @endif
                     {{-- <a href="/entry?raceid={{ $race->raceid }}" class="btn btn-main" id="view-entry"><i
 							class="fa-regular fa-eye"></i> View Entry</a> --}}
