@@ -30,9 +30,9 @@
                 <td><div><small class={{$race->statusname == "Pending" ? 'text-danger' :'text-success'}}>{{$race->statusname}}</small></div></td>
                 <td>
                     <div>
-                        <a href="/entry/create?raceid={{ $race->raceid }}" {{$race->statusname == "Pending" ? 'class="btn btn-danger disabled"' :'class="btn btn-main"'}} id="add-entry"><i
+                        <a href="/entry/create?raceid={{ $race->raceid }}" class={{$race->statusname == 'Pending' ? btn btn-danger disabled :btn btn-main}} id="add-entry"><i
                                 class="fa-solid fa-plus"></i> Add Entry</a>
-                        <a href="/entry?raceid={{ $race->raceid }}" {{$race->statusname == "Pending" ? 'class="btn btn-danger disabled"' :'class="btn btn-main"'}} id="view-entry"><i
+                        <a href="/entry?raceid={{ $race->raceid }}" {{$race->statusname == 'Pending' ? btn btn-danger disabled :btn btn-main}} id="view-entry"><i
                                 class="fa-regular fa-eye"></i> View Entry</a>
                     </div>
                 </td>
