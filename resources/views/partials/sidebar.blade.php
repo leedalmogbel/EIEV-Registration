@@ -46,11 +46,11 @@
                 <i class="fa fa-cloud" aria-hidden="true"></i> Seasons
             </a>
         </li> --}}
-        <li>
+        {{--<li>
             <a href="/owner" class="{{ $modelName == 'owner' ? 'active' : '' }}">
                 <i class="fa fa-user" aria-hidden="true"></i> Owners
             </a>
-        </li>
+        </li>--}}
         {{-- <li>
             <a href="/event" class="{{ $modelName == 'event' ? 'active' : '' }}">
                 <i class="fa fa-list" aria-hidden="true"></i> Events
