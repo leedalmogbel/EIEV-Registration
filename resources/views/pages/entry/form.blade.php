@@ -1,9 +1,9 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <style>
-    /* .select2-container--default .select2-results>.select2-results__options {
+    .select2-container--default .select2-results>.select2-results__options {
         max-height: 700px;
-    } */
+    }
 </style>
 {{-- <h2 class="text-danger">Race / Event Detail</h2>
 @include('partials.formFields.selectFormGroup', [
@@ -139,9 +139,9 @@
 
             for (let i in horses) {
                 //  horseHtml += `<option value="${horses[i].horse_id}">${horses[i].name}</option>`
-                if(horses[i].registeredx0020season == "2022-2023"){
+                if (horses[i].registeredx0020season == "2022-2023") {
                     horseHtml +=
-                    `<option value="${horses[i].horseid}">${horses[i].name} / ${horses[i].nfregistration} / ${horses[i].gender} / ${horses[i].color}</option>`
+                        `<option value="${horses[i].horseid}">${horses[i].name} / ${horses[i].nfregistration} / ${horses[i].gender} / ${horses[i].color}</option>`
                 }
             }
 
@@ -170,7 +170,7 @@
                     obj.id = obj.riderid || obj.riderid;
                     obj.text = obj.text ||
                         `${obj.firstx0020name} ${obj.familyx0020name} (${obj.stable}) ${obj.nfx0020license} / ${obj.feix0020reg} / ${obj.countryshort}`; // replace pk with your identifier
-                    if(obj.registeredseasoncode =="13"){
+                    if (obj.registeredseasoncode == "13") {
                         return obj;
                     }
                 })
@@ -313,8 +313,5 @@
         // $('.select-2-basic').select2({
         //     minimumInputLength: 3
         // });
-
-
-        $('.select2-container--default .select2-results>.select2-results__options').css('max-width', '650px');
     </script>
 @endsection
