@@ -82,7 +82,7 @@ class FentryControler extends Controller
         $reventries = isset($request->ppage)? $reventries->paginate($ppage) : $reventries->get();
         //rejected entries
         $rentries = Fentry::query();
-        $rentries = $rentries->where('eventcode','like','%'.$request->SearchEventID.'%')->where('status','Rejected');
+        $rentries = $rentries->where('eventcode','like','%'.$request->SearchEventID.'%')->whereIn('status',['Rejected','Withdrawn']);
         $rentries = isset($request->ppage)? $rentries->paginate($ppage) : $rentries->get();
         //royal for president cup
         $pcentries = Fentry::query();
