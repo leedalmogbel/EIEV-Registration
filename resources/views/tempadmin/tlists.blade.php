@@ -2,8 +2,8 @@
 @section('content')
 <div class="col-9">
     @php
-    $titles= ['final'=>'Final List','pfa'=>'Pending for Acceptance','prov'=>'Provisional Entries','royprov'=>'Royal Provisional Entries','pfr'=>'Pending for Review','re'=>'Rejected Entries'];
-    @endph
+        $titles= ['final'=>'Final List','pfa'=>'Pending for Acceptance','prov'=>'Provisional Entries','royprov'=>'Royal Provisional Entries','pfr'=>'Pending for Review','re'=>'Rejected Entries'];
+    @endphp
 @foreach (${Str::plural($modelName)} as $key => $lists)
 <h1>{{Str::upper($titles[$key]). ' - Total Entries : ' }}{{count($lists)}}</h1>
 <table id={{$key}} class="table table-striped table-bordered">
