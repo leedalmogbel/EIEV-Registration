@@ -42,7 +42,7 @@
                         ])
                     </div>
                     <div class="col">
-                    <div><small class="text-danger">You can't select expired rider</small></div>
+                    <div><small class="text-danger">You can't select expired riders</small></div>
                         @include('partials.formFields.selectFormGroup', [
                             'label' => 'Rider',
                             'name' => "data[$index][rider]",
