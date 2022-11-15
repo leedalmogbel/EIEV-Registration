@@ -5,6 +5,7 @@
         <th>Trainer</th>
         <th>Stable</th>
         <th>Status</th>
+        <th>Remarks</th>
         <th width="100" style="text-align:right">ACTIONS</th>
     </tr>
     @foreach ($eef_entries as $entry)
@@ -33,6 +34,7 @@
                 {{-- @include('partials.status', ['status' => $entry->status]) --}}
                 {{ $entry->status }}
             </td>
+            <td>{{ $entry->remarks }}</td>
             <td>
                 {{-- @include('partials.actions', ['object' => $entry]) --}}
                 <div>
