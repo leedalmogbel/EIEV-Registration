@@ -170,7 +170,7 @@ class FentryControler extends Controller
             Multi::insertOrUpdate([["riderid"=>$request->params['RiderID'],"horseid"=>$request->params['HorseID'],"userid"=>$request->params['UserID'],"code"=>$data['entrycode'],"eventcode"=>$request->params['EventID']]],'fentries');
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$data['entrycode']);
         }
-        return redirect('/entry'.$entry->eventcode);
+        return redirect('/submitentry');
     }
     
 
