@@ -5,6 +5,7 @@
             <th>Location</th>
             {{-- <th>Contact</th> --}}
             <td>Race Dates</td>
+            <td>Status</td>
             <th>Actions</th>
             {{-- <th width="100" style="text-align:right">ACTIONS</th> --}}
         </tr>
@@ -26,6 +27,7 @@
                     <div>From Date: <strong>{{ date('M d, Y', strtotime($race->racefromdate)) }}</strong></div>
                     <div>To Date: <strong>{{ date('M d, Y', strtotime($race->racetodate)) }}</strong></div>
                 </td>
+                <td><div><small class={{$race->statusname == "Pending" ? 'text-danger' :'text-success'}}>{{$race->statusname}}</small></div></td>
                 <td>
                     <div>
                         <a href="/entry/create?raceid={{ $race->raceid }}" class={{$race->statusname == "Pending" ? 'btn btn-dange disabled' :'btn btn-main'}} id="add-entry"><i
