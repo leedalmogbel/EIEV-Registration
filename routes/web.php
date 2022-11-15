@@ -151,8 +151,8 @@ foreach ($adminRoutes as $modelControl => $routes) {
     Route::get("/$route/update/{id}", "{$controller}@updateForm");
     Route::post("/$route/update/{id}", "{$controller}@update");*/
 }
-//domain('devregistration.eiev-app.ae')->
-Route::group(['middleware'=>sessionChecker::class],function ()
+//
+Route::domain('devregistration.eiev-app.ae')->group(['middleware'=>sessionChecker::class],function ()
 {
     Route::group(['prefix'=>'rideslist'],function ()
     {
