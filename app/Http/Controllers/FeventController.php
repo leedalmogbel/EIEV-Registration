@@ -35,7 +35,7 @@ class FeventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -80,7 +80,7 @@ class FeventController extends Controller
      * @param  \App\Models\Fevent  $fevent
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Fevent $fevent)
+    public function update(Request $request, $id)
     {
         //
     }
