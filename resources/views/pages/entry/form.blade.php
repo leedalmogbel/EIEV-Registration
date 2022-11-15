@@ -139,8 +139,10 @@
 
             for (let i in horses) {
                 //  horseHtml += `<option value="${horses[i].horse_id}">${horses[i].name}</option>`
-                horseHtml +=
+                if(horses[i].registeredx0020season == "2022-2023"){
+                    horseHtml +=
                     `<option value="${horses[i].horseid}">${horses[i].name} / ${horses[i].nfregistration} / ${horses[i].gender} / ${horses[i].color}</option>`
+                }
             }
 
             let riderHtml = '<option disabled selected>Select a Rider</option>';
@@ -168,8 +170,9 @@
                     obj.id = obj.riderid || obj.riderid;
                     obj.text = obj.text ||
                         `${obj.firstx0020name} ${obj.familyx0020name} (${obj.stable}) ${obj.nfx0020license} / ${obj.feix0020reg} / ${obj.countryshort}`; // replace pk with your identifier
-
-                    return obj;
+                    if(obj.registeredseasoncode =="13"){
+                        return obj;
+                    }
                 })
             };
 
