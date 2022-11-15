@@ -24,6 +24,7 @@ Route::group(['prefix'=>'ajax'],function ()
 {
     Route::get('searchrider',[FriderController::class,'index']);
     Route::get('searchhorse',[FhorseController::class,'index']);
+    Route::get('searchevent',[FeventController::class,'index']);
 });
 
 Route::group(['middleware'=>[EnsureClientIsValid::class],'prefix'=>'uaeerf'],function () {

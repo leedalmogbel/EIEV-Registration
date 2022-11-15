@@ -63,13 +63,19 @@
           <select class="rider-select select-2-basic col-12" style="height: 50px;"></select>
         </div>
       </div>
+      <div class="col">
+
+        <div class="form-group mb-3">
+          <select class="event-select select-2-basic col-12" style="height: 50px;"></select>
+        </div>
+      </div>
     </div>
   </div>
   <div class="entries">
     <div class="row entry">
       <div class="col">
         <div class="form-group mb-3">
-          <a class="btn btn-main col-12" href="/submitentry/add">SUBMIT</a>
+          <a id="entry-submit" class="btn btn-main col-12" href="/submitentry/add">SUBMIT</a>
         </div>
       </div>
     </div>
@@ -77,7 +83,41 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function () {
+    $('.event-select.select-2-basic').select2({
+        ajax: {
+          url: 'https://registration.eiev-app.ae/api/ajax/searchevent',
+          dataType: 'json',
+          type: 'GET',
+          processResults: function (data) {
+            return {
+              "results": $.map(data.events.data, function (obj) {
+                obj.id = obj.raceid || obj.raceid;
+                obj.text = obj.text ||
+                  `${obj.racename}" - ${obj.location} | ${obj.racefromdate}`;
+
+                return obj;
+              })
+            }
+          }
+        }
+      });
     $('#submitentry').DataTable();
+
+    $(document).on('click', '#entry-submit', function (e) {
+      e.preventDefault();
+      let self = this;
+      let href = $(self).attr('href');
+      href = `https://registration.eiev-app.ae/${href}?params[`
+      console.log($('.horse-select.select-2-basic').val());
+      console.log($('.rider-select.select-2-basic').val());
+
+      $validator = Validator::make($request->all(),[
+        'params.EventID'=>'required',
+        'params.HorseID'=>'required',
+        'params.RiderID'=>'required',
+        'params.UserID'=>'required',
+      ]);
+    });
 
     $(document).on('click', '#select-data', function (e) {
       e.preventDefault();
@@ -102,7 +142,7 @@
           },
           processResults: function (data) {
             return {
-              "results": $.map(data.horse.data, function (obj) {
+              "results": $.map(data.horses.data, function (obj) {
                 obj.id = obj.horseid || obj.horseid;
                 obj.text = obj.text ||
                   `${obj.horseid}">${obj.name} / ${obj.nfregistration} / ${obj.gender} / ${obj.color}`;
