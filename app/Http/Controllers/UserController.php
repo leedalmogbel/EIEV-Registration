@@ -73,7 +73,7 @@ class UserController extends Controller
             
         }
         try {
-            Auth::login($user,$request->has('remember'));
+            Auth::login($checkIfExist,$request->has('remember'));
         } catch (\Throwable $th) {
         }
 
