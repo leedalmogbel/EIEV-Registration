@@ -165,7 +165,7 @@
                     obj.id = obj.riderid || obj.riderid;
                     obj.text = obj.text ||
                         `${obj.firstx0020name} ${obj.familyx0020name} (${obj.stable}) ${obj.nfx0020license} / ${obj.feix0020reg} / ${obj.countryshort}`; // replace pk with your identifier
-                    if(obj.registeredx0020season =="13"){
+                    if(obj.registeredseasoncode =="13"){
                         return obj;
                     }
                 })
