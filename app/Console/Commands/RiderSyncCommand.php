@@ -41,7 +41,7 @@ class RiderSyncCommand extends Command
      */
     public function handle()
     {
-        $id =  $this->option('id') == "null"?$this->option('id'): Str::uuid();
+        $id =  $this->option('id') != "null"?$this->option('id'): Str::uuid();
         try {
             info("`{$id}` - Started Rider Sync");
             $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->first();

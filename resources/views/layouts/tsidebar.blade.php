@@ -1,5 +1,5 @@
 <div class="sidebar px-0 col">
-    <div class="logo"><img src="/assets/images/dash-logo.png" /></div>
+    <div class="logo"><img src="/assets/images/dash-logo-white.png" /></div>
     <ul class="side-menu">
         <li>
             <a href="rideslist" class="{{ $modelName == 'entry' ? 'active' : '' }}">

@@ -497,6 +497,63 @@ class FederationController extends Controller
         }
         return $this->extractData((string)$response->getBody(),'!GetUserProfileResult|uprofile-LastestUpdate|latestupdate-IsActive|isactive-Email|email-UserId|userid-Fname|fname-Lname|lname-MobileNo|mobileno-Dob|bday-Stable_ID|stableid',$debug);
     }
+    
+    public function moveentrytomain(Request $request)
+    {
+      $debug= false;
+      $validator = Validator::make($request->all(),[
+        'params.SearchEntryID'=>'required',
+        'params.EventID'=>'required',
+      ]);
+      if($validator->fails()){
+        return response()->json(["error" => $validator->errors()]);
+      }
+      $fieldlist = ["SearchEntryID","EventID"];
+      if(isset($request->params)){
+        $arrkeys= array_keys($request->params);
+        $validationResult=$this->validateData($fieldlist,$arrkeys);
+        if(!$validationResult['allow']){
+          return response()->json(['error'=>$validationResult['msg']],400);
+        }
+      }
+        $xml='<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+        <soap:Header>
+          <SecuredToken xmlns="http://ws.uaeerf.ae/">
+            <username>?</username>
+            <password>?</password>
+            <AuthenticationToken>'.$this->wslogin()['token'].'</AuthenticationToken>
+          </SecuredToken>
+        </soap:Header>
+        <soap:Body>
+          <MoveEntryToMain xmlns="http://ws.uaeerf.ae/">';
+          if(isset($request->params)){
+            $keys = array_keys($request->params);
+            foreach ($keys as $key) {
+                $xml.='<'.$key.'>'.$request->params[$key].'</'.$key.'>';
+            }
+          }
+          $xml.='<msg></msg>
+          </MoveEntryToMain>
+        </soap:Body>
+      </soap:Envelope>';
+
+        $options = [
+            'headers' => [
+                'Content-Type' => 'text/xml; charset=utf-8',
+                "SOAPAction"=>"http://ws.uaeerf.ae/MoveEntryToMain",
+                "User-Agent" => "EIEV/1.0",
+                "Accept"=>"*/*",
+                "Host"=>"ws.uaeerf.ae"
+            ],
+            'body' => $xml
+        ];
+        $client = new Client();
+        $response = $client->post(env("UAEERF_BASE_URL"), $options);
+        if(isset($request->showraw)){
+            return $response->getBody();
+        }
+        return $this->extractData((string)$response->getBody(),'MoveEntryToMainResult|moved',$debug);
+    }
 
     public function searchhorselist(Request $request,$horseid=null)
     {

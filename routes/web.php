@@ -162,6 +162,7 @@ Route::domain('devregistration.eiev-app.ae')->group(function ()
     {
         Route::get('/',[FentryControler::class,'getlists']);
         Route::get('/accept',[FentryControler::class,'accept']);
+        Route::get('/mainlist',[FentryControler::class,'mainlist']);
         Route::get('/reject',[FentryControler::class,'reject']);
         Route::get('/withdraw',[FentryControler::class,'withdraw']);
     });

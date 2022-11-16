@@ -21,13 +21,13 @@
             <th>RIDER</th>
             <th>EEF ID|FEI ID</th>
             <th>GENDER</th>
-            @if($key != "re")
+            @if(!in_array($key,["re","pdf"])
             <th>QR</th>
             @else
             <th>Remarks</th>
             @endif
             <th>Status</th>
-            @if($key!= "re")
+            @if(!in_array($key,["re","pdf"])
           <th width="100" style="text-align:right">ACTIONS</th>
           @endif 
         </tr>
@@ -73,7 +73,7 @@
                 <td class="text-center">
                 {{$entry->rgender ?? 'UNK'}}
                 </td>
-                @if($key != "re")
+                @if(!in_array($key,["re","pdf"])
                 <td class="text-center">
                 {{$entry->qrval ?? 'UNK'}}
                 </td>
@@ -91,8 +91,13 @@
                         <a href="/rideslist/reject?entrycode={{ $entry->code }}" class="btn btn-danger" id="reject-entry"><i
                                 class="fa-solid fa-close"></i></a>
                         @if(!Str::contains($key,'final'))
+                        @if(in_array($key,['prov','royprov'])
+                        <a href="/rideslist/mainlist?entrycode={{ $entry->code }}" class="btn btn-success" id="move-entry"><i
+                                class="fa-solid fa-check"></i></a>
+                        @else
                         <a href="/rideslist/accept?entrycode={{ $entry->code }}" class="btn btn-success" id="accept-entry"><i
                                 class="fa-solid fa-check"></i></a>
+                        @endif
                         @endif
                         <a href="/rideslist/withdraw?entrycode={{ $entry->code }}" class="btn btn-main" id="withdraw-entry"><i
                                 class="fa-solid fa-eject"></i></a>
@@ -148,6 +153,31 @@
 
         $.confirm({
             title: 'Accept Entry',
+            columnClass: 'col-md-8',
+            content: $('#swap-form').html(),
+            buttons: {
+                'Yes': {
+                    btnClass: 'btn-main',
+                    action: function() {
+                        window.location.href = href
+                    }
+                },
+                'No': {
+                    btnClass: 'btn-danger',
+                    action: function() {
+
+                    }
+                }
+            }
+        });
+    });
+    $(document).on('click', '#move-entry', function(e) {
+        e.preventDefault();
+        let self = this;
+        const href = $(self).attr('href');
+
+        $.confirm({
+            title: 'Move Entry to Main List',
             columnClass: 'col-md-8',
             content: $('#swap-form').html(),
             buttons: {

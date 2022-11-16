@@ -110,6 +110,20 @@ class FentryControler extends Controller
         }
         return redirect('/rideslist?SearchEventID='.$entry->eventcode);
     }
+    public function mainlist(Request $request)
+    {
+        $entry = Fentry::where('code',$request->entrycode)->first();
+        if($entry){
+            $myRequest = new \Illuminate\Http\Request();
+            $myRequest->setMethod('POST');
+            $myRequest->request->add(['params' => [
+                'EventID'=>$entry->eventcode,
+                'SearchEntryID'=>$entry->code,]]);
+            $data = (new FederationController)->moveentrytomain($myRequest);
+            Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
+        }
+        return redirect('/rideslist?SearchEventID='.$entry->eventcode);
+    }
     public function reject(Request $request)
     {
         $entry = Fentry::where('code',$request->entrycode)->first();
