@@ -27,7 +27,7 @@
             <th>Remarks</th>
             @endif
             <th>Status</th>
-            @if(!in_array($key,["re","pdf"])
+            @if(!in_array($key,["re","pdf"]))
           <th width="100" style="text-align:right">ACTIONS</th>
           @endif 
         </tr>
