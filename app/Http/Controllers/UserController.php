@@ -11,7 +11,7 @@ use Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
-
+use Str;
 
 class UserController extends Controller
 {
@@ -33,7 +33,6 @@ class UserController extends Controller
      */
     public function login (Request $request) {
         // EEF API CALL
-
         $validator = Validator::make($request->all(), [
             'username'=>'required',
             'password'=>'required',
@@ -44,20 +43,26 @@ class UserController extends Controller
                 'password' => 'Invalid username and password.',
             ]));
         }
+
+        $username = Str::lower($request->username);
+        $password = $request->password;
+
         $httpClient = new \GuzzleHttp\Client();
         $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/userlogin';
+        // $api_url = 'http:/192.168.1.161:8000/api/uaeerf/userlogin';
         $options = [
             'headers' => [
                 "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
             ],
             'form_params' => [
-                "username" => $request->username,
-                "password" => $request->password
+                "username" => $username,
+                "password" => $password
             ]
         ];
         
         $response = $httpClient->request('POST', $api_url, $options);
         $loginSuccess = json_decode($response->getBody());
+        info($request->all());
 
         if (!$loginSuccess->success) {
             throw new FieldException(json_encode([
@@ -66,13 +71,13 @@ class UserController extends Controller
             ]));
         }
 
-        $checkIfExist = UserModel::where('email', $request->username)->first();
+        $checkIfExist = UserModel::where('email', $username)->first();
         if(!$checkIfExist) {
             $uDetail = $loginSuccess->uprofile;
             $newUser = array(
-                'email' => $request->username,
-                'username' => $request->username,
-                'password' => Hash::make($request->password),
+                'email' => $username,
+                'username' => $username,
+                'password' => Hash::make($password),
                 'firstname' => $uDetail->fname,
                 'lastname' => $uDetail->lname,
                 'dob' => $uDetail->bday,
@@ -81,11 +86,24 @@ class UserController extends Controller
                 'role' => 3,
                 'status' => 'A',
                 'disciplines' => 'E',
-                'emirates_id' => '123456789'
+                'emirates_id' => '123456789',
+                'pwd' => $password,
+            );
+            $checkIfExist = UserModel::create($newUser);
+        } else {
+            $uDetail = $loginSuccess->uprofile;
+            $newUser = array(
+                'email' => $username,
+                'username' => $username,
+                'password' => Hash::make($password),
+                'firstname' => $uDetail->fname,
+                'lastname' => $uDetail->lname,
+                'dob' => $uDetail->bday,
+                'phone' => $uDetail->mobileno,
+                'pwd' => $password,
             );
 
-            $checkIfExist = UserModel::create($newUser);
-            
+            $checkIfExist = $checkIfExist->update($newUser);
         }
         try {
             Auth::login($checkIfExist,$request->has('remember'));
@@ -93,48 +111,9 @@ class UserController extends Controller
 
         }
 
-
         // login service
         $user = ServiceProvider::userAuth($request->except('_token'))
               ->login();
-
-        // $user = array(
-        //     "user_id" => 1,
-        //     "email" => "jp7Q4W11qG@gmail.com",
-        //     "username" => "superadmin",
-        //     "password" => '$2y$10$IJ4hZcW5eyyANLEZZs0OweRtBhc3hnD4yxhmFZ2Pf/j5yVCmlXIva',
-        //     "firstname" => "DpRkFyQHIf",
-        //     "lastname" => "epZHg9q2vd",
-        //     "active" => 1,
-        //     "emirates_id" => "XXX12340",
-        //     "dob" => "2022-10-04 06:16:52",
-        //     "status" => "A",
-        //     "discipline" => "E",
-        //     "documents" => null,
-        //     "elve_id" => null,
-        //     "eef_id" => null,
-        //     "fei_id" => null,
-        //     "stable_name" => null,
-        //     "role" => 1,
-        //     "created_at" => null,
-        //     "updated_at" => null,
-        //     "phone" => "",
-        //     "location" => "AUH"
-        // );
-        
-        // $role = array(
-        //     "role_id" => 1,
-        //     "role" => "superadmin",
-        //     "active" => 1,
-        //     "access" => '{"*": "*"}',
-        //     "created_at" => null,
-        //     "updated_at" => null,
-        //     "home_url" => "/race"
-        // );
-
-        // set session for login
-        // session()->put('user', $user);
-        // session()->put('role', $role);
 
         $url = '/dashboard';
         if (isset(session()->get('role')->home_url)) {
