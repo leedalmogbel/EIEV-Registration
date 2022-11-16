@@ -21,13 +21,13 @@
             <th>RIDER</th>
             <th>EEF ID|FEI ID</th>
             <th>GENDER</th>
-            @if(!in_array($key,["re","pdf","pfa"]))
+            @if(!in_array($key,["re","pdf","pfr"]))
             <th>QR</th>
             @else
             <th>Remarks</th>
             @endif
             <th>Status</th>
-            @if(!in_array($key,["re","pdf","pfa"]))
+            @if(!in_array($key,["re","pdf","pfr"]))
           <th width="100" style="text-align:right">ACTIONS</th>
           @endif 
         </tr>
@@ -73,7 +73,7 @@
                 <td class="text-center">
                 {{$entry->rgender ?? 'UNK'}}
                 </td>
-                @if(!in_array($key,["re","pdf","pfa"]))
+                @if(!in_array($key,["re","pdf","pfr"]))
                 <td class="text-center">
                 {{$entry->qrval ?? 'UNK'}}
                 </td>
