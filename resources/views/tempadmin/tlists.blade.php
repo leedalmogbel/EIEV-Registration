@@ -73,7 +73,7 @@
                 <td class="text-center">
                 {{$entry->rgender ?? 'UNK'}}
                 </td>
-                @if(!in_array($key,["re","pdf"])
+                @if(!in_array($key,["re","pdf"]))
                 <td class="text-center">
                 {{$entry->qrval ?? 'UNK'}}
                 </td>
@@ -91,7 +91,7 @@
                         <a href="/rideslist/reject?entrycode={{ $entry->code }}" class="btn btn-danger" id="reject-entry"><i
                                 class="fa-solid fa-close"></i></a>
                         @if(!Str::contains($key,'final'))
-                        @if(in_array($key,['prov','royprov'])
+                        @if(in_array($key,['prov','royprov']))
                         <a href="/rideslist/mainlist?entrycode={{ $entry->code }}" class="btn btn-success" id="move-entry"><i
                                 class="fa-solid fa-check"></i></a>
                         @else
