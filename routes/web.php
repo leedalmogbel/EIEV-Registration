@@ -172,6 +172,22 @@ Route::domain('devregistration.eiev-app.ae')->group(function ()
         Route::get('/add',[FentryControler::class,'addentry']);
     });
 });
+Route::domain('localhost')->group(function ()
+{
+    Route::group(['prefix'=>'rideslist'],function ()
+    {
+        Route::get('/',[FentryControler::class,'getlists']);
+        Route::get('/accept',[FentryControler::class,'accept']);
+        Route::get('/mainlist',[FentryControler::class,'mainlist']);
+        Route::get('/reject',[FentryControler::class,'reject']);
+        Route::get('/withdraw',[FentryControler::class,'withdraw']);
+    });
+    Route::group(['prefix'=>'submitentry'],function ()
+    {
+        Route::get('/',[FentryControler::class,'entryadd']);
+        Route::get('/add',[FentryControler::class,'addentry']);
+    });
+});
 
 // custom routes
 Route::get('/entry/user/{userId}', "EntryController@horseRider");
