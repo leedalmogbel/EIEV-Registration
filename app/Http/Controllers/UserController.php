@@ -134,7 +134,7 @@ class UserController extends Controller
                 $url = session()->get('role')->home_url;
             }
     
-            session()->put('profile', [
+            session()->put('profile', json_encode('[
                 "latestupdate"=>"2022-11-14T19:56:01",
                 "isactive"=>"true",
                 "email"=>"oecryk@gmail.com",
@@ -145,7 +145,7 @@ class UserController extends Controller
                 "bday"=>"1998-10-21T00:00:00",
                 "stableid"=>"E0000014",
                 "stablename"=>"Private Individual Stables"
-              ]);
+              ]'));
             return redirect($url);
         }
         // TODO: redirect to dashboard
