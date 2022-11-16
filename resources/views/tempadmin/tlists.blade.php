@@ -1,10 +1,12 @@
 @extends('layouts.tapp')
 @section('content')
-<div class="col-9 py-5">
-
-@if(count(${Str::plural($modelName)})>0)
+<div class="col-9">
+    @php
+        $titles= ['final'=>'Final List','pfa'=>'Pending for Acceptance','prov'=>'Provisional Entries','royprov'=>'Royal Provisional Entries','pfr'=>'Pending for Review','re'=>'Rejected/Withdrawn Entries'];
+    @endphp
 @foreach (${Str::plural($modelName)} as $key => $lists)
-<table id={{$key}} class="table table-striped table-bordered py-5">
+<h1>{{Str::upper($titles[$key]). ' - Total Entries : ' }}{{count($lists)}}</h1>
+<table id={{$key}} class="table table-striped table-bordered">
     <thead>
         <tr>
             <th>START NO</th>
@@ -107,63 +109,18 @@
     </tbody>
 </table>
 @endforeach
-@else
-<div>NO DATA</div>
-
-@endif
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#final').DataTable({
-            dom: '<"#final.pfatoolbar">lftipr',
-        });
-        $('#pfa').DataTable({
-            dom: '<"#pfa.pfatoolbar">lftipr',
-        });
-        $('#prov').DataTable({
-            dom: '<"#prov.pfatoolbar">lftipr',
-        });
-        $('#royprov').DataTable({
-            dom: '<"#royprov.pfatoolbar">lftipr',
-        });
-        $('#pfr').DataTable({
-            dom: '<"#pfr.pfatoolbar">lftipr',
-        });
-        $('#re').DataTable({
-            dom: '<"#re.pfatoolbar">lftipr',
-        });
-        const urlParams = new URLSearchParams(window.location.search);
-
-        let titles= {
-            'final':'Final List',
-            'pfa':'Pending for Acceptance',
-            'prov':'Provisional Entries',
-            'royprov':'Royal Provisional Entries',
-            'pfr':'Pending for Review',
-            're':'Rejected/Withdrawn Entries'};
-        if(!urlParams.has('presidentcup')){
-            delete titles['royprov'];
-        }
-        const tkeys = Object.keys(titles);
-        let dataobj = '{!! json_encode($entries) !!}';
-        console.log(JSON.parse(dataobj));
-        for(let k of tkeys){
-            console.log(k,titles[k]);
-            console.log(dataobj[k]);
-            if(dataobj[k]!= undefined){
-                if(k != "pfa"){
-                    $(`div#${k}`).html(`<h1>${titles[k]} Total Entries : ${dataobj[k].data.length}</h1>`);
-                }
-                if(k == "pfa"){
-                    if(dataobj[k].data.length>0){
-                        $(`div#${k}`).html(`<h1>${titles[k]} Total Entries : ${dataobj[k].data.length}</h1>`);
-                    }else{
-                        $(`div#${k}`).html(`<h1>${titles[k]} Total Entries : ${dataobj[k].data.length}</h1>`);
-                    }
-                }
-            }
-        }
+        $('#final').DataTable();
+        $('#pfa').DataTable();
+        $('#prov').DataTable();
+        $('#royprov').DataTable();
+        $('#pfr').DataTable();
+        $('#re').DataTable();
     });
+</script>
+<script>
     $(document).on('click', '#reject-entry', function(e) {
         e.preventDefault();
         let self = this;
