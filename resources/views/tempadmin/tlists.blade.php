@@ -21,7 +21,7 @@
             <th>RIDER</th>
             <th>EEF ID|FEI ID</th>
             <th>GENDER</th>
-            @if(!in_array($key,["re","pdf"])
+            @if(!in_array($key,["re","pdf"]))
             <th>QR</th>
             @else
             <th>Remarks</th>
