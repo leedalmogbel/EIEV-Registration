@@ -84,7 +84,7 @@
                 @endif
                 <td class="text-center">
                 {{$entry->status ?? 'UNK'}}
-                @if($key!= "re")
+                @if(!in_array($key,["re","pdf","pfr"]))
                 </td>
                   <td class="text-center">
                     <div>
