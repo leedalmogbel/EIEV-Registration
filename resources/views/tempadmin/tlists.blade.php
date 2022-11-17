@@ -1,9 +1,30 @@
 @extends('layouts.tapp')
 @section('content')
 <div class="col-9">
+@php
+$eventid=0;
+if(isset($_GET['SearchEventID'])){
+    $eventid = intval($_GET['SearchEventID']);
+}
+@endphp
+<div class="pb-5 mt-5 form-floating">
+    <label for="eventid">Select a Ride</label>
+    <select class=" form-select col-12 text-center fs-5" style="height:75px;" name="eventid" id="eventid">
+        <option disabled selected value="defval">Event ID : EVENT NAME | EVENT DATE | OPENING | CLOSING</option>
+        @foreach($events as $k => $v)
+        <div>@php gettype($k) @endphp</div>
+        @if($eventid > 0 && $eventid == intval($k))
+            <option id={{$k}} selected value={{$k}}><p>{{$v}}</p></option>
+        @else
+            <option id={{$k}} value={{$k}}><p>{{$v}}</p></option>
+        @endif
+        @endforeach
+    </select>
+</div>
     @php
         $titles= ['final'=>'Final List','pfa'=>'Pending for Acceptance','prov'=>'Provisional Entries','royprov'=>'Royal Provisional Entries','pfr'=>'Pending for Review','re'=>'Rejected/Withdrawn Entries'];
     @endphp
+@if($eventid > 0 && isset($events[$eventid]))
 @foreach (${Str::plural($modelName)} as $key => $lists)
 <h1>{{Str::upper($titles[$key]). ' - Total Entries : ' }}{{count($lists)}}</h1>
 <table id={{$key}} class="table table-striped table-bordered">
@@ -109,18 +130,48 @@
     </tbody>
 </table>
 @endforeach
+@endif
 </div>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function(e) {
         $('#final').DataTable();
         $('#pfa').DataTable();
         $('#prov').DataTable();
         $('#royprov').DataTable();
         $('#pfr').DataTable();
         $('#re').DataTable();
+        const d = JSON.parse('{!! json_encode((object)$events) !!}');
+        let urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('SearchEventID')){
+            const val = urlParams.get('SearchEventID');
+            if(d[val]!==undefined){
+                $('#eventid').val(urlParams.get('SearchEventID'))
+            }else{
+                $('#eventid').val("defval")
+                urlParams.delete("SearchEventID")
+
+            }
+        }else{
+            $('#eventid').val("defval")
+            urlParams.delete("SearchEventID")
+
+        }
     });
 </script>
 <script>
+    $('#eventid').on('change',function(e)
+    {
+        const eid = e.target.value;
+        
+        let urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('SearchEventID')){
+            urlParams.set('SearchEventID',eid);
+        }else{
+            urlParams.append('SearchEventID',eid);
+        }
+        window.location.search = urlParams;
+
+    });
     $(document).on('click', '#reject-entry', function(e) {
         e.preventDefault();
         let self = this;
