@@ -52,8 +52,8 @@
                                         $racepath = '#';
                                         $opDate = substr($event->openingdate, 0, 10);
                                         $clDate = substr($event->closingdate, 0, 10);
-                                        $opening = strpos($opDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y', strtotime($event->openingdate));
-                                        $closing = strpos($clDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y', strtotime($event->closingdate));
+                                        $opening = strpos($opDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y H:m:s', strtotime($event->openingdate));
+                                        $closing = strpos($clDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y H:m:s', strtotime($event->closingdate));
                                         if ($event->statusname != 'Pending') {
                                             $racepath = '/entry/create?raceid=' . $event->raceid;
                                         }
@@ -62,7 +62,7 @@
                                         <div class="card">
                                             <div class="card-block p-3">
                                                 <div class="card-block-info d-flex justify-content-between">
-                                                    <div class="event-title w-75">
+                                                    <div class="event-title w-50">
                                                         <h4 class="card-title">{{ $event->racename }}
                                                             @php
                                                                 $statusclass = '';
