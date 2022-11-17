@@ -5,14 +5,17 @@
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @php
 $eventid=0;
-$stableid = -1;
+$stableidlist = [];
 if(isset($_GET['SearchEventID'])){
     $eventid = intval($_GET['SearchEventID']);
 }
 if(isset($_GET['stablename'])){
-    $indexlist = array_keys($stables,$_GET['stablename']);
-    if(count($indexlist)>0){
-        $stableid = $indexlist[0];
+    $sids= explode(',',$_GET['stablename']);
+    foreach($sids as $sid){
+        $indexlist = array_keys($stables,$sid);
+        if(count($indexlist)>0){
+            array_push($stableidlist,$indexlist[0]);
+        }
     }
 }
 @endphp
@@ -32,11 +35,10 @@ if(isset($_GET['stablename'])){
 </div>
 @if(count($stables)>0)
 <div class="mb-5 mt-1 form-floating">
-    <select class="stable-select select-2-basic form-select col-12 text-center fs-5" style="height:75px;" name="stableid" id="stableid">
-        <option disabled selected value="defval">All</option>
+    <select class="stable-select select-2-basic form-select col-12 text-center fs-5" multiple="multiple" style="height:75px;" name="stableid" id="stableid">
         @foreach($stables as $k=>$v)
         <div>@php gettype($k) @endphp</div>
-        @if($stableid > -1 && $stableid == intval($k))
+        @if(in_array($k,$stableidlist))
             <option id={{$k}} selected value={{$k}}><p>{{$v}}</p></option>
         @else
             <option id={{$k}} value={{$k}}><p>{{$v}}</p></option>
@@ -182,6 +184,7 @@ if(isset($_GET['stablename'])){
         }
         $('.stable-select.select-2-basic').select2({
             placeholder: "Filter by Stable",
+            allowClear:true
         });
     });
 </script>
@@ -203,15 +206,20 @@ if(isset($_GET['stablename'])){
     {
         const eid = e.target.value;
         const d = JSON.parse('{!! json_encode((object)$stables) !!}');
+
+        const a= $.map($('#stableid').val(), function (obj) {
+                return d[obj];
+              });
+       
         let urlParams = new URLSearchParams(window.location.search);
             if(urlParams.has('stablename')){
-                if(d[eid] == "All"){
+                if(a.length==0){
                     urlParams.delete('stablename');
                 }else{
-                    urlParams.set('stablename',d[eid]);
+                    urlParams.set('stablename',a);
                 }
             }else{
-                urlParams.append('stablename',d[eid]);
+                urlParams.append('stablename',a);
             }
             window.location.search = urlParams;
         
