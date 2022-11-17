@@ -41,7 +41,7 @@
             display: block;
             margin: auto;
             margin-top: 30%;
-            width: 50%;
+            width: 80%;
         }
 
         .main-div {
