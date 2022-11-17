@@ -3,11 +3,18 @@
 <div class="col-9">
 @php
 $eventid=0;
+$stableid = -1;
 if(isset($_GET['SearchEventID'])){
     $eventid = intval($_GET['SearchEventID']);
 }
+if(isset($_GET['stablename'])){
+    $indexlist = array_keys($stables,$_GET['stablename']);
+    if(count($indexlist)>0){
+        $stableid = $indexlist[0];
+    }
+}
 @endphp
-<div class="pb-5 mt-5 form-floating">
+<div class="mt-3 form-floating">
     <label for="eventid">Select a Ride</label>
     <select class=" form-select col-12 text-center fs-5" style="height:75px;" name="eventid" id="eventid">
         <option disabled selected value="defval">Event ID : EVENT NAME | EVENT DATE | OPENING | CLOSING</option>
@@ -21,6 +28,22 @@ if(isset($_GET['SearchEventID'])){
         @endforeach
     </select>
 </div>
+@if(count($stables)>0)
+<div class="mb-5 mt-1 form-floating">
+    <label for="stableid">Filter by Stable</label>
+    <select class=" form-select col-12 text-center fs-5" style="height:75px;" name="stableid" id="stableid">
+        <option disabled selected value="defval">STABLE NAME</option>
+        @foreach($stables as $k=>$v)
+        <div>@php gettype($k) @endphp</div>
+        @if($stableid > -1 && $stableid == intval($k))
+            <option id={{$k}} selected value={{$k}}><p>{{$v}}</p></option>
+        @else
+            <option id={{$k}} value={{$k}}><p>{{$v}}</p></option>
+        @endif
+        @endforeach
+    </select>
+</div>
+@endif
     @php
         $titles= ['final'=>'Final List','pfa'=>'Pending for Acceptance','prov'=>'Provisional Entries','royprov'=>'Royal Provisional Entries','pfr'=>'Pending for Review','re'=>'Rejected/Withdrawn Entries'];
     @endphp
@@ -168,6 +191,19 @@ if(isset($_GET['SearchEventID'])){
             urlParams.set('SearchEventID',eid);
         }else{
             urlParams.append('SearchEventID',eid);
+        }
+        window.location.search = urlParams;
+
+    });
+    $('#stableid').on('change',function(e)
+    {
+        const eid = e.target.value;
+        const d = JSON.parse('{!! json_encode((object)$stables) !!}');
+        let urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('stablename')){
+            urlParams.set('stablename',d[eid]);
+        }else{
+            urlParams.append('stablename',d[eid]);
         }
         window.location.search = urlParams;
 

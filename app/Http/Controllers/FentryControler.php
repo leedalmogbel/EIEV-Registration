@@ -61,38 +61,61 @@ class FentryControler extends Controller
         if($validator->fails()){
             return view('tempadmin.tlists',['modelName'=>'entry','events'=>$events,'entries'=>[]]);
         }
+        
         $ppage= 15;
         if(isset($request->ppage)){
             $ppage = $request->ppage;
         }
+
+        $stables = Fentry::where('eventcode','like',"%".strval(intval($request->SearchEventID)))->groupBy('stablename')->pluck('stablename')->toArray();
+        array_splice($stables,0,0,array('All'));
         //final list
         $fentries = Fentry::query();
-        $fentries = $fentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('status', 'Accepted');
-        $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
         //limited entries
         $eentries = Fentry::query();
-        $eentries = $eentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"1");
-        $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
         //regular / private entries
         $pentries = Fentry::query();
-        $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"3")->where('status', 'Pending')->where('review','<>','0');
-        $pentries =isset($request->ppage)? $pentries->paginate($ppage): $pentries->get();
         //pending for approval
         $reventries = Fentry::query();
-        $reventries = $reventries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->where('status','Pending')->where('review','0');
-        $reventries = isset($request->ppage)? $reventries->paginate($ppage) : $reventries->get();
         //rejected entries
         $rentries = Fentry::query();
-        $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn']);
-        $rentries = isset($request->ppage)? $rentries->paginate($ppage) : $rentries->get();
         //royal for president cup
         $pcentries = Fentry::query();
-        if(isset($request->presidentcup)){
+        if(isset($request->stablename)){
+            if($request->stablename == "All"){
+                $fentries = $fentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('status', 'Accepted');
+                $eentries = $eentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"1");
+                $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"3")->where('status', 'Pending')->where('review','<>','0');
+                $reventries = $reventries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->where('status','Pending')->where('review','0');
+                $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn']);
+                $pcentries = $pcentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0');
+            }else{
+                $fentries = $fentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('status', 'Accepted')->where('stablename',$request->stablename);
+                $eentries = $eentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"1")->where('stablename',$request->stablename);
+                $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"3")->where('status', 'Pending')->where('review','<>','0')->where('stablename',$request->stablename);
+                $reventries = $reventries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->where('status','Pending')->where('review','0')->where('stablename',$request->stablename);
+                $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn'])->where('stablename',$request->stablename);
+                $pcentries = $pcentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0')->where('stablename',$request->stablename);
+            }
+        }else{
+            $fentries = $fentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('status', 'Accepted');
+            $eentries = $eentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"1");
+            $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"3")->where('status', 'Pending')->where('review','<>','0');
+            $reventries = $reventries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->where('status','Pending')->where('review','0');
+            $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn']);
             $pcentries = $pcentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0');
-            $pcentries =isset($request->ppage)? $pcentries->paginate($ppage): $pcentries->get();
-            return response()->json(['modelName'=>'entry','events'=>$events,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'royprov'=>$pcentries,'re'=>$rentries]]);
         }
-        return view('tempadmin.tlists',['modelName'=>'entry','events'=>$events,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'re'=>$rentries]]);
+        $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
+        $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
+        $pentries =isset($request->ppage)? $pentries->paginate($ppage): $pentries->get();
+        $reventries = isset($request->ppage)? $reventries->paginate($ppage) : $reventries->get();
+        $rentries = isset($request->ppage)? $rentries->paginate($ppage) : $rentries->get();
+        $pcentries =isset($request->ppage)? $pcentries->paginate($ppage): $pcentries->get();
+        
+        if(isset($request->presidentcup)){
+            return response()->json(['modelName'=>'entry','events'=>$events,'stables'=>$stables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'royprov'=>$pcentries,'re'=>$rentries]]);
+        }
+        return view('tempadmin.tlists',['modelName'=>'entry','events'=>$events,'stables'=>$stables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'re'=>$rentries]]);
     }
 
     public function accept(Request $request)
