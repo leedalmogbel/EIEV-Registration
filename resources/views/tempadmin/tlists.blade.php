@@ -207,6 +207,7 @@ if(isset($_GET['stablename'])){
         const d = JSON.parse('{!! json_encode((object)$stables) !!}');
         let urlParams = new URLSearchParams(window.location.search);
         if(urlParams.has('stablename')){
+            if(urlParams.has('stablename')){
             if(d[eid] == "All"){
                 urlParams.delete('stablename');
             }else{
@@ -215,7 +216,10 @@ if(isset($_GET['stablename'])){
         }else{
             urlParams.append('stablename',d[eid]);
         }
-        window.location.search = urlParams;
+            window.location.search = urlParams;
+        }
+        
+        
 
     });
     $(document).on('click', '#reject-entry', function(e) {
