@@ -390,7 +390,7 @@ class FederationController extends Controller
       if(isset($request->showraw)){
           return $response->getBody();
       }
-      return $this->extractData((string)$response->getBody(),'GetEIEVEventListResult|events#Events#StatusID|statusid&StatusName|statusname&TypeID|typeid&TypeName|typename&DivisionID|divisionid&DivisionName|divisionname&RaceCity|racecity&RaceCountry|racecountry&SeasonID|seasonid&SeasonName|seasonname&RaceID|raceid&RaceName|racename&RaceLocation|racelocation&RaceClub|raceclub&RaceFromDate|racefromdate&RaceTOdate|racetodate',$debug);
+      return $this->extractData((string)$response->getBody(),'GetEIEVEventListResult|events#Events#OpeningDate|openingdate&ClosingDate|closingdate&StatusID|statusid&StatusName|statusname&TypeID|typeid&TypeName|typename&DivisionID|divisionid&DivisionName|divisionname&RaceCity|racecity&RaceCountry|racecountry&SeasonID|seasonid&SeasonName|seasonname&RaceID|raceid&RaceName|racename&RaceLocation|racelocation&RaceClub|raceclub&RaceFromDate|racefromdate&RaceTOdate|racetodate',$debug);
     }
 
     public function getentries(Request $request,$entryid=null)
@@ -497,7 +497,7 @@ class FederationController extends Controller
         }
         return $this->extractData((string)$response->getBody(),'!GetUserProfileResult|uprofile-LastestUpdate|latestupdate-IsActive|isactive-Email|email-UserId|userid-Fname|fname-Lname|lname-MobileNo|mobileno-Dob|bday-Stable_ID|stableid',$debug);
     }
-    
+
     public function moveentrytomain(Request $request)
     {
       $debug= false;
