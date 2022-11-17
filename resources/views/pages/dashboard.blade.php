@@ -1,7 +1,10 @@
 @extends('partials.frame')
 
 @section('content')
-    <div class="content container col-9 align-items-center justify-content-center">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+    <div class="content container col-9 col-md-9 col-xxl-10 align-items-center justify-content-center">
         <div class="row counts py-5">
             <div class="col-md-4">
                 <div class="card image-container-horses">
@@ -45,14 +48,49 @@
                         @foreach ($events as $event)
                             <div class="list-group">
                                 <div class="col py-1">
-                                    <a href="/entry/create?raceid={{ $event->raceid }}">
+                                    @php
+                                        $racepath = '#';
+                                        $opDate = substr($event->openingdate, 0, 10);
+                                        $clDate = substr($event->closingdate, 0, 10);
+                                        $opening = strpos($opDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y', strtotime($event->openingdate));
+                                        $closing = strpos($clDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y', strtotime($event->closingdate));
+                                        if ($event->statusname != 'Pending') {
+                                            $racepath = '/entry/create?raceid=' . $event->raceid;
+                                        }
+                                    @endphp
+                                    <a href="{{ $racepath }}">
                                         <div class="card">
                                             <div class="card-block p-3">
-                                                <div class="card-block-info">
-                                                    <h4 class="card-title">{{ $event->racename }} <small class={{$event->statusname == 'Pending' ? 'text-danger':'text-success'}}>({{$event->statusname}})</small></h4>
-                                                    <h6 class="card-title">{{ $event->racelocation }}
-                                                        {{ $event->racecountry }}
-                                                    </h6>
+                                                <div class="card-block-info d-flex justify-content-between">
+                                                    <div class="event-title w-75">
+                                                        <h4 class="card-title">{{ $event->racename }}
+                                                            @php
+                                                                $statusclass = '';
+                                                                $statuslabel = '';
+                                                                if ($event->statusid == 11) {
+                                                                    $statusclass = 'text-success';
+                                                                    $statuslabel = 'Open for Entries';
+                                                                } elseif ($event->statusid == 1) {
+                                                                    $statusclass = 'text-pending';
+                                                                    $statuslabel = 'Pending';
+                                                                } else {
+                                                                    $statusclass = 'text-danger';
+                                                                    $statuslabel = 'Closed';
+                                                                }
+                                                            @endphp
+                                                            <small class={{ $statusclass }}>
+                                                                ({{ $statuslabel }})
+                                                            </small>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="event-date">
+                                                        <h6 class="card-title">
+                                                            Opening: {{ $opening }}
+                                                        </h6>
+                                                        <h6 class="card-title">
+                                                            Closing: {{ $closing }}
+                                                        </h6>
+                                                    </div>
                                                 </div>
                                                 <div class="card-block-print">
                                                     <a
@@ -130,11 +168,24 @@
         </div>
         {{-- END: RECENT ENTRIES --}}
 
+        {{-- START: CALENDAR --}}
+        {{-- <div class="row calendar">
+            <div id="calendar"></div>
+        </div> --}}
+        {{-- END: CALENDAR --}}
     </div>
 
     <script type="text/javascript">
         $(document).ready(function() {
             $('#recentEntries').DataTable();
+            $('.fc-toolbar.fc-header-toolbar').addClass('row col-lg-12');
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth'
+            });
+            calendar.render();
         });
     </script>
 @endsection
