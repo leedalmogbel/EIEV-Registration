@@ -153,7 +153,7 @@
                         </form>
 						
                     </div>
-					<div class="col-5">
+					<div class="col-5 d-flex align-items-center">
 						<div class="eiev-inquiry">
 							
 						</div>
@@ -165,16 +165,16 @@
                                 </h4>
                             </div>
                             <ul>
-                                <li><p class="fs-5">if you're not getting logged in, you may need to your <strong><a href="https://portal.uaeerf.ae/">UAEERF Portal</a></strong> to update your password.</p></li>
+                                <li><p class="fs-5">if you're not getting logged in, you may need to sign in to your <strong><a href="https://portal.uaeerf.ae/">UAEERF Portal</a></strong> to update your password.</p></li>
                             </ul>
                             <h5>For any inquiries or questions with the EIEV Registration:</h5>
 
                             <div class="row">
                                 <div class="col text-center">
-							        <p class="pt-1"><a href="tel:+971563338562"><i class="fa-solid fa-phone"></i> 0563338562</a></p>
+							        <p class="pt-1 fs-5"><a href="tel:+971563338562"><i class="fa-solid fa-phone"></i> 0563338562</a></p>
                                 </div>
                                 <div class="col text-center">
-                                    <p class="pt-1"><a href="mailto:registration@eiev.ae"><i class="fa-solid fa-at"></i >registration@eiev.ae</a></p>
+                                    <p class="pt-1 fs-5"><a href="mailto:registration@eiev.ae"><i class="fa-solid fa-at"></i > registration@eiev.ae</a></p>
                                 </div>
                             </div>
 							
