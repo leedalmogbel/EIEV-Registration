@@ -155,20 +155,28 @@
                     </div>
 					<div class="col-5">
 						<div class="eiev-inquiry">
-							<h4>For any inquiries or questions with the EIEV Registration:</h4>
-							<p>Please call us @ <a href="tel:+971563338562">0563338562</a></p>
-							<p>Or Email us @<a href="mailto:registration@eiev.ae">registration@eiev.ae</a></p>
+							
 						</div>
                         <div class="important-notice border border-3 p-2">
                             <div class="d-flex align-items-center">
                                 <h4 class="" style="color: #A49467;">    
                                     <i class="fa-solid fa-circle-info" style="font-size: 20px; color: #A49467;"></i>
-                                Important Notice/s:
-                            </h4>
+                                    Important Notice/s:
+                                </h4>
                             </div>
                             <ul>
-                                <li><p class="fs-5">if youre not getting logged in, you may need to your <strong><a href="https://portal.uaeerf.ae/">UAEERF Portal</a></strong> to update your password.</p></li>
+                                <li><p class="fs-5">if you're not getting logged in, you may need to your <strong><a href="https://portal.uaeerf.ae/">UAEERF Portal</a></strong> to update your password.</p></li>
                             </ul>
+                            <h5>For any inquiries or questions with the EIEV Registration:</h5>
+
+                            <div class="row">
+                                <div class="col text-center">
+							        <p class="pt-1"><a href="tel:+971563338562"><i class="fa-solid fa-phone"></i> 0563338562</a></p>
+                                </div>
+                                <div class="col text-center">
+                                    <p class="pt-1"><a href="mailto:registration@eiev.ae"><i class="fa-solid fa-at"></i >registration@eiev.ae</a></p>
+                                </div>
+                            </div>
 							
 						</div>
 					</div>
