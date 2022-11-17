@@ -207,7 +207,7 @@ if(isset($_GET['stablename'])){
         
         let urlParams = new URLSearchParams(window.location.search);
         if(urlParams.has('stablename')){
-            const d = JSON.parse('{!! json_encode((object)$stables) !!}');
+            const d = JSON.parse('{!! json_encode((object)$stables ?? []) !!}');
             if(urlParams.has('stablename')){
                 if(d[eid] == "All"){
                     urlParams.delete('stablename');
