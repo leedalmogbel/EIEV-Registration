@@ -1,6 +1,8 @@
 @extends('layouts.tapp')
 @section('content')
 <div class="col-9">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @php
 $eventid=0;
 $stableid = -1;
@@ -16,7 +18,7 @@ if(isset($_GET['stablename'])){
 @endphp
 <div class="mt-3 form-floating">
     <label for="eventid">Select a Ride</label>
-    <select class=" form-select col-12 text-center fs-5" style="height:75px;" name="eventid" id="eventid">
+    <select class="select-2-basic form-select col-12 text-center fs-5" style="height:75px;" name="eventid" id="eventid">
         <option disabled selected value="defval">Event ID : EVENT NAME | EVENT DATE | OPENING | CLOSING</option>
         @foreach($events as $k => $v)
         <div>@php gettype($k) @endphp</div>
@@ -30,9 +32,8 @@ if(isset($_GET['stablename'])){
 </div>
 @if(count($stables)>0)
 <div class="mb-5 mt-1 form-floating">
-    <label for="stableid">Filter by Stable</label>
-    <select class=" form-select col-12 text-center fs-5" style="height:75px;" name="stableid" id="stableid">
-        <option disabled selected value="defval">STABLE NAME</option>
+    <select class="stable-select select-2-basic form-select col-12 text-center fs-5" style="height:75px;" name="stableid" id="stableid">
+        <option disabled selected value="defval">All</option>
         @foreach($stables as $k=>$v)
         <div>@php gettype($k) @endphp</div>
         @if($stableid > -1 && $stableid == intval($k))
@@ -179,6 +180,9 @@ if(isset($_GET['stablename'])){
             urlParams.delete("SearchEventID")
 
         }
+        $('.stable-select.select-2-basic').select2({
+            placeholder: "Filter by Stable",
+        });
     });
 </script>
 <script>
@@ -201,7 +205,11 @@ if(isset($_GET['stablename'])){
         const d = JSON.parse('{!! json_encode((object)$stables) !!}');
         let urlParams = new URLSearchParams(window.location.search);
         if(urlParams.has('stablename')){
-            urlParams.set('stablename',d[eid]);
+            if(d[eid] == "All"){
+                urlParams.delete('stablename');
+            }else{
+                urlParams.set('stablename',d[eid]);
+            }
         }else{
             urlParams.append('stablename',d[eid]);
         }
