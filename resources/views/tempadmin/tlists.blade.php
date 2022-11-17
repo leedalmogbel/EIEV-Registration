@@ -204,18 +204,19 @@ if(isset($_GET['stablename'])){
     $('#stableid').on('change',function(e)
     {
         const eid = e.target.value;
-        const d = JSON.parse('{!! json_encode((object)$stables) !!}');
+        
         let urlParams = new URLSearchParams(window.location.search);
         if(urlParams.has('stablename')){
+            const d = JSON.parse('{!! json_encode((object)$stables) !!}');
             if(urlParams.has('stablename')){
-            if(d[eid] == "All"){
-                urlParams.delete('stablename');
+                if(d[eid] == "All"){
+                    urlParams.delete('stablename');
+                }else{
+                    urlParams.set('stablename',d[eid]);
+                }
             }else{
-                urlParams.set('stablename',d[eid]);
+                urlParams.append('stablename',d[eid]);
             }
-        }else{
-            urlParams.append('stablename',d[eid]);
-        }
             window.location.search = urlParams;
         }
         
