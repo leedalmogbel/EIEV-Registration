@@ -124,8 +124,8 @@
                             @csrf
                             @include('partials.formFields.inputFormGroup', [
                                 'name' => 'username',
-                                'label' => 'USERNAME',
-                                'placeholder' => 'Enter your username',
+                                'label' => 'Email Address',
+                                'placeholder' => 'Enter your email address',
                                 'type' => 'text',
                             ])
 
