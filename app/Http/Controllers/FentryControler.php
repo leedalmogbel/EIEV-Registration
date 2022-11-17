@@ -61,7 +61,7 @@ class FentryControler extends Controller
         array_splice($stables,0,0,array('All'));
         $events = Fevent::selectRaw('CONCAT( CAST(raceid as INT), " : ", racename, "    |   Event Date - ", DATE_FORMAT( CAST(racefromdate as DATETIME),"%Y-%m-%d"), "    |   Opening - ", DATE_FORMAT( CAST(openingdate as DATETIME),"%Y-%m-%d %H:%i:%s"), "    |   Closing - ", DATE_FORMAT( CAST(closingdate as DATETIME),"%Y-%m-%d %H:%i:%s") ) as race, CAST(raceid as INT) as raceid')->where('statusname','like','%Entries%')->pluck('race','raceid')->toArray();
         if($validator->fails()){
-            return view('tempadmin.tlists',['modelName'=>'entry','stable'=>$stables,'events'=>$events,'entries'=>[]]);
+            return view('tempadmin.tlists',['modelName'=>'entry','stables'=>$stables,'events'=>$events,'entries'=>[]]);
         }
         
         $ppage= 15;
