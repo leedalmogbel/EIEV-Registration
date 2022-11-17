@@ -30,6 +30,7 @@ if(isset($_GET['stablename'])){
         @endforeach
     </select>
 </div>
+@if(isset($_GET['stablename']))
 @if(count($stables)>0)
 <div class="mb-5 mt-1 form-floating">
     <select class="stable-select select-2-basic form-select col-12 text-center fs-5" style="height:75px;" name="stableid" id="stableid">
@@ -44,6 +45,7 @@ if(isset($_GET['stablename'])){
         @endforeach
     </select>
 </div>
+@endif
 @endif
     @php
         $titles= ['final'=>'Final List','pfa'=>'Pending for Acceptance','prov'=>'Provisional Entries','royprov'=>'Royal Provisional Entries','pfr'=>'Pending for Review','re'=>'Rejected/Withdrawn Entries'];
