@@ -63,6 +63,6 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     });
     Route::get('verify',function(Request $request){
         $qrresult = $request->qr_enc == md5($request->uniqueid);
-        return response()->json(['qr'=>$qrresult]);
+        return response()->json(['qr'=>$qrresult, ]);
     });
 });
