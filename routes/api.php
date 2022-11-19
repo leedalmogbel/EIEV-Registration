@@ -61,3 +61,6 @@ Route::group(['middleware'=>[EnsureClientIsFed::class],'prefix'=>'uaeerf'],funct
 Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
 });
+Route::domain('localhost')->group(function(){
+    Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
+});
