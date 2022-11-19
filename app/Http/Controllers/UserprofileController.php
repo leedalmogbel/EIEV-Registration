@@ -6,6 +6,7 @@ use App\Models\Userprofile;
 use App\Models\Reusable;
 use App\Models\Multi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UserprofileController extends Controller
 {
