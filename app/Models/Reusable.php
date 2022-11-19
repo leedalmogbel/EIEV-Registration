@@ -13,7 +13,7 @@ class Reusable extends Model
         if($encrypt){
             switch ($type) {
                 case 'ouuid':
-                    $ouuids = Str::of(Reusable::generateOrderuuid())->explode('-');
+                    $ouuids = (array)Str::of(Reusable::generateOrderuuid())->explode('-');
                     $ouuids = array_slice($ouuids, -2, 2);
                     $funique = implode('-',$ouuids);
                     break;
