@@ -62,7 +62,7 @@ class UserprofileController extends Controller
         $uniqueids = array();
         foreach ($ids as $id) {
             $up = array();
-            $up['uniqueid'] = Reusable::generateReusableUnique('',sprintf('EIEV-%s',$id),'',true,'ouuid');
+            $up['uniqueid'] = Reusable::generateReusableUnique('',sprintf('EIEV-%s',Str::padLeft($id, 8, '0')),'',true,'ouuid');
             $up['userid'] = $id;
             array_push($uniqueids,$up);
         }

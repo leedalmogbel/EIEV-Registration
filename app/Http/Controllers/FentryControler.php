@@ -59,7 +59,7 @@ class FentryControler extends Controller
           ]);
         $totalcount = 0;
         $stables = Fentry::where('eventcode','like',"%".strval(intval($request->SearchEventID)))->groupBy('stablename')->pluck('stablename')->toArray();
-        $events = Fevent::selectRaw('CONCAT( CAST(raceid as INT), " : ", racename, "    |   Event Date - ", DATE_FORMAT( CAST(racefromdate as DATETIME),"%Y-%m-%d"), "    |   Opening - ", DATE_FORMAT( CAST(openingdate as DATETIME),"%Y-%m-%d %H:%i:%s"), "    |   Closing - ", DATE_FORMAT( CAST(closingdate as DATETIME),"%Y-%m-%d %H:%i:%s") ) as race, CAST(raceid as INT) as raceid')->where('statusname','like','%Entries%')->pluck('race','raceid')->toArray();
+        $events = Fevent::selectRaw('CONCAT( CAST(raceid as INT), " : ", racename, "    |   Event Date - ", DATE_FORMAT( CAST(racefromdate as DATETIME),"%Y-%m-%d"), "    |   Opening - ", DATE_FORMAT( CAST(openingdate as DATETIME),"%Y-%m-%d %H:%i:%s"), "    |   Closing - ", DATE_FORMAT( CAST(closingdate as DATETIME),"%Y-%m-%d %H:%i:%s") ) as race, CAST(raceid as INT) as raceid')->where('statusname','like','%Entries%')->orWhere('statusname','like','%Closed%')->pluck('race','raceid')->toArray();
         if($validator->fails()){
             return view('tempadmin.tlists',['modelName'=>'entry','stables'=>$stables,'events'=>$events,'entries'=>[]]);
         }
