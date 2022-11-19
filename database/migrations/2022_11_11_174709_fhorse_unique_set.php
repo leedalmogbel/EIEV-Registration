@@ -14,7 +14,7 @@ class FhorseUniqueSet extends Migration
     public function up()
     {
         Schema::table('fhorses', function (Blueprint $table) {
-            $table->string("horseid")->unique()->nullable()->change();
+            $table->string("horseid")->unique()->change();
         });
     }
 

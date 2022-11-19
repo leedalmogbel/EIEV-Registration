@@ -15,7 +15,7 @@ class FriderUniqueSet extends Migration
     {
         Schema::table('friders', function (Blueprint $table) {
             //
-            $table->string('riderid')->unique()->nullable()->change();
+            $table->string('riderid')->unique()->change();
         });
     }
 

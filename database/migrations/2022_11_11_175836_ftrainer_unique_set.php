@@ -15,7 +15,7 @@ class FtrainerUniqueSet extends Migration
     {
         Schema::table('ftrainers', function (Blueprint $table) {
             //
-            $table->string("trainerid")->unique()->nullable()->change();
+            $table->string("trainerid")->unique()->change();
         });
     }
 

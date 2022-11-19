@@ -14,7 +14,7 @@ class FownerUniqueSet extends Migration
     public function up()
     {
         Schema::table('fowners', function (Blueprint $table) {
-            $table->string("ownerid")->unique()->nullable()->change();
+            $table->string("ownerid")->unique()->change();
         });
     }
 
