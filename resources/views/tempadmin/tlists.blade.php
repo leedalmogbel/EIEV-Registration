@@ -19,6 +19,7 @@ if(isset($_GET['stablename'])){
     }
 }
 @endphp
+<div class="mb-5">
 <div class="mt-3 form-floating">
     <label for="eventid">Select a Ride</label>
     <select class="select-2-basic form-select col-12 text-center fs-5" style="height:75px;" name="eventid" id="eventid">
@@ -34,7 +35,7 @@ if(isset($_GET['stablename'])){
     </select>
 </div>
 @if(count($stables)>0)
-<div class="mb-5 mt-1 form-floating">
+<div class="mt-1 form-floating">
     <select class="stable-select select-2-basic form-select col-12 text-center fs-5" multiple="multiple" style="height:75px;" name="stableid" id="stableid">
         @foreach($stables as $k=>$v)
         <div>@php gettype($k) @endphp</div>
@@ -47,9 +48,13 @@ if(isset($_GET['stablename'])){
     </select>
 </div>
 @endif
+</div>
     @php
         $titles= ['final'=>'Final List','pfa'=>'Pending for Acceptance','prov'=>'Provisional Entries','royprov'=>'Royal Provisional Entries','pfr'=>'Pending for Review','re'=>'Rejected/Withdrawn Entries'];
     @endphp
+<div class="row">
+    <div class="col"><h1>Overall Entries: {{$totalcount}}</h1></div>
+</div>
 @if($eventid > 0 && isset($events[$eventid]))
 @foreach (${Str::plural($modelName)} as $key => $lists)
 <h1>{{Str::upper($titles[$key]). ' - Total Entries : ' }}{{count($lists)}}</h1>

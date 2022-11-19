@@ -55,3 +55,14 @@ Route::group(['middleware'=>[EnsureClientIsFed::class],'prefix'=>'uaeerf'],funct
     // Route::post('SearchTrainerListV5', [FederationSyncController::class, 'synctrainers']);
     // Route::post('getStableList',[FederationSyncController::class, 'syncstables']);
 });
+
+Route::domain('devregistration.eiev-app.ae')->group(function(){
+    Route::get('generate',function(Request $request){
+        $qr = md5($request->uniqueid);
+        return response()->json(['qr_enc'=>$qr]);
+    });
+    Route::get('verify',function(Request $request){
+        $qrresult = $request->qr_enc == md5($request->uniqueid);
+        return response()->json(['qr'=>$qrresult]);
+    });
+});
