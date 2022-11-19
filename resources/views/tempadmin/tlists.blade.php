@@ -54,9 +54,6 @@ if(isset($_GET['stablename'])){
     @endphp
 
 @if($eventid > 0 && isset($events[$eventid]))
-<div class="row mb-2">
-    <div class="col"><h1>Overall Entries: {{$total}}</h1></div>
-</div>
 @foreach (${Str::plural($modelName)} as $key => $lists)
 <h1>{{Str::upper($titles[$key]). ' - Total Entries : ' }}{{count($lists)}}</h1>
 <table id={{$key}} class="table table-striped table-bordered">
@@ -162,6 +159,9 @@ if(isset($_GET['stablename'])){
     </tbody>
 </table>
 @endforeach
+<div class="row mb-2">
+    <div class="col text-center fs-3"><h1>Overall Entries: {{$total}}</h1></div>
+</div>
 @endif
 </div>
 <script type="text/javascript">
