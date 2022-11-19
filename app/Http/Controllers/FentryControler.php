@@ -103,6 +103,7 @@ class FentryControler extends Controller
         $pcentries =isset($request->ppage)? $pcentries->paginate($ppage): $pcentries->get();
         $totalcount = count($fentries) + count($eentries) + count($pentries)
         + count($reventries) + count($rentries);
+        dd($totalcount);
         if(isset($request->presidentcup)){
             $totalcount += count($pcentries);
             return response()->json(['modelName'=>'entry','totalcount'=>$totalcount,'events'=>$events,'stables'=>$stables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'royprov'=>$pcentries,'re'=>$rentries]]);
