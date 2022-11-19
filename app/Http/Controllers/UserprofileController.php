@@ -33,7 +33,7 @@ class UserprofileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -99,7 +99,7 @@ class UserprofileController extends Controller
      * @param  \App\Models\Userprofile  $userprofile
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Userprofile $userprofile)
+    public function update(Request $request, $id)
     {
         //
     }
