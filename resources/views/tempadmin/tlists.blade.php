@@ -52,10 +52,11 @@ if(isset($_GET['stablename'])){
     @php
         $titles= ['final'=>'Final List','pfa'=>'Pending for Acceptance','prov'=>'Provisional Entries','royprov'=>'Royal Provisional Entries','pfr'=>'Pending for Review','re'=>'Rejected/Withdrawn Entries'];
     @endphp
-<div class="row">
-    <div class="col"><h1>Overall Entries: {{$totalcount}}</h1></div>
-</div>
+
 @if($eventid > 0 && isset($events[$eventid]))
+<div class="row mb-2">
+    <div class="col"><h1>Overall Entries: {{$total}}</h1></div>
+</div>
 @foreach (${Str::plural($modelName)} as $key => $lists)
 <h1>{{Str::upper($titles[$key]). ' - Total Entries : ' }}{{count($lists)}}</h1>
 <table id={{$key}} class="table table-striped table-bordered">
