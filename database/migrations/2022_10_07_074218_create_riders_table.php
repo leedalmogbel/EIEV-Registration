@@ -32,7 +32,7 @@ class CreateRidersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('mobile')->nullable();
             $table->integer('user_id')->index();
-            $table->text('remarks')->nullable()->default('');
+            $table->text('remarks')->nullable();
             $table->enum('status', ['P', 'A', 'R'])->default('P')->index();
             $table->timestamps();
         });

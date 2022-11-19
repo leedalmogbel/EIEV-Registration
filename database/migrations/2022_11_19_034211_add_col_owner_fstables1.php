@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class FstableUniqueSet extends Migration
+class AddColOwnerFstables1 extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class FstableUniqueSet extends Migration
      */
     public function up()
     {
-        Schema::table('stables', function (Blueprint $table) {
+        Schema::table('fstables', function (Blueprint $table) {
             //
-            $table->string('stable_id')->unique()->nullable()->change();
+            $table->longText('owner')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class FstableUniqueSet extends Migration
      */
     public function down()
     {
-        Schema::table('stables', function (Blueprint $table) {
+        Schema::table('fstables', function (Blueprint $table) {
             //
         });
     }

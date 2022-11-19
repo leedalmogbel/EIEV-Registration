@@ -16,7 +16,7 @@ class CreateFstablesTable extends Migration
         Schema::create('fstables', function (Blueprint $table) {
             $table->id();
             $table->string("lastestupdate")->nullable();
-            $table->string("stable_id")->nullable();
+            $table->string("stableid")->unique();
             $table->string("name")->nullable();
             $table->string("address")->nullable();
             $table->string("zip")->nullable();

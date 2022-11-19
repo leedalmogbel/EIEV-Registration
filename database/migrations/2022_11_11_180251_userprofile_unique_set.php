@@ -15,7 +15,7 @@ class UserprofileUniqueSet extends Migration
     {
         Schema::table('userprofiles', function (Blueprint $table) {
             //
-            $table->string('userid')->unique()->nullable()->change();
+            $table->string('userid')->unique()->change();
         });
     }
 
