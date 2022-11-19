@@ -105,9 +105,9 @@ class FentryControler extends Controller
         + count($reventries) + count($rentries);
         if(isset($request->presidentcup)){
             $totalcount += count($pcentries);
-            return response()->json(['modelName'=>'entry','total'=>$totalcount,'events'=>$events,'stables'=>$stables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'royprov'=>$pcentries,'re'=>$rentries]]);
+            return response()->json(['modelName'=>'entry','totalcount'=>$totalcount,'events'=>$events,'stables'=>$stables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'royprov'=>$pcentries,'re'=>$rentries]]);
         }
-        return view('tempadmin.tlists',['modelName'=>'entry','total'=>$totalcount,'events'=>$events,'stables'=>$stables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'re'=>$rentries]]);
+        return view('tempadmin.tlists',['modelName'=>'entry','totalcount'=>$totalcount,'events'=>$events,'stables'=>$stables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'re'=>$rentries]]);
     }
 
     public function accept(Request $request)
