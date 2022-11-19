@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Userprofile;
+use App\Models\Reusable;
+use App\Models\Multi;
 use Illuminate\Http\Request;
 
 class UserprofileController extends Controller
@@ -45,6 +47,27 @@ class UserprofileController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public function generateUnique(Request $request)
+    {
+        $profiles = Userprofile::query();
+        if(isset($request->userid)){
+            $profiles = $profiles->where('userid',$request->userid);
+        }
+        if(isset($request->stableid)){
+            $profiles = $profiles->where('stableid',$request->stableid);
+        }
+        $ids = $profiles->pluck('userid');
+        $uniqueids = array();
+        foreach ($ids as $id) {
+            $up = array();
+            $up[$id] = Reusable::generateReusableUnique('',sprintf('EIEV-%s',$id),'',true,'ouuid');
+            array_push($uniqueids,$up);
+        }
+        if(count($uniqueids)>0){
+            Multi::insertOrUpdate($uniqueids,'userprofiles');
+        }
     }
 
     /**

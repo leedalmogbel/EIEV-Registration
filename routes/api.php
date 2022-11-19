@@ -3,12 +3,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FederationController;
+use App\Http\Controllers\UserprofileController;
 use App\Http\Controllers\FederationSyncController;
 use App\Http\Controllers\FriderController;
 use App\Http\Controllers\FeventController;
 use App\Http\Controllers\FhorseController;
 use App\Http\Middleware\EnsureClientIsValid;
 use App\Http\Middleware\EnsureClientIsFed;
+use App\Models\Reusable;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,12 +59,5 @@ Route::group(['middleware'=>[EnsureClientIsFed::class],'prefix'=>'uaeerf'],funct
 });
 
 Route::domain('devregistration.eiev-app.ae')->group(function(){
-    Route::get('generate',function(Request $request){
-        $qr = md5($request->uniqueid);
-        return response()->json(['qr_enc'=>$qr]);
-    });
-    Route::get('verify',function(Request $request){
-        $qrresult = $request->qr_enc == md5($request->uniqueid);
-        return response()->json(['qr'=>$qrresult, ]);
-    });
+    Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
 });
