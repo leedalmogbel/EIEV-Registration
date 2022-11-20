@@ -57,13 +57,50 @@ class Fentry extends Model
     ];
 
     protected $appends = [
+        'qrval',
+        
+        'racecode',
+        'racestartcode',
+        
         'hgender',
         'color',
         'yob',
-        'rgender',
-        'qrval'
-    ];
+        'breed',
+        'microchip',
+        'horigin',
 
+        'rgender',
+        'rcountry',
+
+    ];
+    // profile includes
+    public function getQrvalAttribute()
+    {
+        $fprofile = Userprofile::where('userid',$this->userid)->first();
+        if($fprofile){
+            return $fprofile->uniqueid;
+        }
+    }
+    // end profile includes
+
+    // race includes
+    public function GetRacestartcodeAttribute()
+    {
+        $fevent = Fevent::where('raceid','like',strval(intval($this->eventcode ?? 0)))->first();
+        if($fevent){
+            return $fevent->startcode;
+        }
+    }
+    
+    public function GetRacecodeAttribute()
+    {
+        $frider = Fevent::where('raceid','like',strval(intval($this->eventcode ?? 0)))->first();
+        if($frider){
+            return Str::contains(Str::lower($frider->typename),'national') ? "1" : "2";
+        }
+    }
+    // end race includes
+    // horse includes
     public function getHgenderAttribute()
     {
         $fhorse = Fhorse::where('horseid',$this->horseid)->first();
@@ -71,18 +108,33 @@ class Fentry extends Model
             return $fhorse->gender;
         }
     }
-    public function getRgenderAttribute()
+    public function getMicrochipAttribute()
     {
-        $frider = Frider::where('riderid',$this->riderid)->first();
-        if($frider){
-            return $frider->gender;
+        $fhorse = Fhorse::where('horseid',$this->horseid)->first();
+        if($fhorse){
+            return $fhorse->microchip;
         }
     }
+    public function getHoriginAttribute()
+    {
+        $fhorse = Fhorse::where('horseid',$this->horseid)->first();
+        if($fhorse){
+            return $fhorse->countryoriginshort;
+        }
+    }
+    
     public function getColorAttribute()
     {
         $fhorse = Fhorse::where('horseid',$this->horseid)->first();
         if($fhorse){
             return $fhorse->color;
+        }
+    }
+    public function getBreedAttribute()
+    {
+        $fhorse = Fhorse::where('horseid',$this->horseid)->first();
+        if($fhorse){
+            return $fhorse->breed;
         }
     }
     public function getYobAttribute()
@@ -92,11 +144,21 @@ class Fentry extends Model
             return $fhorse->dob;
         }
     }
-    public function getQrvalAttribute()
+    // end horse includes
+    // rider includes
+    public function GetRcountryAttribute()
     {
-        $fprofile = Userprofile::where('userid',$this->userid)->first();
-        if($fprofile){
-            return $fprofile->stableid.'UP'.Str::padLeft($fprofile->userid,6,'0') ;
+        $frider = Frider::where('riderid',$this->riderid)->first();
+        if($frider){
+            return $frider->nationalityshort;
         }
     }
+    public function getRgenderAttribute()
+    {
+        $frider = Frider::where('riderid',$this->riderid)->first();
+        if($frider){
+            return $frider->gender;
+        }
+    }
+    // end rider includes
 }
