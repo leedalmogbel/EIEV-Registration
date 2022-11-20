@@ -14,11 +14,13 @@
 
 
 ### SYNC COMMANDS
-php artisan command:syncentries --ip=eievadmin --host=admineiev
 php artisan command:syncevents --ip=eievadmin --host=admineiev
-php artisan command:synchorses --ip=eievadmin --host=admineiev
+php artisan command:syncentries --ip=eievadmin --host=admineiev
+php artisan command:syncstables --ip=eievadmin --host=admineiev
 php artisan command:syncowners --ip=eievadmin --host=admineiev
+php artisan command:synctrainers --ip=eievadmin --host=admineiev
 php artisan command:syncprofiles --ip=eievadmin --host=admineiev
 php artisan command:syncriders --ip=eievadmin --host=admineiev
-php artisan command:syncstables --ip=eievadmin --host=admineiev
-php artisan command:synctrainers --ip=eievadmin --host=admineiev
+php artisan command:synchorses --ip=eievadmin --host=admineiev
+### COMMANDS TO ADD
+UniqueID Generator
