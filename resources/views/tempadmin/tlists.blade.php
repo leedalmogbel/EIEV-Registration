@@ -60,7 +60,7 @@ if(isset($_GET['stablename'])){
 <table id={{$key}} class="table table-striped table-bordered table-responsive">
     <thead>
         <tr>
-            <th>StartNo</th>
+            <!-- <th>StartNo</th>
             <th class="export">Rider FName</th>
             <th class="export">Rider LName</th>
             <th>RIDER EEF</th>
@@ -81,7 +81,19 @@ if(isset($_GET['stablename'])){
             <th class="export">Division</th>
             <th class="export">TEAM</th>
             <th class="export">Transponsder Code</th>
-            @if(!in_array($key,["re","pdf","pfr"]))
+            @if(!in_array($key,["re","pdf","pfr"])) -->
+            <th>START NO</th>
+            <th>STABLE</th>
+            <th>OWNER</th>
+            <th>TRAINER</th>
+            <th>HORSE</th>
+            <td>EEF ID|FEI ID</td>
+            <th>GENDER</th>
+            <th>COLOR</th>
+            <th>YOB</th>
+            <th>RIDER</th>
+            <th>EEF ID|FEI ID</th>
+            <th>GENDER</th>
             <th class="export">QR</th>
             @else
             <th>Remarks</th>
