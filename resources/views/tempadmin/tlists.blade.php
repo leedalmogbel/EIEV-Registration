@@ -219,7 +219,13 @@
                             this.active(!this.active());
                         }
                     },copy,csv,{...excel, filename:`(Provisional List) ${f[eventval]}`},pdf,print],
-                    responsive:responsive
+                    responsive:responsive,
+                    columnDefs:[
+                        {
+                            ordable:false,
+                            targets:[0]
+                        }
+                    ]
                 });
                 // let royprov = $('#royprov').DataTable({
                 //     dom: dom,
