@@ -202,7 +202,7 @@ if(isset($_GET['stablename'])){
         // const print = 'print';
         // const dom = '<"container-fluid"<"row"<"col"<"col"l><"col"f>><"col"B>>>rtip';
         // const responsive = false;
-        // const d = JSON.parse('{!! json_encode((object)$events) !!}');
+        const d = JSON.parse('{!! json_encode((object)$events) !!}');
         // const f = JSON.parse('{!! json_encode((object)$eventnames) !!}');
         let urlParams = new URLSearchParams(window.location.search);
         const eventval = urlParams.get('SearchEventID');
