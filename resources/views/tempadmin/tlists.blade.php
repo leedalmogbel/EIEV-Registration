@@ -54,6 +54,7 @@ if(isset($_GET['stablename'])){
     @endphp
 
 @if($eventid > 0 && isset($events[$eventid]))
+
 @foreach (${Str::plural($modelName)} as $key => $lists)
 <h1>{{Str::upper($titles[$key]). ' - Total Entries : ' }}{{count($lists)}}</h1>
 <div class="table-responsive mt-2">
