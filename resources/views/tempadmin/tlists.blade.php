@@ -222,7 +222,7 @@
                     responsive:responsive,
                     columnDefs:[
                         {
-                            ordable:false,
+                            orderable:false,
                             targets:[0]
                         }
                     ]
