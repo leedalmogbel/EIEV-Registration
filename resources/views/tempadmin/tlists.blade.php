@@ -174,11 +174,11 @@
                 $('#royprov').DataTable();
                 $('#pfr').DataTable();
                 $('#re').DataTable();
-                // const copy = 'copy';
-                // const csv = 'csv';
+                const copy = 'copy';
+                const csv = 'csv';
                 const excel = {extend:'excel',messageTop:null,messageBottom:null,title:null};
-                // const pdf = 'pdf';
-                // const print = 'print';
+                const pdf = 'pdf';
+                const print = 'print';
                 const dom = '<"container-fluid"<"row"<"col"<"col"l><"col"f>><"col"B>>>rtip';
                 // const responsive = false;
                 const d = JSON.parse('{!! json_encode((object)$events) !!}');
