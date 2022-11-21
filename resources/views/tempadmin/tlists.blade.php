@@ -189,89 +189,95 @@ if(isset($_GET['stablename'])){
 </div>
 <script type="text/javascript">
     $(document).ready(function(e) {
-        const copy = 'copy';
-        const csv = 'csv';
-        const excel = {extend:'excel',messageTop:null,messageBottom:null,title:null};
-        const pdf = 'pdf';
-        const print = 'print';
-        const dom = '<"container-fluid"<"row"<"col"<"col"l><"col"f>><"col"B>>>rtip';
-        const responsive = false;
-        const d = JSON.parse('{!! json_encode((object)$events) !!}');
-        const f = JSON.parse('{!! json_encode((object)$eventnames) !!}');
+        $('#final').DataTable();
+        $('#pfa').DataTable();
+        $('#prov').DataTable();
+        $('#royprov').DataTable();
+        $('#pfr').DataTable();
+        $('#re').DataTable();
+        // const copy = 'copy';
+        // const csv = 'csv';
+        // const excel = {extend:'excel',messageTop:null,messageBottom:null,title:null};
+        // const pdf = 'pdf';
+        // const print = 'print';
+        // const dom = '<"container-fluid"<"row"<"col"<"col"l><"col"f>><"col"B>>>rtip';
+        // const responsive = false;
+        // const d = JSON.parse('{!! json_encode((object)$events) !!}');
+        // const f = JSON.parse('{!! json_encode((object)$eventnames) !!}');
         let urlParams = new URLSearchParams(window.location.search);
         const eventval = urlParams.get('SearchEventID');
-        let final = $('#final').DataTable({
-            dom: dom,
-            buttons:[
-            {
-                text: 'Show/Hide Export Data',
-                action: function ( e, dt, node, config ) {
-                    final.columns('.export').visible(this.active());
-                    this.active(!this.active());
-                }
-            },copy,csv,{...excel, filename:`(Final List) ${f[eventval]}`},pdf,print],
-            responsive:responsive
-        });
-        let pfa = $('#pfa').DataTable({
-            dom: dom,
-            buttons:[
-            {
-                text: 'Show/Hide Export Data',
-                action: function ( e, dt, node, config ) {
-                    pfa.columns('.export').visible(this.active());
-                    this.active(!this.active());
-                }
-            },copy,csv,{...excel, filename:`(For Approval List) ${f[eventval]}`},pdf,print],
-            responsive:responsive
-        });
-        let prov = $('#prov').DataTable({
-            dom: dom,
-            buttons:[
-            {
-                text: 'Show/Hide Export Data',
-                action: function ( e, dt, node, config ) {
-                    prov.columns('.export').visible(this.active());
-                    this.active(!this.active());
-                }
-            },copy,csv,{...excel, filename:`(Provisional List) ${f[eventval]}`},pdf,print],
-            responsive:responsive
-        });
-        let royprov = $('#royprov').DataTable({
-            dom: dom,
-            buttons:[
-            {
-                text: 'Show/Hide Export Data',
-                action: function ( e, dt, node, config ) {
-                    royprov.columns('.export').visible(this.active());
-                    this.active(!this.active());
-                }
-            },copy,csv,{...excel, filename:`(Royal Provisional List) ${f[eventval]}`},pdf,print],
-            responsive:responsive
-        });
-        let pfr = $('#pfr').DataTable({
-            dom: dom,
-            buttons:[
-            {
-                text: 'Show/Hide Export Data',
-                action: function ( e, dt, node, config ) {
-                    pfr.columns('.export').visible(this.active());
-                    this.active(!this.active());
-                }
-            },copy,csv,{...excel, filename:`(For Review List) ${f[eventval]}`},pdf,print],
-            responsive:responsive
-        });
-        let re = $('#re').DataTable({
-            dom: dom,
-            buttons:[
-            {
-                text: 'Show/Hide Export Data',
-                action: function ( e, dt, node, config ) {
-                    re.columns('.export').visible(this.active());
-                    this.active(!this.active());
-                }
-            },copy,csv,{...excel, filename:`(Not Eligible List) ${f[eventval]}`},pdf,print],
-            responsive:responsive
-        });
+        // let final = $('#final').DataTable({
+        //     dom: dom,
+        //     buttons:[
+        //     {
+        //         text: 'Show/Hide Export Data',
+        //         action: function ( e, dt, node, config ) {
+        //             final.columns('.export').visible(this.active());
+        //             this.active(!this.active());
+        //         }
+        //     },copy,csv,{...excel, filename:`(Final List) ${f[eventval]}`},pdf,print],
+        //     responsive:responsive
+        // });
+        // let pfa = $('#pfa').DataTable({
+        //     dom: dom,
+        //     buttons:[
+        //     {
+        //         text: 'Show/Hide Export Data',
+        //         action: function ( e, dt, node, config ) {
+        //             pfa.columns('.export').visible(this.active());
+        //             this.active(!this.active());
+        //         }
+        //     },copy,csv,{...excel, filename:`(For Approval List) ${f[eventval]}`},pdf,print],
+        //     responsive:responsive
+        // });
+        // let prov = $('#prov').DataTable({
+        //     dom: dom,
+        //     buttons:[
+        //     {
+        //         text: 'Show/Hide Export Data',
+        //         action: function ( e, dt, node, config ) {
+        //             prov.columns('.export').visible(this.active());
+        //             this.active(!this.active());
+        //         }
+        //     },copy,csv,{...excel, filename:`(Provisional List) ${f[eventval]}`},pdf,print],
+        //     responsive:responsive
+        // });
+        // let royprov = $('#royprov').DataTable({
+        //     dom: dom,
+        //     buttons:[
+        //     {
+        //         text: 'Show/Hide Export Data',
+        //         action: function ( e, dt, node, config ) {
+        //             royprov.columns('.export').visible(this.active());
+        //             this.active(!this.active());
+        //         }
+        //     },copy,csv,{...excel, filename:`(Royal Provisional List) ${f[eventval]}`},pdf,print],
+        //     responsive:responsive
+        // });
+        // let pfr = $('#pfr').DataTable({
+        //     dom: dom,
+        //     buttons:[
+        //     {
+        //         text: 'Show/Hide Export Data',
+        //         action: function ( e, dt, node, config ) {
+        //             pfr.columns('.export').visible(this.active());
+        //             this.active(!this.active());
+        //         }
+        //     },copy,csv,{...excel, filename:`(For Review List) ${f[eventval]}`},pdf,print],
+        //     responsive:responsive
+        // });
+        // let re = $('#re').DataTable({
+        //     dom: dom,
+        //     buttons:[
+        //     {
+        //         text: 'Show/Hide Export Data',
+        //         action: function ( e, dt, node, config ) {
+        //             re.columns('.export').visible(this.active());
+        //             this.active(!this.active());
+        //         }
+        //     },copy,csv,{...excel, filename:`(Not Eligible List) ${f[eventval]}`},pdf,print],
+        //     responsive:responsive
+        // });
         if(urlParams.has('SearchEventID')){
             const val = urlParams.get('SearchEventID');
             if(d[val]!==undefined){
