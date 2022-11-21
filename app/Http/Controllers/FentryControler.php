@@ -154,9 +154,9 @@ class FentryControler extends Controller
                     $entries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
                     $osnupdates = array();
                     if($entries){
-                        foreach ($entries as $entry) {
+                        for($i=0;$i<count($entries);$i++){
                             $snum['code']=$entry->code;
-                            $snum['startno']=$snumlist[0]."W";
+                            $snum['startno']=$collection[$i]."W";
                             array_push($osnupdates,$snum);
                         }
                         if(count($osnupdates)>0){
