@@ -70,6 +70,7 @@ class FentryControler extends Controller
                         }
                     }
                 }
+                Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->update(['startno'=>NULL]);
             }
             switch ($request->action) {
                 case 'royal':
