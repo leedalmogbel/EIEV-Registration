@@ -56,8 +56,8 @@ class FentryControler extends Controller
 
     public function generateStartnumber(Request $request)  
     {
-        $totalentries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->count();
         if(isset($request->eventId) && isset($request->action)){
+            $totalentries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->count();
             switch ($request->action) {
                 case 'royal':
                     $royalstables = Fstable::where('category','Royal')->pluck('stableid')->toArray();
@@ -65,15 +65,17 @@ class FentryControler extends Controller
                     $rsnupdates = array();
                     foreach ($entries as $entry) {
                         $snum = array();
-                        $startno = Snpool::where('stableid',$entry->stableid)->where('userid',$entry->userid)->whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) <0')->orderBy('startno')->get()->first();
-                        if($startno->startno <= $totalentries){
-                            $snum['code']=$entry->code;
-                            $snum['startno']=$startno->startno;
-                            array_push($rsnupdates,$snum);
-                            $startassigned = json_decode($startno->assigned ?? '{}',true);
-                            $startassigned[$request->eventId]=1;
-                            $startno->assigned = $startassigned;
-                            $startno->save();
+                        $startno = Snpool::where('stableid',$entry->stableid)->where('userid',$entry->userid)->whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) <0')->orderBy('startno')->first();
+                        if($startno){
+                            if($startno->startno <= $totalentries){
+                                $snum['code']=$entry->code;
+                                $snum['startno']=$startno->startno;
+                                array_push($rsnupdates,$snum);
+                                $startassigned = json_decode($startno->assigned ?? '{}',true);
+                                $startassigned[$request->eventId]=1;
+                                $startno->assigned = $startassigned;
+                                $startno->save();
+                            }
                         }
                     }
                     if(count($rsnupdates)>0){
