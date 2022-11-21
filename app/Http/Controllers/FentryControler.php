@@ -92,7 +92,7 @@ class FentryControler extends Controller
                     if($entries){
                         for($i=0;$i<count($entries);$i++){
                             $snum['code']=$entries[$i]->code;
-                            $snum['startno']=$collection[$i]."W";
+                            $snum['startno']=$collection[$i];
                             array_push($osnupdates,$snum);
                         }
                         if(count($osnupdates)>0){
