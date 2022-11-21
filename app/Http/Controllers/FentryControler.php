@@ -150,7 +150,7 @@ class FentryControler extends Controller
                 case 'others':
                     $exclude = [1,2,3,7,10,41,8,86,87,88,89,42,43,48,44,45,46,47,145,146,147,148,34,35,36,37,149,150,151,152,153,154,155,156,38,79,24,25,72,27,28,29,76,73,31,32,33,75,127,128,129,71
                     ,78,74,35,36,37,126,77,30,38,26,34];
-                    $collection = collect(range(1,$totalentries+50))->map(function ($n){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
+                    $collection = collect(range(1,$totalentries+50))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
                     $entries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
                     $osnupdates = array();
                     if($entries){
