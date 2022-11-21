@@ -81,17 +81,22 @@ class EntryController extends Controller
         $reqData = $request->data;
         $httpClient = new \GuzzleHttp\Client();
         $raceid = $request->get('raceid');
+        if(!isset($request->raceid)){
+            $this->flashMsg(sprintf('%s', 'Entry details is incomplete. Please try again.'), 'warning');
+                return redirect('/race');
+        }
         $options = [
             'headers' => [
                 "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
             ],
         ];
-
+        
         $entryCode = array();
+        $fEntries = array();
         foreach ($reqData as $key => $value) {
             if (!isset($reqData[$key]['horse']) || !isset($reqData[$key]['rider'])) {
                 $this->flashMsg(sprintf('%s must not be empty', ucwords($this->model)), 'warning');
-                return redirect(URL::current());
+                return redirect(URL::full());
             }
             $horseid = $reqData[$key]['horse'];
             $riderid = $reqData[$key]['rider'];
@@ -103,7 +108,7 @@ class EntryController extends Controller
 
             if($entryCode[$key]['entry']->entrycode === '0') {
                 $this->flashMsg(sprintf('%s', $entryCode[$key]['entry']->msgs[0]), 'warning');
-                return redirect(URL::current());
+                return redirect(URL::full());
             }
 
             $fEntries[$key] = array(
@@ -117,7 +122,7 @@ class EntryController extends Controller
 
         Multi::insertOrUpdate($fEntries, 'fentries');
         // foreach($fEntries as $key => $val) {
-        //     Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$fEntries['code']);
+        //     Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$fEntries['h']['code']);
         // }
         // foreach ($entryCode as $key => $value) {
         //     $this->flashMsg(sprintf('%s Horse '.$entryCode[$key]['horse'].' and '.$entryCode[$key]['rider'].' created successfully', ucwords($this->model)), 'success');
