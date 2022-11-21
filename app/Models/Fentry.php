@@ -71,6 +71,9 @@ class Fentry extends Model
 
         'rgender',
         'rcountry',
+        'rfname',
+        'rlname',
+
 
     ];
     // profile includes
@@ -158,6 +161,20 @@ class Fentry extends Model
         $frider = Frider::where('riderid',$this->riderid)->first();
         if($frider){
             return $frider->gender;
+        }
+    }
+    public function GetRfnameAttribute()
+    {
+        $frider = Frider::where('riderid',$this->riderid)->first();
+        if($frider){
+            return $frider->firstx0020name;
+        }
+    }
+    public function GetRlnameAttribute()
+    {
+        $frider = Frider::where('riderid',$this->riderid)->first();
+        if($frider){
+            return $frider->familyx0020name;
         }
     }
     // end rider includes

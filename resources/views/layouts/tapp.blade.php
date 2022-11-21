@@ -8,7 +8,6 @@
         }
     @endphp
     <title>{{ ucwords(Str::plural($modelName)) }}</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />

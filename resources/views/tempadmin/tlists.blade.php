@@ -59,25 +59,37 @@
                     <table id={{$key}} class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                
-                                <th class="export">START NO</th>
-                                <th class="export">STABLE</th>
-                                <th class="export">OWNER</th>
-                                <th class="export">TRAINER</th>
-                                <th class="export">HORSE</th>
-                                <td class="export">EEF ID|FEI ID</td>
-                                <th class="export">GENDER</th>
-                                <th class="export">COLOR</th>
-                                <th class="export">YOB</th>
-                                <th class="export">RIDER</th>
-                                <th class="export">EEF ID|FEI ID</th>
-                                <th class="export">GENDER</th>
+                                <th class="a-export m-export d-export">StartNo</th>
+                                <th class="a-export m-export d-export">StartCode</th>
+                                <th class="hide m-export d-export">Rider FName</th>
+                                <th class="hide m-export d-export">Rider LName</th>
+                                <th class="a-export">RiderName</th>
+                                <th class="a-export m-export d-export">RiderEEF</th>
+                                <th class="a-export m-export d-export">RiderFEI</th>
+                                <th class="a-export m-export d-export">RiderNationality</th>
+                                <th class="hide d-export">RiderGender</th>
+                                <th class="a-export m-export d-export">HorseName</th>
+                                <th class="a-export m-export d-export">HorseEEF</th>
+                                <th class="a-export m-export d-export">HorseFEI</th>
+                                <th class="a-export m-export d-export">Sex</th>
+                                <th class="a-export m-export d-export">Colour</th>
+                                <th class="a-export m-export d-export">Breed</th>
+                                <th class="a-export m-export d-export">YOB</th>
+                                <th class="hide d-export">HorseOrigin</th>
+                                <th class="hide d-export">Horse Chip</th>
+                                <th class="hide d-export">Rider Weight</th>
+                                <th class="hide m-export d-export">Owner</th>
+                                <th class="hide m-export d-export">Trainer</th>
+                                <th class="hide m-export d-export">Stable</th>
+                                <th class="hide m-export d-export">Division</th>
+                                <th class="hide m-export d-export">TEAM</th>
+                                <th class="hide m-export d-export">Transponsder Code</th>
                                 @if(!in_array($key,["re","pdf","pfr"]))
-                                    <th class="export">QR</th>
+                                    <th class="d-export">QR</th>
                                 @else
-                                    <th class="export">Remarks</th>
+                                    <th>Remarks</th>
                                 @endif
-                                <th class="export">Status</th>
+                                <th>Status</th>
                                 @if(!in_array($key,["re","pdf","pfr"]))
                                     <th width="100" style="text-align:right">ACTIONS</th>
                                 @endif 
@@ -86,11 +98,63 @@
                         <tbody>
                             @foreach ($lists as $entry)
                                 <tr>
-                                <td class="text-center">
+                                    <td class="text-center">
                                     {{$entry->startno ?? 'N/A'}}
                                     </td>
                                     <td class="text-center">
-                                    {{$entry->stablename ?? 'N/A'}}
+                                    {{$entry->racestartcode ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->rfname ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->rlname ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->ridername ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->ridernfid ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->riderfeiid ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->rcountry ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->rgender ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->horsename ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->horsenfid ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->horsefeiid ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{ $entry->hgender ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{ $entry->color ?? 'N/A'}}
+                                    </td> 
+                                    <td class="text-center">
+                                    {{$entry->breed ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{date('Y', strtotime($entry->yob)) ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{$entry->horigin ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    <strong>
+                                    {{$entry->microchip ?? 'N/A'}}
+                                    </strong>
+                                    </td>
+                                    <td class="text-center">
                                     </td>
                                     <td class="text-center">
                                     {{$entry->ownername ?? 'N/A'}}
@@ -98,45 +162,29 @@
                                     <td class="text-center">
                                     {{$entry->trainername ?? 'N/A'}}
                                     </td>
-                                    <td class="text-center"><strong>{{ $entry->horsename }}</strong></td>
                                     <td class="text-center">
-                                    <div>{{ $entry->horsenfid }}</div>
-                                    <div>{{ $entry->horsefeiid }}</div>
-                                    </td> 
-                                    <td class="text-center">
-                                    {{$entry->hgender ?? 'UNK'}}
+                                    {{$entry->stablename ?? 'N/A'}}
                                     </td>
                                     <td class="text-center">
-                                    {{$entry->color ?? 'UNK'}}
                                     </td>
                                     <td class="text-center">
-                                    {{date('Y-m-d', strtotime($entry->yob)) ?? 'UNK'}}
                                     </td>
                                     <td class="text-center">
-                                    <strong>
-                                    {{$entry->ridername}}
-                                    </strong>
-                                    </td>
-                                    <td class="text-center">
-                                    <div>{{ $entry->ridernfid }}</div>
-                                    <div>{{ $entry->riderfeiid }}</div>
-                                    </td>
-                                    <td class="text-center">
-                                    {{$entry->rgender ?? 'UNK'}}
+                                    {{$entry->startno ?? 'N/A'}}
                                     </td>
                                     @if(!in_array($key,["re","pdf","pfr"]))
                                     <td class="text-center">
-                                    {{$entry->qrval ?? 'UNK'}}
+                                    {{$entry->qrval ?? 'N/A'}}
                                     </td>
                                     @else
                                     <td class="text-center">
-                                    {{$entry->remarks ?? 'UNK'}}
+                                    {{$entry->remarks ?? 'N/A'}}
                                     </td>
                                     @endif
                                     <td class="text-center">
-                                    {{$entry->status ?? 'UNK'}}
-                                    @if(!in_array($key,["re","pdf","pfr"]))
+                                    {{$entry->status ?? 'N/A'}}
                                     </td>
+                                    @if(!in_array($key,["re","pdf","pfr"]))
                                     <td class="text-center">
                                         <div>
                                             <a href="/rideslist/reject?entrycode={{ $entry->code }}" class="btn btn-danger" id="reject-entry"><i
@@ -168,101 +216,149 @@
     </div>
         <script type="text/javascript">
             $(document).ready(function(e) {
-                $('#final').DataTable();
-                $('#pfa').DataTable();
-                // $('#prov').DataTable();
-                $('#royprov').DataTable();
-                $('#pfr').DataTable();
-                $('#re').DataTable();
-                const copy = 'copy';
-                const csv = 'csv';
                 const excel = {extend:'excel',messageTop:null,messageBottom:null,title:null};
-                const pdf = 'pdf';
-                const print = 'print';
+                const pdf = {extend:'pdfHtml5',orientation:'landscape',pageSize:'A4',
+                    messageTop:null,
+                    messageBottom:null,
+                    title:null,
+                };
+                const print = {extend:'print',footer:false,
+                    messageTop:'',
+                    messageBottom:'',
+                    title:'',};
                 const dom = '<"container-fluid"<"row"<"col"<"col"l><"col"f>><"col"B>>>rtip';
                 const responsive = false;
                 const d = JSON.parse('{!! json_encode((object)$events) !!}');
                 const f = JSON.parse('{!! json_encode((object)$eventnames) !!}');
                 let urlParams = new URLSearchParams(window.location.search);
                 const eventval = urlParams.get('SearchEventID');
-                // let final = $('#final').DataTable({
-                //     dom: dom,
-                //     buttons:[
-                //     {
-                //         text: 'Show/Hide Export Data',
-                //         action: function ( e, dt, node, config ) {
-                //             final.columns('.export').visible(this.active());
-                //             this.active(!this.active());
-                //         }
-                //     },copy,csv,{...excel, filename:`(Final List) ${f[eventval]}`},pdf,print],
-                //     responsive:responsive
-                // });
-                // let pfa = $('#pfa').DataTable({
-                //     dom: dom,
-                //     buttons:[
-                //     {
-                //         text: 'Show/Hide Export Data',
-                //         action: function ( e, dt, node, config ) {
-                //             pfa.columns('.export').visible(this.active());
-                //             this.active(!this.active());
-                //         }
-                //     },copy,csv,{...excel, filename:`(For Approval List) ${f[eventval]}`},pdf,print],
-                //     responsive:responsive
-                // });
+                let final = $('#final').DataTable({
+                    dom: dom,
+                    buttons:[
+                        {...excel, filename:`(Final List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(Final List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(Final List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...pdf, filename:`(Final List) ${f[eventval]}`, 
+                        className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
+                            customize : function(doc){
+                                console.log(doc);
+                                doc.fontSize =8;
+                                doc.pageMargins= 5;
+                                doc.content[0].table.widths = Array.from({length: $('.a-export').length/5}, (_, i) => 'auto');
+                                // doc.content[0].table.widths=Array(doc.content[0].table.body[0].length + 1).join('%').split('');
+                            }
+                        },
+                        {...print,exportOptions:{columns:'.a-export'}}
+                    ],
+                    responsive:responsive
+                });
+                let pfa = $('#pfa').DataTable({
+                    dom: dom,
+                    buttons:[
+                        {...excel, filename:`(For Acceptance List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(For Acceptance List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(For Acceptance List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...pdf, filename:`(For Acceptance List) ${f[eventval]}`, 
+                        className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
+                            customize : function(doc){
+                                console.log(doc);
+                                doc.fontSize =8;
+                                doc.pageMargins= 5;
+                                doc.content[0].table.widths = Array.from({length: $('.a-export').length/5}, (_, i) => 'auto');
+                                // doc.content[0].table.widths=Array(doc.content[0].table.body[0].length + 1).join('%').split('');
+                            }
+                        },
+                        {...print,exportOptions:{columns:'.a-export'}}
+                    ],
+                    responsive:responsive
+                });
                 let prov = $('#prov').DataTable({
                     dom: dom,
                     buttons:[
-                    {
-                        text: 'Show/Hide Export Data',
-                        action: function ( e, dt, node, config ) {
-                            prov.columns('.export').visible(this.active());
-                            this.active(!this.active());
-                        }
-                    },copy,csv,{...excel, filename:`(Provisional List) ${f[eventval]}`},pdf,print],
+                        {...excel, filename:`(Provisional List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(Provisional List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(Provisional List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...pdf, filename:`(Provisional List) ${f[eventval]}`, 
+                        className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
+                            customize : function(doc){
+                                console.log(doc);
+                                doc.fontSize =8;
+                                doc.pageMargins= 5;
+                                doc.content[0].table.widths = Array.from({length: $('.a-export').length/5}, (_, i) => 'auto');
+                                // doc.content[0].table.widths=Array(doc.content[0].table.body[0].length + 1).join('%').split('');
+                            }
+                        },
+                        {...print,exportOptions:{columns:'.a-export'}}
+                    ],
                     responsive:responsive,
-                    columnDefs:[
+                    columnDefs: [
                         {
-                            orderable:false,
-                            targets:[0]
-                        }
+                            target: 'hide',
+                            visible: false,
+                            searchable: false,
+                        },
                     ]
                 });
-                // let royprov = $('#royprov').DataTable({
-                //     dom: dom,
-                //     buttons:[
-                //     {
-                //         text: 'Show/Hide Export Data',
-                //         action: function ( e, dt, node, config ) {
-                //             royprov.columns('.export').visible(this.active());
-                //             this.active(!this.active());
-                //         }
-                //     },copy,csv,{...excel, filename:`(Royal Provisional List) ${f[eventval]}`},pdf,print],
-                //     responsive:responsive
-                // });
-                // let pfr = $('#pfr').DataTable({
-                //     dom: dom,
-                //     buttons:[
-                //     {
-                //         text: 'Show/Hide Export Data',
-                //         action: function ( e, dt, node, config ) {
-                //             pfr.columns('.export').visible(this.active());
-                //             this.active(!this.active());
-                //         }
-                //     },copy,csv,{...excel, filename:`(For Review List) ${f[eventval]}`},pdf,print],
-                //     responsive:responsive
-                // });
-                // let re = $('#re').DataTable({
-                //     dom: dom,
-                //     buttons:[
-                //     {
-                //         text: 'Show/Hide Export Data',
-                //         action: function ( e, dt, node, config ) {
-                //             re.columns('.export').visible(this.active());
-                //             this.active(!this.active());
-                //         }
-                //     },copy,csv,{...excel, filename:`(Not Eligible List) ${f[eventval]}`},pdf,print],
-                //     responsive:responsive
-                // });
+                let royprov = $('#royprov').DataTable({
+                    dom: dom,
+                    buttons:[
+                        {...excel, filename:`(Royal Provisional List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(Royal Provisional List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(Royal Provisional List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...pdf, filename:`(Royal Provisional List) ${f[eventval]}`, 
+                        className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
+                            customize : function(doc){
+                                console.log(doc);
+                                doc.fontSize =8;
+                                doc.pageMargins= 5;
+                                doc.content[0].table.widths = Array.from({length: $('.a-export').length/5}, (_, i) => 'auto');
+                                // doc.content[0].table.widths=Array(doc.content[0].table.body[0].length + 1).join('%').split('');
+                            }
+                        },
+                        {...print,exportOptions:{columns:'.a-export'}}
+                    ],
+                    responsive:responsive
+                });
+                let pfr = $('#pfr').DataTable({
+                    dom: dom,
+                    buttons:[
+                        {...excel, filename:`(For Review List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(For Review List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(For Review List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...pdf, filename:`(For Review List) ${f[eventval]}`, 
+                        className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
+                            customize : function(doc){
+                                console.log(doc);
+                                doc.fontSize =8;
+                                doc.pageMargins= 5;
+                                doc.content[0].table.widths = Array.from({length: $('.a-export').length/5}, (_, i) => 'auto');
+                                // doc.content[0].table.widths=Array(doc.content[0].table.body[0].length + 1).join('%').split('');
+                            }
+                        },
+                        {...print,exportOptions:{columns:'.a-export'}}
+                    ],
+                    responsive:responsive
+                });
+                let re = $('#re').DataTable({
+                    dom: dom,
+                    buttons:[
+                        {...excel, filename:`(Not Qualified List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(Not Qualified List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(Not Qualified List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...pdf, filename:`(Not Qualified List) ${f[eventval]}`, 
+                        className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
+                            customize : function(doc){
+                                console.log(doc);
+                                doc.fontSize =8;
+                                doc.pageMargins= 5;
+                                doc.content[0].table.widths = Array.from({length: $('.a-export').length/5}, (_, i) => 'auto');
+                                // doc.content[0].table.widths=Array(doc.content[0].table.body[0].length + 1).join('%').split('');
+                            }
+                        },
+                        {...print,exportOptions:{columns:'.a-export'}}
+                    ],
+                    responsive:responsive
+                });
                 if(urlParams.has('SearchEventID')){
                     const val = urlParams.get('SearchEventID');
                     if(d[val]!==undefined){
