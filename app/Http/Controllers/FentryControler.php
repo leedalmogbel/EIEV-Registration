@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Fentry;
 use App\Models\Fevent;
 use App\Models\Userprofile;
+use App\Models\Snpool;
 use App\Models\Multi;
 use App\Models\Fstable;
 use Illuminate\Http\Request;
@@ -55,70 +56,6 @@ class FentryControler extends Controller
 
     public function generateStartnumber(Request $request)  
     {
-        $royallist = array();
-        $royallist["E0000004"]=[336,337,338];
-        $royallist["E0000006"]=[35,36];
-        $royallist["E0000012"]=[155,156];
-        $royallist["E0000037"]=[28,126,127,128,179];
-        $royallist["E0000052"]=[327,328];
-        $royallist["E0000061"]=[80,81];
-        $royallist["E0000086"]=[207,285,286];
-        $royallist["E0000103"]=[6,65];
-        $royallist["E0000111"]=[99,228];
-        $royallist["E0000112"]=[61,62,329];
-        $royallist["E0000115"]=[224,225];
-        $royallist["E0000117"]=[248,249];
-        $royallist["E0000158"]=[16,17];
-        $royallist["E0000172"]=[15,71,88];
-        $royallist["E0000190"]=[8,9];
-        $royallist["E0000191"]=[218,219];
-        $royallist["E0000192"]=[220,221];
-        $royallist["E0000193"]=[74,165,];
-        $royallist["E0000195"]=[4,5,348];
-        $royallist["E0000214"]=[318,319];
-        $royallist["E0000253"]=[161,162];
-        $royallist["E0000267"]=[22,24,25,27,184,204];
-        $royallist["E0000268"]=[26,205,243,259];
-        $royallist["E0000269"]=[19,178,];
-        $royallist["E0000270"]=[29,20,30,21,206];
-        $royallist["E0000275"]=[201,202];
-        $royallist["E0000283"]=[];
-        $royallist["E0000292"]=[];
-        $royallist["E0000293"]=[260,261];
-        $royallist["E0000316"]=[250,251];
-        $royallist["E0000318"]=[32,33,87,23];
-        $royallist["E0000321"]=[];
-        $royallist["E0000327"]=[];
-        $royallist["E0000330"]=[244,147,146,149,145];
-        $royallist["E0000342"]=[];
-        $royallist["E0000344"]=[306,307,305,308];
-        $royallist["E0000374"]=[321,322];
-        $royallist["E0000375"]=[55,54];
-        $royallist["E0000379"]=[18,31,37,14];
-        $royallist["E0000381"]=[50,52,49,152,51,53];
-        $royallist["E0000384"]=[143,94,97,96,153,98];
-        $royallist["E0000386"]=[91,95,93,90,92];
-        $royallist["E0000403"]=[57];
-        $royallist["E0000409"]=[];
-        $royallist["E0000410"]=[302,309];
-        $royallist["E0000427"]=[39,34,38];
-        $royallist["E0000434"]=[79,72,78,77];
-        $royallist["E0000443"]=[316,317];
-        $royallist["E0000454"]=[];
-        $royallist["E0000468"]=[312,314,313,315];
-        $royallist["E0000486"]=[217,215];
-        $royallist["E0000491"]=[262,263];
-        $royallist["E0000501"]=[157,154];
-        $royallist["E0000527"]=[292,291];
-        $royallist["E0000540"]=[];
-        $royallist["E0000542"]=[311,310];
-        $royallist["E0000567"]=[];
-        $royallist["E0000568"]=[];
-        $royallist["E0000596"]=[];
-        $royallist["E0000612"]=[];
-        $royallist["E0000613"]=[];
-        $royallist["E0000617"]=[];
-        $royallist["E0000639"]=[];
         $totalentries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->count();
         if(isset($request->eventId) && isset($request->action)){
             switch ($request->action) {
@@ -127,28 +64,26 @@ class FentryControler extends Controller
                     $entries = Fentry::whereIn('stableid',$royalstables)->where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
                     $rsnupdates = array();
                     foreach ($entries as $entry) {
-                        if(isset($royallist[$entry->stableid])){
-                            if(count($royallist[$entry->stableid]) > 0){
-                                
-                                $snum = array();
-                                $snumlist = Arr::sort($royallist[$entry->stableid]);
-                                if($snumlist <= $totalentries){
-                                    $snum['code']=$entry->code;
-                                    $snum['startno']=$snumlist[0];
-                                    array_push($rsnupdates,$snum);
-                                }
-                                $royallist[$entry->stableid] = array_splice($snumlist,1,count($snumlist)-1);
-                            }
+                        $snum = array();
+                        $startno = Snpool::where('stableid',$entry->stableid)->where('userid',$entry->userid)->whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) <0')->orderBy('startno')->get()->first();
+                        if($startno <= $totalentries){
+                            $snum['code']=$entry->code;
+                            $snum['startno']=$startno->startno;
+                            array_push($rsnupdates,$snum);
+                            $startassigned = json_decode($startno->assigned ?? '{}',true);
+                            $startassigned[$request->eventId]=1;
+                            $startno->assigned = $startassigned;
+                            $startno->save();
                         }
                     }
                     if(count($rsnupdates)>0){
-                        // Multi::insertOrUpdate($rsnupdates,'fentries');
+                        Multi::insertOrUpdate($rsnupdates,'fentries');
                         return response()->json(['msg'=>sprintf('Updated %s entries',count($rsnupdates)), 'entries'=>$rsnupdates]);
                     }
                     return response()->json(['msg'=>'No entries updated.']);
                     break;
                 case 'others':
-                    $exclude = [4,41,5,6,9,8,11,12,13,14,15,16,17,18,19,20,86,21,22,23,87,88,89,42,39,43,48,40,49,50,51,52,56,53,54,55,57,58,59,60,61,62,63,64,65,66,44,45,46,47,67,68,69,70,80,81,82,83,84,85,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,134,135,136,137,138,139,140,141,145,142,143,144,157,158,159,146,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,147,148,34,35,36,37,195,196,197,198,199,200,149,150,151,152,153,201,202,203,204,154,205,206,155,156,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,38,252,253,254,256,255,257,258,79,259,260,261,24,25,262,263,264,72,27,28,29,76,73,31,32,33,75,127,128,129,71
+                    $exclude = [1,2,3,7,10,4,41,5,6,9,8,11,12,13,14,15,16,17,18,19,20,86,21,22,23,87,88,89,42,39,43,48,40,49,50,51,52,56,53,54,55,57,58,59,60,61,62,63,64,65,66,44,45,46,47,67,68,69,70,80,81,82,83,84,85,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,134,135,136,137,138,139,140,141,145,142,143,144,157,158,159,146,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,147,148,34,35,36,37,195,196,197,198,199,200,149,150,151,152,153,201,202,203,204,154,205,206,155,156,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,38,252,253,254,256,255,257,258,79,259,260,261,24,25,262,263,264,72,27,28,29,76,73,31,32,33,75,127,128,129,71
                     ,265,78,74,35,36,37,126,77,30,266,38,26,34,267,268];
                     $collection = collect(range(1,$totalentries+100))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
                     $entries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
