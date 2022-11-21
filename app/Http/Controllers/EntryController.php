@@ -20,6 +20,42 @@ class EntryController extends Controller
     //
     protected $model = 'entry';
 
+    /**
+     * Triggers GET /[model]/create
+     *
+     * @param Request $request
+     */
+    public function createForm(Request $request) {
+        $tpl_vars = [];
+        $raceid = $request->get('raceid');
+        $httpClient = new \GuzzleHttp\Client();
+        $event_url = 'https://ebe.eiev-app.ae/api/uaeerf/eventlist?params[SearchEventCode]='.$raceid;
+        $options = [
+            'headers' => [
+                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+            ],
+        ];
+        $eventResponse = $httpClient->request('POST', $event_url, $options);
+        $eventJson = json_decode($eventResponse->getBody());
+        $event = $eventJson->events->data;
+
+        // if($event[0]->)
+        $clDate = substr($event[0]->closingdate, 0, 10);
+        if ($clDate < now()) {
+            $this->flashMsg(sprintf('%s', 'Forbidden Action. Entry is already closed'), 'warning');
+            return redirect('/race');
+        }
+        
+        if (method_exists($this, 'prepTPLVars')) {
+            $tpl_vars = $this->prepTPLVars();
+        }
+
+        $tpl_vars[$this->model] = ServiceProvider::{$this->model}();
+        $tpl_vars['page'] = 'create';
+        
+        return view(self::FORM_TPL, $tpl_vars);
+    }
+
     public function horseRider($userId) {
         // $horses = HorseModel::select('name', 'originalName', 'horse_id')
         //         ->join('owners', 'owners.owner_id', '=', 'horses.owner_id')
@@ -40,7 +76,6 @@ class EntryController extends Controller
         $stableId = '';
         $userId = '';
         $profile = session()->get('profile');
-        
 
         $horse_url = 'https://ebe.eiev-app.ae/api/uaeerf/horselist?params[StableID]='.$profile->stableid;
         if (isset($profile->stableid) && $profile->stableid == "E0000014") {
@@ -83,7 +118,7 @@ class EntryController extends Controller
         $raceid = $request->get('raceid');
         if(!isset($request->raceid)){
             $this->flashMsg(sprintf('%s', 'Entry details is incomplete. Please try again.'), 'warning');
-                return redirect('/race');
+            return redirect('/race');
         }
         $options = [
             'headers' => [
