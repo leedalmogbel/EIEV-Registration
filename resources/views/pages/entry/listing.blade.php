@@ -1,105 +1,96 @@
-<div class="table-responsive">
-    <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th width="300">Race</th>
-                <th>Location</th>
-                {{-- <th>Contact</th> --}}
-                <td>Race Dates</td>
-                <td>Status</td>
-                <th>Actions</th>
-                {{-- <th width="100" style="text-align:right">ACTIONS</th> --}}
-            </tr>
-        </thead>
-        {{-- @foreach (${Str::plural($modelName)} as $race) --}}
-
-        <tbody>
-            @foreach ($eef_events as $race)
-                @php
-                    $createRace = '#';
-                    $viewRace = '#';
-                    $clDate = substr($race->closingdate, 0, 10);
-                    if ($race->statusid == 11) {
-                        $createRace = '/entry/create?raceid=' . $race->raceid;
-                        $viewRace = '/entry?raceid=' . $race->raceid;
-                        if ($clDate < now()) {
-                            $createRace = '#';
-                        }
-                    }
-                    $statusclass = '';
-                    $statuslabel = '';
-                    if ($race->statusid == 11) {
-                        $statusclass = 'text-success';
-                        $statuslabel = 'Open for Entries';
-                        if ($clDate < now()) {
-                            $statusclass = 'text-danger';
-                            $statuslabel = 'Closed';
-                        }
-                    } elseif ($race->statusid == 1) {
-                        $statusclass = 'text-pending';
-                        $statuslabel = 'Pending';
-                    } else {
-                        $statusclass = 'text-danger';
-                        $statuslabel = 'Closed';
-                    }
-                @endphp
-                <tr>
-                    <td>
-                        <div>{{ $race->racename }}</div>
-                    </td>
-                    <td>{{ $race->racelocation }}</td>
-                    {{-- <td>
-                <div>{{ $race->contact['person'] }}</div>
-                <div><small class="text-success">{{ $race->contact['number'] }}</small></div>
-            </td> --}}
-                    <td>
-                        <div>Race Date: <strong>{{ date('M d, Y', strtotime($race->racetodate)) }}</strong></div>
-                        <div>From Date: <strong>{{ date('M d, Y', strtotime($race->racefromdate)) }}</strong></div>
-                        <div>To Date: <strong>{{ date('M d, Y', strtotime($race->racetodate)) }}</strong></div>
-                    </td>
-                    <td>
-                        <div>
-                            <small class={{ $statusclass }}>{{ $statuslabel }}</small>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            @if ($race->statusid == 11)
-                                @if ($clDate < now())
-                                    <a href="{{ $createRace }}" class='btn btn-danger disabled' id="add-entry"><i
-                                            class="fa-solid fa-plus"></i> Add Entry</a>
-                                    <a href="{{ $viewRace }}" class='btn btn-main' id="view-entry"><i
-                                            class="fa-regular fa-eye"></i> View Entry</a>
-                                @else
-                                    <a href="{{ $createRace }}" class='btn btn-main' id="add-entry"><i
-                                            class="fa-solid fa-plus"></i> Add Entry</a>
-                                    <a href="{{ $viewRace }}" class='btn btn-main' id="view-entry"><i
-                                            class="fa-regular fa-eye"></i> View Entry</a>
-                                @endif
-                            @else
-                                <a href="{{ $createRace }}" class='btn btn-danger disabled'id="add-entry"><i
-                                        class="fa-solid fa-plus"></i> Add Entry</a>
-                                <a href="{{ $viewRace }}" class='btn btn-danger disabled' id="view-entry"><i
-                                        class="fa-regular fa-eye"></i> View Entry</a>
-                            @endif
-                        </div>
-                    </td>
-                    {{-- <td>
-                @include('partials.status', ['status' => $race->status])
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>Horse</th>
+        <th>Rider</th>
+        <th>Trainer</th>
+        <th>Stable</th>
+        <th>Status</th>
+        <th>Remarks</th>
+        <th width="100" style="text-align:right">ACTIONS</th>
+    </tr>
+    @foreach ($eef_entries as $entry)
+        {{-- @foreach (${Str::plural($modelName)} as $entry) --}}
+        <tr>
+            <td>
+                <div>{{ $entry->horsename }}</div>
+                <div class="text-secondary">{{ $entry->horsenfid }}</div>
+                <div class="text-secondary">{{ $entry->horsefeiid }}</div>
             </td>
-            <td style="text-align: right">
-                @include('partials.actions', [
-                    'object' => $race,
-                    'actions' => [
-                        '<i class="fa-solid fa-check"></i> Add Entry' => [
-                            'href' => '/entry/create?race_id=' . $race->race_id,
-                            'class' => 'boom-panes',
-                        ],
-                    ],
-                ])
-            </td> --}}
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+            <td>
+                <div>{{ $entry->ridername }}</div>
+                <div class="text-secondary">{{ $entry->ridernfid }}</div>
+                <div class="text-secondary">{{ $entry->riderfeiid }}</div>
+
+            </td>
+            <td>
+                <div>{{ $entry->trainername }}</div>
+                <div class="text-secondary">{{ $entry->trainernfid }}</div>
+                <div class="text-secondary">{{ $entry->trainerfeiid }}</div>
+            </td>
+            <td>
+                {{ $entry->stablename }}
+            </td>
+            <td>
+                {{-- @include('partials.status', ['status' => $entry->status]) --}}
+
+                @if ($entry->status == 'Pending' && $entry->review == '0')
+                    {{ 'Pending for review' }}
+                @elseif ($entry->status == 'Pending' && $entry->review != '0')
+                    {{ 'Pending for acceptance' }}
+                @else
+                    {{ $entry->status }}
+                @endif
+            </td>
+            <td>{{ $entry->remarks }}</td>
+            <td>
+                {{-- @include('partials.actions', ['object' => $entry]) --}}
+                <div>
+                    @if ($entry->status == 'Eligible' ||
+                        $entry->status == 'Accepted' ||
+                        ($entry->status == 'Pending' && $entry->review != '0'))
+                        <a id="withdrawn"
+                            href="/entry/withdrawn?raceid={{ $entry->eventcode }}&entrycode={{ $entry->code }}&status=withdrawn"
+                            class="btn btn-danger">
+                            <i class="fa-solid fa-eject"></i>
+                            Withdrawn
+                        </a>
+                    @else
+                        No Action Available
+                    @endif
+                    {{-- <a href="/entry?raceid={{ $race->raceid }}" class="btn btn-main" id="view-entry"><i
+							class="fa-regular fa-eye"></i> View Entry</a> --}}
+                </div>
+            </td>
+        </tr>
+    @endforeach
+</table>
+<script type="text/tpl" id="swap-form">
+	<p>Are you sure to withdraw?</p>
+</script>
+<script>
+    $(document).on('click', '#withdrawn', function(e) {
+        e.preventDefault();
+        let self = this;
+        const href = $(self).attr('href');
+
+        $.confirm({
+            title: 'Withdrawn Entry',
+            columnClass: 'col-md-8',
+            content: $('#swap-form').html(),
+            buttons: {
+                'I Agree': {
+                    btnClass: 'btn-main',
+                    action: function() {
+                        window.location.href = href
+                    }
+                },
+                'I Disagree': {
+                    btnClass: 'btn-danger',
+                    action: function() {
+
+                    }
+                }
+            }
+        });
+    });
+</script>
