@@ -96,7 +96,7 @@ class EntryController extends Controller
         foreach ($reqData as $key => $value) {
             if (!isset($reqData[$key]['horse']) || !isset($reqData[$key]['rider'])) {
                 $this->flashMsg(sprintf('%s must not be empty', ucwords($this->model)), 'warning');
-                return redirect(URL::full());
+                return redirect(URL::current());
             }
             $horseid = $reqData[$key]['horse'];
             $riderid = $reqData[$key]['rider'];
@@ -108,7 +108,7 @@ class EntryController extends Controller
 
             if($entryCode[$key]['entry']->entrycode === '0') {
                 $this->flashMsg(sprintf('%s', $entryCode[$key]['entry']->msgs[0]), 'warning');
-                return redirect(URL::full());
+                return redirect(URL::current());
             }
 
             $fEntries[$key] = array(
