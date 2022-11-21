@@ -119,6 +119,7 @@ class FentryControler extends Controller
         $royallist["E0000613"]=[];
         $royallist["E0000617"]=[];
         $royallist["E0000639"]=[];
+        $totalentries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->count();
         if(isset($request->eventId) && isset($request->action)){
             switch ($request->action) {
                 case 'royal':
@@ -128,11 +129,14 @@ class FentryControler extends Controller
                     foreach ($entries as $entry) {
                         if(isset($royallist[$entry->stableid])){
                             if(count($royallist[$entry->stableid]) > 0){
+                                
                                 $snum = array();
                                 $snumlist = Arr::sort($royallist[$entry->stableid]);
-                                $snum['code']=$entry->code;
-                                $snum['startno']=$snumlist[0];
-                                array_push($rsnupdates,$snum);
+                                if($snumlist <= $totalentries){
+                                    $snum['code']=$entry->code;
+                                    $snum['startno']=$snumlist[0];
+                                    array_push($rsnupdates,$snum);
+                                }
                                 $royallist[$entry->stableid] = array_splice($snumlist,1,count($snumlist)-1);
                             }
                         }
@@ -144,10 +148,22 @@ class FentryControler extends Controller
                     return response()->json(['msg'=>'No entries updated.']);
                     break;
                 case 'others':
-                    $exclude = [1,2,3,7,10];
-                    $collection = collect(range(1,$request->size??400))->map(function ($n){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
+                    $exclude = [1,2,3,7,10,41,8,86,87,88,89,42,43,48,44,45,46,47,145,146,147,148,34,35,36,37,149,150,151,152,153,154,155,156,38,79,24,25,72,27,28,29,76,73,31,32,33,75,127,128,129,71
+                    ,78,74,35,36,37,126,77,30,38,26,34];
+                    $collection = collect(range(1,$totalentries+50))->map(function ($n){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
                     $entries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
+                    $osnupdates = array();
                     if($entries){
+                        foreach ($entries as $entry) {
+                            $snum['code']=$entry->code;
+                            $snum['startno']=$snumlist[0]."W";
+                            array_push($osnupdates,$snum);
+                        }
+                        if(count($osnupdates)>0){
+                            Multi::insertOrUpdate($osnupdates,'fentries');
+                            return response()->json(['msg'=>sprintf('Updated %s entries',count($osnupdates)), 'entries'=>$osnupdates]);
+                        }
+
                     }
                     break;
             }
