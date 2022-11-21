@@ -1,6 +1,6 @@
 @extends('layouts.tapp')
 @section('content')
-    <div class="col-9">
+    <div class="">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         @php
@@ -250,7 +250,14 @@
                         },
                         {...print,exportOptions:{columns:'.a-export'}}
                     ],
-                    responsive:responsive
+                    responsive:responsive,
+                    columnDefs: [
+                        {
+                            target: 'hide',
+                            visible: false,
+                            searchable: false,
+                        },
+                    ]
                 });
                 let pfa = $('#pfa').DataTable({
                     dom: dom,
@@ -270,7 +277,14 @@
                         },
                         {...print,exportOptions:{columns:'.a-export'}}
                     ],
-                    responsive:responsive
+                    responsive:responsive,
+                    columnDefs: [
+                        {
+                            target: 'hide',
+                            visible: false,
+                            searchable: false,
+                        },
+                    ]
                 });
                 let prov = $('#prov').DataTable({
                     dom: dom,
@@ -317,7 +331,14 @@
                         },
                         {...print,exportOptions:{columns:'.a-export'}}
                     ],
-                    responsive:responsive
+                    responsive:responsive,
+                    columnDefs: [
+                        {
+                            target: 'hide',
+                            visible: false,
+                            searchable: false,
+                        },
+                    ]
                 });
                 let pfr = $('#pfr').DataTable({
                     dom: dom,
@@ -337,7 +358,14 @@
                         },
                         {...print,exportOptions:{columns:'.a-export'}}
                     ],
-                    responsive:responsive
+                    responsive:responsive,
+                    columnDefs: [
+                        {
+                            target: 'hide',
+                            visible: false,
+                            searchable: false,
+                        },
+                    ]
                 });
                 let re = $('#re').DataTable({
                     dom: dom,
@@ -357,7 +385,14 @@
                         },
                         {...print,exportOptions:{columns:'.a-export'}}
                     ],
-                    responsive:responsive
+                    responsive:responsive,
+                    columnDefs: [
+                        {
+                            target: 'hide',
+                            visible: false,
+                            searchable: false,
+                        },
+                    ]
                 });
                 if(urlParams.has('SearchEventID')){
                     const val = urlParams.get('SearchEventID');

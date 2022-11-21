@@ -40,9 +40,9 @@
 	</head>
 	<body>
 		<div class="container-fluid">
-			<div class="row no-gutters">
-				@include('layouts.tsidebar')
-        @yield('content')
+            <div class="row no-gutters">
+                @include('layouts.tsidebar')
+                @yield('content')
 			</div>
 		</div>
 		<div class="modal-overlay"></div>
@@ -51,7 +51,7 @@
              toastr["{{ Session::has('message_type') ? Session::get('message_type') : 'info' }}"]('{{ __(Session::get('message')) }}');
             </script> @endif
         <script>
-            $('.sidebar').height($(document).height());
+            // $('.sidebar').height($(document).height());
 
             const overlayPage = (show) => {
                 if (show) {
