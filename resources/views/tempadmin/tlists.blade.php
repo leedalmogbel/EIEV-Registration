@@ -60,24 +60,24 @@
                         <thead>
                             <tr>
                                 
-                                <th>START NO</th>
-                                <th>STABLE</th>
-                                <th>OWNER</th>
-                                <th>TRAINER</th>
-                                <th>HORSE</th>
-                                <td>EEF ID|FEI ID</td>
-                                <th>GENDER</th>
-                                <th>COLOR</th>
-                                <th>YOB</th>
-                                <th>RIDER</th>
-                                <th>EEF ID|FEI ID</th>
-                                <th>GENDER</th>
+                                <th class="export">START NO</th>
+                                <th class="export">STABLE</th>
+                                <th class="export">OWNER</th>
+                                <th class="export">TRAINER</th>
+                                <th class="export">HORSE</th>
+                                <td class="export">EEF ID|FEI ID</td>
+                                <th class="export">GENDER</th>
+                                <th class="export">COLOR</th>
+                                <th class="export">YOB</th>
+                                <th class="export">RIDER</th>
+                                <th class="export">EEF ID|FEI ID</th>
+                                <th class="export">GENDER</th>
                                 @if(!in_array($key,["re","pdf","pfr"]))
                                     <th class="export">QR</th>
                                 @else
-                                    <th>Remarks</th>
+                                    <th class="export">Remarks</th>
                                 @endif
-                                <th>Status</th>
+                                <th class="export">Status</th>
                                 @if(!in_array($key,["re","pdf","pfr"]))
                                     <th width="100" style="text-align:right">ACTIONS</th>
                                 @endif 
@@ -170,16 +170,16 @@
             $(document).ready(function(e) {
                 $('#final').DataTable();
                 $('#pfa').DataTable();
-                $('#prov').DataTable();
+                // $('#prov').DataTable();
                 $('#royprov').DataTable();
                 $('#pfr').DataTable();
                 $('#re').DataTable();
                 // const copy = 'copy';
                 // const csv = 'csv';
-                // const excel = {extend:'excel',messageTop:null,messageBottom:null,title:null};
+                const excel = {extend:'excel',messageTop:null,messageBottom:null,title:null};
                 // const pdf = 'pdf';
                 // const print = 'print';
-                // const dom = '<"container-fluid"<"row"<"col"<"col"l><"col"f>><"col"B>>>rtip';
+                const dom = '<"container-fluid"<"row"<"col"<"col"l><"col"f>><"col"B>>>rtip';
                 // const responsive = false;
                 const d = JSON.parse('{!! json_encode((object)$events) !!}');
                 // const f = JSON.parse('{!! json_encode((object)$eventnames) !!}');
@@ -209,18 +209,18 @@
                 //     },copy,csv,{...excel, filename:`(For Approval List) ${f[eventval]}`},pdf,print],
                 //     responsive:responsive
                 // });
-                // let prov = $('#prov').DataTable({
-                //     dom: dom,
-                //     buttons:[
-                //     {
-                //         text: 'Show/Hide Export Data',
-                //         action: function ( e, dt, node, config ) {
-                //             prov.columns('.export').visible(this.active());
-                //             this.active(!this.active());
-                //         }
-                //     },copy,csv,{...excel, filename:`(Provisional List) ${f[eventval]}`},pdf,print],
-                //     responsive:responsive
-                // });
+                let prov = $('#prov').DataTable({
+                    dom: dom,
+                    buttons:[
+                    {
+                        text: 'Show/Hide Export Data',
+                        action: function ( e, dt, node, config ) {
+                            prov.columns('.export').visible(this.active());
+                            this.active(!this.active());
+                        }
+                    },copy,csv,{...excel, filename:`(Provisional List) ${f[eventval]}`},pdf,print],
+                    responsive:responsive
+                });
                 // let royprov = $('#royprov').DataTable({
                 //     dom: dom,
                 //     buttons:[
