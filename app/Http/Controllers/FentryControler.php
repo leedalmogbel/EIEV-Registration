@@ -6,6 +6,7 @@ use App\Models\Fentry;
 use App\Models\Fevent;
 use App\Models\Userprofile;
 use App\Models\Multi;
+use App\Models\Fstable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\FederationController;
 use Illuminate\Support\Facades\Artisan;
