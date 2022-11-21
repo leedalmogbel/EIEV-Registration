@@ -57,7 +57,7 @@ if(isset($_GET['stablename'])){
 @foreach (${Str::plural($modelName)} as $key => $lists)
 <h1>{{Str::upper($titles[$key]). ' - Total Entries : ' }}{{count($lists)}}</h1>
 <div class="table-responsive mt-2">
-<table id={{$key}} class="table table-striped table-bordered table-responsive">
+<table id={{$key}} class="table table-striped table-bordered">
     <thead>
         <tr>
             <!-- <th>StartNo</th>
@@ -183,9 +183,7 @@ if(isset($_GET['stablename'])){
 </table>
 </div>
 @endforeach
-<div class="row mb-2">
-    <div class="col text-center fs-3"><h1>Overall Entries: {{$total}}</h1></div>
-</div>
+
 @endif
 </div>
 <script type="text/javascript">
