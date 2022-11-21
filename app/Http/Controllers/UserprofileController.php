@@ -7,6 +7,7 @@ use App\Models\Reusable;
 use App\Models\Multi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class UserprofileController extends Controller
 {
@@ -70,6 +71,16 @@ class UserprofileController extends Controller
         if(count($uniqueids)>0){
             Multi::insertOrUpdate($uniqueids,'userprofiles');
         }
+    }
+
+    public function getQr(Request $request)
+    {
+        $profile = UserProfile::where('userid',$request->userid)->first();
+        if($profile){
+            return QrCode::style($request->style??'square')->encoding('UTF-8')->size($request->size ?? 200)->generate($profile->uniqueid);
+        //    return response(QrCode::encoding('UTF-8')->size(500)->generate('hello'))->header('Content-type','image/png');
+        }
+        return response()->json(['msg'=>'No profile found'],400);
     }
 
     /**

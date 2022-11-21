@@ -7,6 +7,7 @@ use App\Http\Controllers\UserprofileController;
 use App\Http\Controllers\FederationSyncController;
 use App\Http\Controllers\FriderController;
 use App\Http\Controllers\FeventController;
+use App\Http\Controllers\FentryControler;
 use App\Http\Controllers\FhorseController;
 use App\Http\Middleware\EnsureClientIsValid;
 use App\Http\Middleware\EnsureClientIsFed;
@@ -60,7 +61,9 @@ Route::group(['middleware'=>[EnsureClientIsFed::class],'prefix'=>'uaeerf'],funct
 
 Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
+    Route::get('startnum',[FentryControler::class,'generateStartnumber']);
 });
 Route::domain('localhost')->group(function(){
+    Route::get('getqrcode',[UserprofileController::class,'getQr']);
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
 });

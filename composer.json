@@ -15,6 +15,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "monarobase/country-list": "^3.3",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-short-schedule": "^1.4",
         "spatie/laravel-tail": "^4.3"
     },

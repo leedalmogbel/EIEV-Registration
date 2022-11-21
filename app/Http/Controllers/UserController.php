@@ -122,7 +122,6 @@ class UserController extends Controller
             if (isset(session()->get('role')->home_url)) {
                 $url = session()->get('role')->home_url;
             }
-    
             session()->put('profile', $loginSuccess->uprofile);
             return redirect($url);
         }else{
