@@ -54,7 +54,7 @@
                                         $clDate = substr($event->closingdate, 0, 10);
                                         $opening = strpos($opDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y H:i:s', strtotime($event->openingdate));
                                         $closing = strpos($clDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y H:i:s', strtotime($event->closingdate));
-                                        if ($event->statusname != 'Pending') {
+                                        if ($event->statusid == 11) {
                                             $racepath = '/entry/create?raceid=' . $event->raceid;
                                         }
                                     @endphp

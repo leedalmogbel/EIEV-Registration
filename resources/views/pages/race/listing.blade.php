@@ -27,19 +27,43 @@
                     <div>From Date: <strong>{{ date('M d, Y', strtotime($race->racefromdate)) }}</strong></div>
                     <div>To Date: <strong>{{ date('M d, Y', strtotime($race->racetodate)) }}</strong></div>
                 </td>
-                <td><div><small class={{$race->statusname == "Pending" ? 'text-danger' :'text-success'}}>{{$race->statusname}}</small></div></td>
+                <td>
+                    <div><small
+                            class={{ $race->statusname == 'Pending' ? 'text-danger' : 'text-success' }}>{{ $race->statusname }}</small>
+                    </div>
+                </td>
                 <td>
                     <div>
-                        @if($race->statusname == 'Pending')
-                        <a href="/entry/create?raceid={{ $race->raceid }}" class='btn btn-danger disabled'id="add-entry"><i
-                                class="fa-solid fa-plus"></i> Add Entry</a>
-                        <a href="/entry?raceid={{ $race->raceid }}" class='btn btn-danger disabled' id="view-entry"><i
-                                class="fa-regular fa-eye"></i> View Entry</a>
-                                @else
-                                <a href="/entry/create?raceid={{ $race->raceid }}" class='btn btn-main' id="add-entry"><i
-                                        class="fa-solid fa-plus"></i> Add Entry</a>
-                                <a href="/entry?raceid={{ $race->raceid }}" class='btn btn-main' id="view-entry"><i
-                                        class="fa-regular fa-eye"></i> View Entry</a>
+                        @php
+                            $createRace = '#';
+                            $viewRace = '#';
+                            if ($race->statusid == 11) {
+                                $createRace = '/entry/create?raceid=' . $race->raceid;
+                                $viewRace = '/entry?raceid=' . $race->raceid;
+                            }
+                            $statusclass = '';
+                            $statuslabel = '';
+                            if ($race->statusid == 11) {
+                                $statusclass = 'text-success';
+                                $statuslabel = 'Open for Entries';
+                            } elseif ($race->statusid == 1) {
+                                $statusclass = 'text-pending';
+                                $statuslabel = 'Pending';
+                            } else {
+                                $statusclass = 'text-danger';
+                                $statuslabel = 'Closed';
+                            }
+                        @endphp
+                        @if ($race->statusid == 11)
+                            <a href="/entry/create?raceid={{ $createRace }}" class='btn btn-main' id="add-entry"><i
+                                    class="fa-solid fa-plus"></i> Add Entry</a>
+                            <a href="/entry?raceid={{ $viewRace }}" class='btn btn-main' id="view-entry"><i
+                                    class="fa-regular fa-eye"></i> View Entry</a>
+                        @else
+                            <a href="{{ $createRace }}" class='btn btn-danger disabled'id="add-entry"><i
+                                    class="fa-solid fa-plus"></i> Add Entry</a>
+                            <a href="{{ $viewRace }}" class='btn btn-danger disabled' id="view-entry"><i
+                                    class="fa-regular fa-eye"></i> View Entry</a>
                         @endif
                     </div>
                 </td>
