@@ -89,7 +89,7 @@ class Fentry extends Model
     // race includes
     public function GetRacestartcodeAttribute()
     {
-        $fevent = Fevent::where('raceid','like',strval(intval($this->eventcode ?? 0)))->first();
+        $fevent = Fevent::where('raceid','like','%'.strval(intval($this->eventcode ?? 0).'%'))->first();
         if($fevent){
             return $fevent->startcode;
         }
