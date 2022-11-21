@@ -58,6 +58,19 @@ class FentryControler extends Controller
     {
         if(isset($request->eventId) && isset($request->action)){
             $totalentries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->count();
+            if(isset($request->recalc)){
+                $pool = Snpool::where('active',1)->get();
+                if($pool){
+                    foreach ($pool as $sn) {
+                        $startassigned = json_decode($startno->assigned ?? '{}',true);
+                        if(isset($startassigned[$request->eventId])){
+                            unset($startassigned[$request->eventId]);
+                            $sn->assigned = $startassigned;
+                            $sn->save();
+                        }
+                    }
+                }
+            }
             switch ($request->action) {
                 case 'royal':
                     $royalstables = Fstable::where('category','Royal')->pluck('stableid')->toArray();
@@ -86,7 +99,7 @@ class FentryControler extends Controller
                     break;
                 case 'others':
                     $exclude = Snpool::whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) >0')->orWhere('active',0)->pluck('startno')->toArray();
-                    $collection = collect(range(1,$totalentries+100))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
+                    $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
                     $entries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
                     $osnupdates = array();
                     if($entries){
@@ -103,8 +116,8 @@ class FentryControler extends Controller
                     }
                     break;
             }
-            // return response()->json(['entries'=>$entries,'count'=>$tentries]);
         }
+        return response()->json(['msg'=>'No action needed.'],400);
     }
 
     public function getlists(Request $request)
