@@ -25,12 +25,11 @@
                 <select class="select-2-basic form-select col-12 text-center fs-5" style="height:75px;" name="eventid" id="eventid">
                     <option disabled selected value="defval">Event ID : EVENT NAME | EVENT DATE | OPENING | CLOSING</option>
                     @foreach($events as $k => $v)
-                    <div>@php gettype($k) @endphp</div>
-                    @if($eventid > 0 && $eventid == intval($k))
-                        <option id={{$k}} selected value={{$k}}><p>{{$v}}</p></option>
-                    @else
-                        <option id={{$k}} value={{$k}}><p>{{$v}}</p></option>
-                    @endif
+                        @if($eventid > 0 && $eventid == intval($k))
+                            <option id={{$k}} selected value={{$k}}><p>{{$v}}</p></option>
+                        @else
+                            <option id={{$k}} value={{$k}}><p>{{$v}}</p></option>
+                        @endif
                     @endforeach
                 </select>
             </div>
@@ -38,12 +37,11 @@
                 <div class="mt-1 form-floating">
                     <select class="stable-select select-2-basic form-select col-12 text-center fs-5" multiple="multiple" style="height:75px;" name="stableid" id="stableid">
                         @foreach($stables as $k=>$v)
-                        <div>@php gettype($k) @endphp</div>
-                        @if(in_array($k,$stableidlist))
-                            <option id={{$k}} selected value={{$k}}><p>{{$v}}</p></option>
-                        @else
-                            <option id={{$k}} value={{$k}}><p>{{$v}}</p></option>
-                        @endif
+                            @if(in_array($k,$stableidlist))
+                                <option id={{$k}} selected value={{$k}}><p>{{$v}}</p></option>
+                            @else
+                                <option id={{$k}} value={{$k}}><p>{{$v}}</p></option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
@@ -61,28 +59,7 @@
                     <table id={{$key}} class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <!-- <th>StartNo</th>
-                                <th class="export">Rider FName</th>
-                                <th class="export">Rider LName</th>
-                                <th>RIDER EEF</th>
-                                <th>RIDER FEI</th>
-                                <th>RiderNationality</th>
-                                <th>Horse</th>
-                                <th>HORSE EEF</th>
-                                <th>HORSE FEI</th>
-                                <th>Sex</th>
-                                <th>Colour</th>
-                                <th>Breed</th>
-                                <th>YOB</th>
-                                <th class="export">Horse Chip</th>
-                                <th class="export">Rider Weight</th>
-                                <th>Owner</th>
-                                <th>Trainer</th>
-                                <th>Stable</th>
-                                <th class="export">Division</th>
-                                <th class="export">TEAM</th>
-                                <th class="export">Transponsder Code</th>
-                                @if(!in_array($key,["re","pdf","pfr"])) -->
+                                
                                 <th>START NO</th>
                                 <th>STABLE</th>
                                 <th>OWNER</th>
