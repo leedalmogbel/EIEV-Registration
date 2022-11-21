@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
 
-    <div class="content container col-9 col-md-9 col-xxl-10 align-items-center justify-content-center">
+    <div class="content container col col-md col-xl col-xxl-10 align-items-center justify-content-center">
         <div class="row counts py-5">
             <div class="col-md-4">
                 <div class="card image-container-horses">
@@ -56,6 +56,9 @@
                                         $closing = strpos($clDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y H:i:s', strtotime($event->closingdate));
                                         if ($event->statusid == 11) {
                                             $racepath = '/entry/create?raceid=' . $event->raceid;
+                                            if ($clDate < now()) {
+                                                $racepath = '#';
+                                            }
                                         }
                                     @endphp
                                     <a href="{{ $racepath }}">
@@ -70,6 +73,10 @@
                                                                 if ($event->statusid == 11) {
                                                                     $statusclass = 'text-success';
                                                                     $statuslabel = 'Open for Entries';
+                                                                    if ($clDate < now()) {
+                                                                        $statusclass = 'text-danger';
+                                                                        $statuslabel = 'Closed';
+                                                                    }
                                                                 } elseif ($event->statusid == 1) {
                                                                     $statusclass = 'text-pending';
                                                                     $statuslabel = 'Pending';
