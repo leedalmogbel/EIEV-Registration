@@ -182,7 +182,7 @@
                 const dom = '<"container-fluid"<"row"<"col"<"col"l><"col"f>><"col"B>>>rtip';
                 // const responsive = false;
                 const d = JSON.parse('{!! json_encode((object)$events) !!}');
-                // const f = JSON.parse('{!! json_encode((object)$eventnames) !!}');
+                const f = JSON.parse('{!! json_encode((object)$eventnames) !!}');
                 let urlParams = new URLSearchParams(window.location.search);
                 const eventval = urlParams.get('SearchEventID');
                 // let final = $('#final').DataTable({
