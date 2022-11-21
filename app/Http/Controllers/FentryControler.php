@@ -133,6 +133,7 @@ class FentryControler extends Controller
                                 $snum['code']=$entry->code;
                                 $snum['startno']=$snumlist[0];
                                 array_push($rsnupdates,$snum);
+                                $royallist[$entry->stableid] = array_splice($snumlist,0,0);
                             }
                         }
                     }
