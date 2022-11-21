@@ -55,9 +55,9 @@
                             }
                         @endphp
                         @if ($race->statusid == 11)
-                            <a href="/entry/create?raceid={{ $createRace }}" class='btn btn-main' id="add-entry"><i
+                            <a href="{{ $createRace }}" class='btn btn-main' id="add-entry"><i
                                     class="fa-solid fa-plus"></i> Add Entry</a>
-                            <a href="/entry?raceid={{ $viewRace }}" class='btn btn-main' id="view-entry"><i
+                            <a href="{{ $viewRace }}" class='btn btn-main' id="view-entry"><i
                                     class="fa-regular fa-eye"></i> View Entry</a>
                         @else
                             <a href="{{ $createRace }}" class='btn btn-danger disabled'id="add-entry"><i
