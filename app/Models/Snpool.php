@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Snpool extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'userid',
+        'stableid',
+        'startno'
+    ];
 }
