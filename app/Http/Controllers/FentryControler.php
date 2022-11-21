@@ -65,7 +65,7 @@ class FentryControler extends Controller
                     $rsnupdates = array();
                     foreach ($entries as $entry) {
                         $snum = array();
-                        $startno = Snpool::where('stableid',$entry->stableid)->where('userid',$entry->userid)->whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) <0')->orderBy('startno')->first();
+                        $startno = Snpool::where('stableid',$entry->stableid)->where('userid',$entry->userid)->where('active',1)->whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) <0')->orderBy('startno')->first();
                         if($startno){
                             if($startno->startno <= $totalentries){
                                 $snum['code']=$entry->code;
@@ -85,7 +85,7 @@ class FentryControler extends Controller
                     return response()->json(['msg'=>'No entries updated.']);
                     break;
                 case 'others':
-                    $exclude = [1,2,3,7,10];
+                    $exclude = Snpool::whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) >0')->orWhere('active',0)->pluck('startno')->toArray();
                     $collection = collect(range(1,$totalentries+100))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
                     $entries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
                     $osnupdates = array();
