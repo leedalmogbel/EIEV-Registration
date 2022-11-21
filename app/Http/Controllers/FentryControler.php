@@ -202,19 +202,19 @@ class FentryControler extends Controller
         $rentries = Fentry::query();
         //royal for president cup
         $pcentries = Fentry::query();
-        $fentries = $fentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('status', 'Accepted');
-        $eentries = $eentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"1")->whereIn('status',['Pending','Eligible']);
-        $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"3")->where('status', 'Pending')->where('review','<>','0');
-        $reventries = $reventries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->where('status','Pending')->where('review','0');
-        $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn']);
-        $pcentries = $pcentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0');
+        $fentries = $fentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('status', 'Accepted')->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+        $eentries = $eentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"1")->whereIn('status',['Pending','Eligible'])->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+        $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"3")->where('status', 'Pending')->where('review','<>','0')->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+        $reventries = $reventries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->where('status','Pending')->where('review','0')->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+        $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn'])->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+        $pcentries = $pcentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0')->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
         if(isset($request->stablename)){
-            $fentries = $fentries->whereIn('stablename',explode(',',$request->stablename));
-            $eentries = $eentries->whereIn('stablename',explode(',',$request->stablename));
-            $pentries = $pentries->whereIn('stablename',explode(',',$request->stablename));
-            $reventries = $reventries->whereIn('stablename',explode(',',$request->stablename));
-            $rentries = $rentries->whereIn('stablename',explode(',',$request->stablename));
-            $pcentries = $pcentries->whereIn('stablename',explode(',',$request->stablename));
+            $fentries = $fentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+            $eentries = $eentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+            $pentries = $pentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+            $reventries = $reventries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+            $rentries = $rentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+            $pcentries = $pcentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
         }
         $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
         $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
