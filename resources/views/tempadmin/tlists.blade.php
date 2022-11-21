@@ -161,7 +161,9 @@
                     </table>
                 </div>
             @endforeach
-
+            <div class="row mb-2">
+                <div class="col text-center fs-3"><h1>Overall Entries: {{$total}}</h1></div>
+            </div>
         @endif
     </div>
         <script type="text/javascript">
