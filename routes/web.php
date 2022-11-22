@@ -187,6 +187,11 @@ Route::domain('localhost')->group(function ()
         Route::get('/',[FentryControler::class,'entryadd']);
         Route::get('/add',[FentryControler::class,'addentry']);
     });
+    Route::group(['prefix'=>'actions'],function ()
+    {
+        Route::get('/',[FentryControler::class,'actions']);
+        Route::get('/add',[FentryControler::class,'addentry']);
+    });
 });
 
 // custom routes

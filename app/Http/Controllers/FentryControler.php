@@ -333,6 +333,18 @@ class FentryControler extends Controller
         return view('tempadmin.tentry',['modelName'=>'submitentry','profiles'=>$profiles]);
     }
 
+    public function actions(Request $request)
+    {
+        if(isset($request->code)){
+            $profile = Userprofile::where('uniqueid',$request->code)->first();
+            if($profile){
+                $actions = ['entryadd'=>'Add Entry','entryswap'=>'Swap Entry','entrysub'=>'Change Rider'];
+                return view('tempadmin.tactions',['actions'=>$actions,'profile'=>$profile]);
+            }
+        }
+        return view('tempadmin.tactions',['actions'=>[],'profile'=>[]]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
