@@ -225,12 +225,21 @@ class FederationController extends Controller
                   $xml.='<'.$key.'>'.$request->params[$key].'</'.$key.'>';
               }
             }
+            if($request->action == "UpdateEntry"){
+              $xml.='<msg></msg>';
+            }
             $xml.='</'.$request->action.'>';
           }
         }
-        $xml.='<msg></msg>
-        </soap:Body>
-      </soap:Envelope>';
+        if($request->action == "UpdateEntry"){
+          $xml .='</soap:Body>
+       </soap:Envelope>';
+        }else{
+          $xml.='<msg></msg>
+          </soap:Body>
+       </soap:Envelope>';
+        }
+        
         $options = [
             'headers' => [
                 'Content-Type' => 'text/xml; charset=utf-8',
@@ -279,6 +288,9 @@ class FederationController extends Controller
             break;
           case 'SearchTrainerListV5':
             return $this->extractData((string)$response->getBody(),'@UserLoginResult|uprofile-LastestUpdate|latestupdate-IsActive|isactive-Email|email-UserId|userid-Fname|fname-Lname|lname-MobileNo|mobileno-Dob|bday-Stable_ID|stableid-Stable_Name|stablename',$debug);
+            break;
+          case 'UpdateEntry':
+            return $this->extractData((string)$response->getBody(),'UpdateEntryResult|updated',$debug); 
             break;
           case 'UserLogin':
             return $this->extractData((string)$response->getBody(),'@UserLoginResult|uprofile-LastestUpdate|latestupdate-IsActive|isactive-Email|email-UserId|userid-Fname|fname-Lname|lname-MobileNo|mobileno-Dob|bday-Stable_ID|stableid-Stable_Name|stablename',$debug);

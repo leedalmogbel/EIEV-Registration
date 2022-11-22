@@ -78,9 +78,9 @@
                                 <th class="hide d-export">HorseOrigin</th>
                                 <th class="hide d-export">Horse Chip</th>
                                 <th class="hide d-export">Rider Weight</th>
-                                <th class="hide m-export d-export">Owner</th>
-                                <th class="hide m-export d-export">Trainer</th>
-                                <th class="hide m-export d-export">Stable</th>
+                                <th class="a-export m-export d-export">Owner</th>
+                                <th class="a-export m-export d-export">Trainer</th>
+                                <th class="a-export m-export d-export">Stable</th>
                                 <th class="hide m-export d-export">Division</th>
                                 <th class="hide m-export d-export">TEAM</th>
                                 <th class="hide m-export d-export">Transponsder Code</th>
@@ -235,9 +235,9 @@
                 let final = $('#final').DataTable({
                     dom: dom,
                     buttons:[
-                        {...excel, filename:`(Final List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
-                        {...excel, filename:`(Final List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
-                        {...excel, filename:`(Final List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...excel, filename:`(Final List) ${f[eventval]}_admin`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(Final List) ${f[eventval]}_media`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(Final List) ${f[eventval]}_timing`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
                         {...pdf, filename:`(Final List) ${f[eventval]}`, 
                         className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
                             customize : function(doc){
@@ -262,9 +262,9 @@
                 let pfa = $('#pfa').DataTable({
                     dom: dom,
                     buttons:[
-                        {...excel, filename:`(For Acceptance List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
-                        {...excel, filename:`(For Acceptance List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
-                        {...excel, filename:`(For Acceptance List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...excel, filename:`(For Acceptance List) ${f[eventval]}_admin`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(For Acceptance List) ${f[eventval]}_media`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(For Acceptance List) ${f[eventval]}_timing`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
                         {...pdf, filename:`(For Acceptance List) ${f[eventval]}`, 
                         className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
                             customize : function(doc){
@@ -316,9 +316,9 @@
                 let royprov = $('#royprov').DataTable({
                     dom: dom,
                     buttons:[
-                        {...excel, filename:`(Royal Provisional List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
-                        {...excel, filename:`(Royal Provisional List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
-                        {...excel, filename:`(Royal Provisional List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...excel, filename:`(Royal Provisional List) ${f[eventval]}_admin`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(Royal Provisional List) ${f[eventval]}_media`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(Royal Provisional List) ${f[eventval]}_timing`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
                         {...pdf, filename:`(Royal Provisional List) ${f[eventval]}`, 
                         className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
                             customize : function(doc){
@@ -343,9 +343,9 @@
                 let pfr = $('#pfr').DataTable({
                     dom: dom,
                     buttons:[
-                        {...excel, filename:`(For Review List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
-                        {...excel, filename:`(For Review List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
-                        {...excel, filename:`(For Review List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...excel, filename:`(For Review List) ${f[eventval]}_admin`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(For Review List) ${f[eventval]}_media`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(For Review List) ${f[eventval]}_timing`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
                         {...pdf, filename:`(For Review List) ${f[eventval]}`, 
                         className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
                             customize : function(doc){
@@ -370,9 +370,9 @@
                 let re = $('#re').DataTable({
                     dom: dom,
                     buttons:[
-                        {...excel, filename:`(Not Qualified List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
-                        {...excel, filename:`(Not Qualified List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
-                        {...excel, filename:`(Not Qualified List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...excel, filename:`(Not Qualified List) ${f[eventval]}_admin`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(Not Qualified List) ${f[eventval]}_media`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(Not Qualified List) ${f[eventval]}_timing`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
                         {...pdf, filename:`(Not Qualified List) ${f[eventval]}`, 
                         className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
                             customize : function(doc){
