@@ -199,3 +199,5 @@ Route::get('/logout', function () {
 Route::get('/dashboard', "DashboardController@index");
 Route::get('/generate-pdf', "DashboardController@entriesPDF");
 Route::get('/entry/withdrawn', "EntryController@withdrawn");
+Route::get('/me', 'UserController@me');
+Route::get('/qrcode', 'UserController@downloadQRCode');

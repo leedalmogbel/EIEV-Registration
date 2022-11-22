@@ -38,7 +38,7 @@
         </li>
         <li>
             <a href="/trainer" class="{{ $modelName == 'trainer' ? 'active' : '' }}">
-                <i class="fa fa-paw" aria-hidden="true"></i> Trainers
+                <i class="fa-solid fa-user-tie"></i> Trainers
             </a>
         </li>
         {{-- <li>
@@ -55,12 +55,12 @@
             <a href="/event" class="{{ $modelName == 'event' ? 'active' : '' }}">
                 <i class="fa fa-list" aria-hidden="true"></i> Events
             </a>
-        </li>
-        <li>
-            <a href="/stable" class="{{ $modelName == 'stable' ? 'active' : '' }}">
-                <i class="fa fa-home" aria-hidden="true"></i> Stables
-            </a>
         </li> --}}
+        <li>
+            <a href="/me" class="{{ $modelName == 'profile' ? 'active' : '' }}">
+                <i class="fa-solid fa-user"></i> My Profile
+            </a>
+        </li>
         <li>
             <a href="/logout" class="">
                 <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>Logout
