@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User as UserModel;
+use App\Models\Userprofile as Userprofile;
 use App\Exceptions\FieldException;
 use App\Services\ServiceProvider;
 use Hash;
@@ -122,7 +123,14 @@ class UserController extends Controller
             if (isset(session()->get('role')->home_url)) {
                 $url = session()->get('role')->home_url;
             }
+
+            $dbprofile = Userprofile::where('userid',$loginSuccess->uprofile->userid)->first();            
+            if($dbprofile){
+                $loginSuccess->uprofile->uniqueid = $dbprofile->uniqueid;
+            }
+
             session()->put('profile', $loginSuccess->uprofile);
+
             return redirect($url);
         }else{
             $user = ServiceProvider::userAuth($request->except('_token'))
@@ -181,5 +189,35 @@ class UserController extends Controller
         $this->flashMsg('Registration complete', 'success');
         // then redirect to login
         return redirect('/login');
+    }
+
+    public function me() {
+        $uprofile = session()->get('profile');
+        $modelName = 'profile';
+        if (empty($uprofile)) {
+            $this->flashMsg('Forbidden Action', 'warning');
+            // then redirect to login
+            return redirect('/dashboard');
+        }
+
+        return view('pages.userprofile', [
+            'profile' => $uprofile,
+            'modelName' => $modelName
+        ]);
+    }
+
+    public function downloadQRCode(Request $request)
+    {
+        $profile = session()->get('profile');
+
+        $headers    = array('Content-Type' => ['png','svg','eps']);
+        $contents = file_get_contents("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl={{$profile->uniqueid}}&choe=UTF-8");
+
+        $filename = 'qrEntry.png';
+        \Storage::disk('public')->put($filename, $contents);
+
+        $qrFile = \Storage::path('public/'.$filename);
+
+        return response()->download($qrFile)->deleteFileAfterSend(true);
     }
 }

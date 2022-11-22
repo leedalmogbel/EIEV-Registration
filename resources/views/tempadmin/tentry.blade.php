@@ -9,6 +9,7 @@
       <tr>
         <!-- <th width="300">Race</th> -->
         <th>ACTIVE</th>
+        <th>EIEVID</th>
         <th>EMAIL</th>
         <td>USERID</td>
         <td>STABLEID</td>
@@ -25,6 +26,7 @@
         <td class="text-center">
           {{$profile->isactive ?? 'N/A'}}
         </td>
+        <td class="text-center"><strong>{{ $profile->uniqueid }}</strong></td>
         <td class="text-center"><strong>{{ $profile->email }}</strong></td>
         <td class="text-center"><strong>{{ $profile->userid }}</strong></td>
         <td class="text-center"><strong>{{ $profile->stableid }}</strong></td>
@@ -113,7 +115,7 @@
       const hid = $('.horse-select.select-2-basic').val();
       const rid = $('.rider-select.select-2-basic').val();
       if(uid >0){
-        href = `https://registration.eiev-app.ae/${href}?params[EventID]=${eid}&params[HorseID]=${hid}&params[RiderID]=${rid}&params[UserID]=${uid}`;
+        href = `https://devregistration.eiev-app.ae/${href}?params[EventID]=${eid}&params[HorseID]=${hid}&params[RiderID]=${rid}&params[UserID]=${uid}`;
         window.location.href = href
       }
     });
@@ -177,6 +179,9 @@
           }
         }
       });
+
+    });
+
   });
 </script>
 @endsection

@@ -308,6 +308,12 @@ class FentryControler extends Controller
         if($data['entrycode'] != "0"){
             Multi::insertOrUpdate([["riderid"=>$request->params['RiderID'],"horseid"=>$request->params['HorseID'],"userid"=>$request->params['UserID'],"code"=>$data['entrycode'],"eventcode"=>$request->params['EventID']]],'fentries');
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$data['entrycode']);
+        }else{
+            if(isset($data['msgs'])){
+                $this->flashMsg(sprintf('%s', implode('\n',$data['msgs'])), 'warning');
+            }else{
+                $this->flashMsg(sprintf('%s', 'Entry not added.'), 'warning');
+            }
         }
         return redirect('/submitentry');
     }
