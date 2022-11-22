@@ -62,7 +62,7 @@ class FentryControler extends Controller
                 $pool = Snpool::where('active',1)->get();
                 if($pool){
                     foreach ($pool as $sn) {
-                        $startassigned = json_decode($startno->assigned ?? '{}',true);
+                        $startassigned = json_decode($sn->assigned ?? '{}',true);
                         if(isset($startassigned[$request->eventId])){
                             unset($startassigned[$request->eventId]);
                             $sn->assigned = $startassigned;
