@@ -225,12 +225,18 @@ class FederationController extends Controller
                   $xml.='<'.$key.'>'.$request->params[$key].'</'.$key.'>';
               }
             }
+            if($request->action == "UpdateEntry"){
+              $xml.='<msg></msg>';
+            }
             $xml.='</'.$request->action.'>';
           }
         }
-        $xml.='<msg></msg>
-        </soap:Body>
+        if($request->action != "UpdateEntry"){
+          $xml.='<msg></msg>
+         </soap:Body>
       </soap:Envelope>';
+        }
+        
         $options = [
             'headers' => [
                 'Content-Type' => 'text/xml; charset=utf-8',
