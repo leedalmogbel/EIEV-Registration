@@ -241,7 +241,7 @@ class FederationController extends Controller
             ],
             'body' => $xml
         ];
-        return $xml;
+        return $options;
         $client = new Client();
         $response = $client->post(env("UAEERF_BASE_URL"), $options);
         if(isset($request->showraw)){
