@@ -289,9 +289,9 @@
                 let prov = $('#prov').DataTable({
                     dom: dom,
                     buttons:[
-                        {...excel, filename:`(Provisional List) ${f[eventval]}`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
-                        {...excel, filename:`(Provisional List) ${f[eventval]}`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
-                        {...excel, filename:`(Provisional List) ${f[eventval]}`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
+                        {...excel, filename:`(Provisional List) ${f[eventval]}_admin`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(Provisional List) ${f[eventval]}_media`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
+                        {...excel, filename:`(Provisional List) ${f[eventval]}_timing`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
                         {...pdf, filename:`(Provisional List) ${f[eventval]}`, 
                         className:'aexport',text:'PDF',exportOptions:{columns:'.a-export'},
                             customize : function(doc){
