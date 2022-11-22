@@ -231,10 +231,13 @@ class FederationController extends Controller
             $xml.='</'.$request->action.'>';
           }
         }
-        if($request->action != "UpdateEntry"){
+        if($request->action == "UpdateEntry"){
+          $xml .='</soap:Body>
+       </soap:Envelope>';
+        }else{
           $xml.='<msg></msg>
-         </soap:Body>
-      </soap:Envelope>';
+          </soap:Body>
+       </soap:Envelope>';
         }
         
         $options = [
