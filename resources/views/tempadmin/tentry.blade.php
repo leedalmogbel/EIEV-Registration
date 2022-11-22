@@ -113,10 +113,11 @@
       const hid = $('.horse-select.select-2-basic').val();
       const rid = $('.rider-select.select-2-basic').val();
       console.log(href,eid,hid,rid);
-      // if(uid >0){
-      //   href = `https://registration.eiev-app.ae/${href}?params[EventID]=${eid}&params[HorseID]=${hid}&params[RiderID]=${rid}&params[UserID]=${uid}`;
-      //   window.location.href = href
-      // }
+      if(uid >0){
+        href = `https://registration.eiev-app.ae/${href}?params[EventID]=${eid}&params[HorseID]=${hid}&params[RiderID]=${rid}&params[UserID]=${uid}`;
+        console.log(href);
+        // window.location.href = href
+      }
     });
 
     $(document).on('click', '#select-data', function (e) {
