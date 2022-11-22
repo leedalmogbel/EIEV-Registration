@@ -99,6 +99,7 @@ class FentryControler extends Controller
                     return response()->json(['msg'=>'No entries updated.']);
                     break;
                 case 'others':
+                    
                     $exclude = Snpool::whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) >0')->orWhere('active',0)->pluck('startno')->toArray();
                     $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
                     $entries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
@@ -115,6 +116,45 @@ class FentryControler extends Controller
                         }
 
                     }
+                    break;
+                case 'both':
+                    $royalstables = Fstable::where('category','Royal')->pluck('stableid')->toArray();
+                    $entries = Fentry::whereIn('stableid',$royalstables)->where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
+                    $rsnupdates = array();
+                    foreach ($entries as $entry) {
+                        $snum = array();
+                        $startno = Snpool::where('stableid',$entry->stableid)->where('userid',$entry->userid)->where('active',1)->whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) <0')->orderBy('startno')->first();
+                        if($startno){
+                            if($startno->startno <= $totalentries){
+                                $snum['code']=$entry->code;
+                                $snum['startno']=$startno->startno;
+                                array_push($rsnupdates,$snum);
+                                $startassigned = json_decode($startno->assigned ?? '{}',true);
+                                $startassigned[$request->eventId]=1;
+                                $startno->assigned = $startassigned;
+                                $startno->save();
+                            }
+                        }
+                    }
+                    if(count($rsnupdates)>0){
+                        Multi::insertOrUpdate($rsnupdates,'fentries');
+                    }
+                    $exclude = Snpool::whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) >0')->orWhere('active',0)->pluck('startno')->toArray();
+                    $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
+                    $entries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
+                    $osnupdates = array();
+                    if($entries){
+                        for($i=0;$i<count($entries);$i++){
+                            $snum['code']=$entries[$i]->code;
+                            $snum['startno']=$collection[$i];
+                            array_push($osnupdates,$snum);
+                        }
+                        if(count($osnupdates)>0){
+                            Multi::insertOrUpdate($osnupdates,'fentries');
+                        }
+                        
+                    }
+                    return response()->json(['msg'=>sprintf('Updated %s entries',count($osnupdates) + count($rsnupdates)), 'entries'=>$osnupdates,'rentries'=>$rsnupdates]);
                     break;
             }
         }

@@ -47,7 +47,7 @@ class SnpoolController extends Controller
                 $snarr['userid'] = $request->userid;
                 $snarr['stableid'] = $request->stableid;
                 $snarr['startno'] = $sn;
-                $snexist = Snpool::where('userid',$request->userid)->where('stableid',$request->stableid)->where('startno',$sn)->first();
+                $snexist = Snpool::where('startno',$sn)->first();
                 if(!$snexist){
                     Snpool::create($snarr);
                 }
