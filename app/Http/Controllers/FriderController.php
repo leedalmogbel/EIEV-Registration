@@ -85,7 +85,7 @@ class FriderController extends Controller
             ]
         ]);
         $data = (new FederationController)->execute($myRequest);
-        return response()->json([$data]);
+        return response()->json($data);
     }
 
     /**
