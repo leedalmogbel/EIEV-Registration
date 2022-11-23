@@ -59,6 +59,8 @@
                     <table id={{$key}} class="table table-striped table-bordered">
                         <thead>
                             <tr>
+                                <th class="a-export"></th>
+                                <th>EntryCode</th>
                                 <th class="a-export m-export d-export">StartNo</th>
                                 <th class="a-export m-export d-export">StartCode</th>
                                 <th class="hide m-export d-export">Rider FName</th>
@@ -96,8 +98,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                            
                             @foreach ($lists as $entry)
                                 <tr>
+                                    <td class="text-center">
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->code ?? 'N/A'}}
+                                    </td>
                                     <td class="text-center">
                                     {{$entry->startno ?? 'N/A'}}
                                     </td>
@@ -257,7 +265,11 @@
                             visible: false,
                             searchable: false,
                         },
-                    ]
+                    ],
+                });
+                let fi= 1;
+                final.cells(null, 0, {}).every(function (cell) {
+                    this.data(fi++);
                 });
                 let pfa = $('#pfa').DataTable({
                     dom: dom,
@@ -286,6 +298,10 @@
                         },
                     ]
                 });
+                let pfai= 1;
+                pfa.cells(null, 0, {}).every(function (cell) {
+                    this.data(pfai++);
+                });
                 let prov = $('#prov').DataTable({
                     dom: dom,
                     buttons:[
@@ -312,6 +328,10 @@
                             searchable: false,
                         },
                     ]
+                });
+                let provi= 1;
+                prov.cells(null, 0, {}).every(function (cell) {
+                    this.data(provi++);
                 });
                 let royprov = $('#royprov').DataTable({
                     dom: dom,
@@ -340,6 +360,10 @@
                         },
                     ]
                 });
+                let royprovi= 1;
+                royprov.cells(null, 0, {}).every(function (cell) {
+                    this.data(royprovi++);
+                });
                 let pfr = $('#pfr').DataTable({
                     dom: dom,
                     buttons:[
@@ -367,6 +391,10 @@
                         },
                     ]
                 });
+                let pfri= 1;
+                pfr.cells(null, 0, {}).every(function (cell) {
+                    this.data(pfri++);
+                });
                 let re = $('#re').DataTable({
                     dom: dom,
                     buttons:[
@@ -393,6 +421,10 @@
                             searchable: false,
                         },
                     ]
+                });
+                let rei= 1;
+                re.cells(null, 0, {}).every(function (cell) {
+                    this.data(rei++);
                 });
                 if(urlParams.has('SearchEventID')){
                     const val = urlParams.get('SearchEventID');

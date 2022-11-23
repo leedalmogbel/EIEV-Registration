@@ -192,20 +192,26 @@ class FentryControler extends Controller
         $rentries = Fentry::query();
         //royal for president cup
         $pcentries = Fentry::query();
-        $fentries = $fentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('status', 'Accepted')->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
-        $eentries = $eentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"1")->whereIn('status',['Pending','Eligible'])->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
-        $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"3")->where('status', 'Pending')->where('review','<>','0')->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
-        $reventries = $reventries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->where('status','Pending')->where('review','0')->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
-        $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn'])->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
-        $pcentries = $pcentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0')->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+        $fentries = $fentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('status', 'Accepted');
+        $eentries = $eentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"1")->whereIn('status',['Pending','Eligible'])->where('review','<>','0');
+        $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"3")->where('status', 'Pending')->where('review','<>','0');
+        $reventries = $reventries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->where('status','Pending')->where('review','0');
+        $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn']);
+        $pcentries = $pcentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0');
         if(isset($request->stablename)){
-            $fentries = $fentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
-            $eentries = $eentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
-            $pentries = $pentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
-            $reventries = $reventries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
-            $rentries = $rentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
-            $pcentries = $pcentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(REPLACE(startno,"W","") as INT) asc');
+            $fentries = $fentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as INT) asc');
+            $eentries = $eentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as INT) asc');
+            $pentries = $pentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as INT) asc');
+            $reventries = $reventries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as INT) asc');
+            $rentries = $rentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC');
+            $pcentries = $pcentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as INT) asc');
         }
+        $fentries = $fentries->orderByRaw('CAST(startno as INT) asc');
+        $eentries = $eentries->orderByRaw('CAST(startno as INT) asc');
+        $pentries = $pentries->orderByRaw('CAST(startno as INT) asc');
+        $reventries = $reventries->orderByRaw('CAST(startno as INT) asc');
+        $rentries = $rentries->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC');
+        $pcentries = $pcentries->orderByRaw('CAST(startno as INT) asc');
         $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
         $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
         $pentries =isset($request->ppage)? $pentries->paginate($ppage): $pentries->get();
@@ -264,7 +270,7 @@ class FentryControler extends Controller
         if(isset($request->list) && isset($request->eventid)){
             switch ($request->list) {
                 case 'main':
-                    $entries = Fentry::where('status',"Pending")->where('review','<>','0')->where('eventcode','like','%'.strval(intval($request->eventid)).'%')->get();
+                    $entries = Fentry::where('status',"Pending")->where('review','<>','0')->where('eventcode','like','%'.strval(intval($request->eventid)))->get();
                     $plist = array();
                     if($entries){
                         foreach ($entries as $entry) {
@@ -281,7 +287,7 @@ class FentryControler extends Controller
                     }
                         break;
                 case 'final':
-                    $entries = Fentry::where('status',"Eligible")->where('eventcode','like','%'.strval(intval($request->eventid)).'%')->get();
+                    $entries = Fentry::where('status',"Eligible")->where('eventcode','like','%'.strval(intval($request->eventid)))->get();
                     if($entries){
                         $plist = array();
                         foreach ($entries as $entry) {
@@ -314,6 +320,9 @@ class FentryControler extends Controller
                 'SearchEntryID'=>$entry->code,
                 'Entrystatus'=>'rejected',
                 'Remarks'=>'Rejected Entry by Admin',]]);
+            // if($entry->startno){
+            //     Fentry::where('code',$request->entrycode)->update(['startno'=>NULL]);
+            // }
             $data = (new FederationController)->updateentry($myRequest);
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
         }
@@ -334,6 +343,9 @@ class FentryControler extends Controller
                 'SearchEntryID'=>$entry->code,
                 'Entrystatus'=>'withdrawn',
                 'Remarks'=>'Withdrawn by Admin',]]);
+            // if($entry->startno){
+            //     Fentry::where('code',$request->entrycode)->update(['startno'=>NULL]);
+            // }
             $data = (new FederationController)->updateentry($myRequest);
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
         }
@@ -365,6 +377,7 @@ class FentryControler extends Controller
         if($data['entrycode'] != "0"){
             Multi::insertOrUpdate([["riderid"=>$request->params['RiderID'],"horseid"=>$request->params['HorseID'],"userid"=>$request->params['UserID'],"code"=>$data['entrycode'],"eventcode"=>$request->params['EventID']]],'fentries');
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$data['entrycode']);
+            $this->flashMsg(sprintf('Entry added successfully. Entry Code: %s',$data['entrycode']), 'success');
         }else{
             if(isset($data['msgs'])){
                 $this->flashMsg(sprintf('%s', implode('\n',$data['msgs'])), 'warning');
