@@ -57,7 +57,7 @@ class FentryControler extends Controller
     public function generateStartnumber(Request $request)  
     {
         if(isset($request->eventId) && isset($request->action)){
-            $totalentries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->count();
+            $totalentries = Fentry::where('eventcode',$request->eventId)->where('status','Accepted')->count();
             if(isset($request->recalc)){
                 $pool = Snpool::where('active',1)->get();
                 if($pool){
@@ -70,7 +70,7 @@ class FentryControler extends Controller
                         }
                     }
                 }
-                Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->update(['startno'=>NULL]);
+                Fentry::where('eventcode',$request->eventId)->where('status','Accepted')->update(['startno'=>NULL]);
             }
             switch ($request->action) {
                 case 'royal':
