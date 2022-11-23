@@ -65,12 +65,19 @@
             var regex = new RegExp("[^`]");
             var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
             if (!regex.test(key)) {
-                searchfield.focus();
                 event.preventDefault();
                 return false;
             }
         });
-        $('#a').on('click',()=>{alert($('#search').val())});
+        $('#search').keyup($.debounce( 500, function(){
+            if( $("#search").val() !== ""){
+                console.log($("#search").val());
+                setTimeout(function () {
+                    $("#search").val('');
+                    searchfield.focus();
+                },500);
+            }
+        }));
     });
 </script>
 @endsection
