@@ -264,7 +264,7 @@ class FentryControler extends Controller
         if(isset($request->list) && isset($request->eventid)){
             switch ($request->list) {
                 case 'main':
-                    $entries = Fentry::where('status',"Pending")->where('review','0')->where('eventcode','like','%'.strval(intval($request->eventid)).'%')->get();
+                    $entries = Fentry::where('status',"Pending")->where('review','<>','0')->where('eventcode','like','%'.strval(intval($request->eventid)).'%')->get();
                     $plist = array();
                     if($entries){
                         foreach ($entries as $entry) {
