@@ -455,8 +455,11 @@
             $(document).on('click', '#reject-entry', function(e) {
                 e.preventDefault();
                 let self = this;
-                const href = $(self).attr('href');
-
+                let href = $(self).attr('href');
+                let urlParams = new URLSearchParams(window.location.search);
+                if(urlParams.has('stablename')){
+                    href = href + "&stablename=" + urlParams.get('stablename');
+                }
                 $.confirm({
                     title: 'Reject Entry',
                     columnClass: 'col-md-8',
@@ -480,8 +483,11 @@
             $(document).on('click', '#accept-entry', function(e) {
                 e.preventDefault();
                 let self = this;
-                const href = $(self).attr('href');
-
+                let href = $(self).attr('href');
+                let urlParams = new URLSearchParams(window.location.search);
+                if(urlParams.has('stablename')){
+                    href = href + "&stablename=" + urlParams.get('stablename');
+                }
                 $.confirm({
                     title: 'Accept Entry',
                     columnClass: 'col-md-8',
@@ -505,8 +511,11 @@
             $(document).on('click', '#move-entry', function(e) {
                 e.preventDefault();
                 let self = this;
-                const href = $(self).attr('href');
-
+                let href = $(self).attr('href');
+                let urlParams = new URLSearchParams(window.location.search);
+                if(urlParams.has('stablename')){
+                    href = href + "&stablename=" + urlParams.get('stablename');
+                }
                 $.confirm({
                     title: 'Move Entry to Main List',
                     columnClass: 'col-md-8',
@@ -530,8 +539,11 @@
             $(document).on('click', '#withdraw-entry', function(e) {
                 e.preventDefault();
                 let self = this;
-                const href = $(self).attr('href');
-
+                let href = $(self).attr('href');
+                let urlParams = new URLSearchParams(window.location.search);
+                if(urlParams.has('stablename')){
+                    href = href + "&stablename=" + urlParams.get('stablename');
+                }
                 $.confirm({
                     title: 'Withdraw Entry',
                     columnClass: 'col-md-8',

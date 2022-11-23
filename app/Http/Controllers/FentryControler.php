@@ -236,6 +236,9 @@ class FentryControler extends Controller
             $data = (new FederationController)->updateentry($myRequest);
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
         }
+        if(isset($request->stablename)){
+            return redirect('/rideslist?SearchEventID='.$entry->eventcode.'&stablename='.$request->stablename);
+        }
         return redirect('/rideslist?SearchEventID='.$entry->eventcode);
     }
     public function mainlist(Request $request)
@@ -249,6 +252,9 @@ class FentryControler extends Controller
                 'SearchEntryID'=>$entry->code,]]);
             $data = (new FederationController)->moveentrytomain($myRequest);
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
+        }
+        if(isset($request->stablename)){
+            return redirect('/rideslist?SearchEventID='.$entry->eventcode.'&stablename='.$request->stablename);
         }
         return redirect('/rideslist?SearchEventID='.$entry->eventcode);
     }
@@ -266,6 +272,9 @@ class FentryControler extends Controller
             $data = (new FederationController)->updateentry($myRequest);
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
         }
+        if(isset($request->stablename)){
+            return redirect('/rideslist?SearchEventID='.$entry->eventcode.'&stablename='.$request->stablename);
+        }
         return redirect('/rideslist?SearchEventID='.$entry->eventcode);
     }
 
@@ -282,6 +291,9 @@ class FentryControler extends Controller
                 'Remarks'=>'Withdrawn by Admin',]]);
             $data = (new FederationController)->updateentry($myRequest);
             Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid='.$entry->code);
+        }
+        if(isset($request->stablename)){
+            return redirect('/rideslist?SearchEventID='.$entry->eventcode.'&stablename='.$request->stablename);
         }
         return redirect('/rideslist?SearchEventID='.$entry->eventcode);
     }
