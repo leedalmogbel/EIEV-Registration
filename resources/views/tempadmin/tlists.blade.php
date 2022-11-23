@@ -59,7 +59,7 @@
                     <table id={{$key}} class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th class="a-export"></th>
+                                <th class="a-export">serial</th>
                                 <th>EntryCode</th>
                                 <th class="a-export m-export d-export">StartNo</th>
                                 <th class="a-export m-export d-export">StartCode</th>
@@ -101,8 +101,7 @@
                             
                             @foreach ($lists as $entry)
                                 <tr>
-                                    <td class="text-center">
-                                    </td>
+                                    <td class="text-center"></td>
                                     <td class="text-center">
                                     {{$entry->code ?? 'N/A'}}
                                     </td>
