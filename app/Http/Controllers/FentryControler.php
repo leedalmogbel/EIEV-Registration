@@ -271,14 +271,14 @@ class FentryControler extends Controller
                             $myRequest = new \Illuminate\Http\Request();
                             $myRequest->setMethod('POST');
                             $myRequest->request->add(['params' => [
-                                'EventID'=>$entry->eventcode,
-                                'SearchEntryID'=>$entry->code,]]);
-                                $data = (new FederationController)->moveentrytomain($myRequest);
-                                array_push($plist,$data);
-                            }
-                            Artisan::call('command:syncentries --ip=eievadmin --host=admineiev');
-                            return response()->json(['msg'=>sprintf('Process %s entries',count($plist)),'data'=>$plist]);
+                            'EventID'=>$entry->eventcode,
+                            'SearchEntryID'=>$entry->code,]]);
+                            $data = (new FederationController)->moveentrytomain($myRequest);
+                            array_push($plist,$data);
                         }
+                        Artisan::call('command:syncentries --ip=eievadmin --host=admineiev');
+                        return response()->json(['msg'=>sprintf('Process %s entries',count($plist)),'data'=>$plist]);
+                    }
                         break;
                 case 'final':
                     $entries = Fentry::where('status',"Eligible")->where('eventcode','like','%'.strval(intval($request->eventid)).'%')->get();
