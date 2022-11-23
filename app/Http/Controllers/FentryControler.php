@@ -258,6 +258,51 @@ class FentryControler extends Controller
         }
         return redirect('/rideslist?SearchEventID='.$entry->eventcode);
     }
+
+    public function moveall(Request $request)
+    {
+        if(isset($request->list) && isset($request->eventid)){
+            switch ($request->list) {
+                case 'main':
+                    $entries = Fentry::where('status',"Pending")->where('review','0')->where('eventcode','like','%'.strval(intval($request->eventid)).'%')->get();
+                    $plist = array();
+                    if($entries){
+                        foreach ($entries as $entry) {
+                            $myRequest = new \Illuminate\Http\Request();
+                            $myRequest->setMethod('POST');
+                            $myRequest->request->add(['params' => [
+                                'EventID'=>$entry->eventcode,
+                                'SearchEntryID'=>$entry->code,]]);
+                                $data = (new FederationController)->moveentrytomain($myRequest);
+                                array_push($plist,$data);
+                            }
+                            Artisan::call('command:syncentries --ip=eievadmin --host=admineiev');
+                            return response()->json(['msg'=>sprintf('Process %s entries',count($plist)),'data'=>$plist]);
+                        }
+                        break;
+                case 'final':
+                    $entries = Fentry::where('status',"Eligible")->where('eventcode','like','%'.strval(intval($request->eventid)).'%')->get();
+                    if($entries){
+                        $plist = array();
+                        foreach ($entries as $entry) {
+                            $myRequest = new \Illuminate\Http\Request();
+                            $myRequest->setMethod('POST');
+                            $myRequest->request->add(['params' => [
+                                'EventID'=>$entry->eventcode,
+                                'SearchEntryID'=>$entry->code,
+                                'Entrystatus'=>'accepted',
+                                'Remarks'=>'Accepted Entry for Final List by Admin',]]);
+                            $data = (new FederationController)->updateentry($myRequest);
+                            array_push($plist,$data);
+                        }
+                        Artisan::call('command:syncentries --ip=eievadmin --host=admineiev');
+                        return response()->json(['msg'=>sprintf('Process %s entries',count($plist)),'data'=>$plist]);
+                    }
+                    break;
+            }
+        }
+        return response()->json(['msg'=>'Nothing to do'],400);
+    }
     public function reject(Request $request)
     {
         $entry = Fentry::where('code',$request->entrycode)->first();

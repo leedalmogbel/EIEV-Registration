@@ -63,6 +63,7 @@ Route::group(['middleware'=>[EnsureClientIsFed::class],'prefix'=>'uaeerf'],funct
 Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
     Route::get('startnum',[FentryControler::class,'generateStartnumber']);
+    Route::get('moveall',[FentryControler::class,'moveall']);
     Route::get('addtopool',[SnpoolController::class,'addToPool']);
     // Route::post('execute', [FederationController::class, 'execute']);
     Route::get('ridercheck',[FriderController::class,'checkEligibility']);
@@ -73,4 +74,72 @@ Route::domain('localhost')->group(function(){
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
     Route::get('getqrcode',[UserprofileController::class,'getQr']);
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
+    Route::get('execute',function(Request $request)
+    {
+       $data =  Reusable::soapCall('InsertEntries',[
+            'params'=>[
+                'pEvtCateg'=>$request->pEvtCateg,
+                'pIdCode'=>$request->pIdCode,
+                'pStartNo'=>$request->pStartNo,
+                'pStartCode'=>$request->pStartCode,
+                'pRiderName'=>$request->pRiderName,
+                'pRiderFname'=>$request->pRiderFname,
+                'pRiderLname'=>$request->pRiderLname,
+                'pRiderLicenseFei'=>$request->pRiderLicenseFei,
+                'pRiderLicenseEef'=>$request->pRiderLicenseEef,
+                'pRiderNationality'=>$request->pRiderNationality,
+                'pHorseName'=>$request->pHorseName,
+                'pHorseYear'=>$request->pHorseYear,
+                'pHorseGender'=>$request->pHorseGender,
+                'pHorseColor'=>$request->pHorseColor,
+                'pHorseBreed'=>$request->pHorseBreed,
+                'pHorseLicenseFei'=>$request->pHorseLicenseFei,
+                'pHorseLicenseEef'=>$request->pHorseLicenseEef,
+                'pHorseChip'=>$request->pHorseChip,
+                'pOwnerName'=>$request->pOwnerName,
+                'pTrainerName'=>$request->pTrainerName,
+                'pStableName'=>$request->pStableName,
+                'pContactPerson'=>$request->pContactPerson,
+                'pContactNumber'=>$request->pContactNumber,
+                'pRiderImage'=>null,
+                'pExecutedBy'=>$request->pExecutedBy,
+                'pHorseOrigin'=>$request->pHorseOrigin,
+                'pRiderGender'=>$request->pRiderGender,
+                'pBarcodeValue'=>$request->pBarcodeValue
+                ]
+            ],
+            [
+                'pEvtCateg',
+                'pIdCode',
+                'pStartNo',
+                'pStartCode',
+                'pRiderName',
+                'pRiderFname',
+                'pRiderLname',
+                'pRiderLicenseFei',
+                'pRiderLicenseEef',
+                'pRiderNationality',
+                'pHorseName',
+                'pHorseYear',
+                'pHorseGender',
+                'pHorseColor',
+                'pHorseBreed',
+                'pHorseLicenseFei',
+                'pHorseLicenseEef',
+                'pHorseChip',
+                'pOwnerName',
+                'pTrainerName',
+                'pStableName',
+                'pContactPerson',
+                'pContactNumber',
+                'pRiderImage',
+                'pExecutedBy',
+                'pHorseOrigin',
+                'pRiderGender',
+                'pBarcodeValue'
+            ],
+            '!InsertEntriesV2Result|result-Result|inserstatus-ErrorMessage|errormsg-Status|status-Remarks|remarks',
+            true
+        );
+    });
 });
