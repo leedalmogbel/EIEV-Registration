@@ -326,8 +326,9 @@ class FentryControler extends Controller
             $ppage = $request->ppage;
         }
         $profiles = Userprofile::query();
+        $profiles = $profiles->where('stableid','like','E%');
         if($request->SearchEmail){
-            $profiles = $profiles->where('eventcode','like',"%".$request->SearchEventID."%")->where('stableid','like','E%')->where('status', 'Accepted');
+            $profiles = $profiles->where('eventcode','like',"%".$request->SearchEventID."%")->where('status', 'Accepted');
         }
         $profiles =isset($request->ppage)? $profiles->paginate($ppage): $profiles->get();
         return view('tempadmin.tentry',['modelName'=>'submitentry','profiles'=>$profiles]);
