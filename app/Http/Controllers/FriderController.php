@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Frider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\FederationController;
 
 class FriderController extends Controller
 {
