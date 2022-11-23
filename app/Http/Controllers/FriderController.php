@@ -79,13 +79,13 @@ class FriderController extends Controller
         $myRequest->request->add([
             'action'=>'IsRiderEligibleChecking',
             'params' => [
-                'EventID'=>$request->RiderID,
-                'RiderID'=>$request->EventID,
-                'ClassID'=>1
+                'EventID'=>$request->EventID,
+                'RiderID'=>$request->RiderID,
+                'ClassID'=>"1"
             ]
         ]);
         $data = (new FederationController)->execute($myRequest);
-        return response()->json(['eligibility'=>$data]);
+        return response()->json([$data]);
     }
 
     /**
