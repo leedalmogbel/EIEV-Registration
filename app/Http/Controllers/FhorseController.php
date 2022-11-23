@@ -63,6 +63,31 @@ class FhorseController extends Controller
         return response()->json(['horses'=>$horses]);
     }
 
+    public function checkEligibility(Request $request)
+    {
+        $validator = Validator::make($request->all(),[    
+            'RiderID'=>'required',
+            'HorseID'=>'required',
+            'EventID'=>'required'
+        ]);
+        if($validator->fails()){
+            return response()->json(["error" => $validator->errors()]);
+        }
+        $myRequest = new \Illuminate\Http\Request();
+        $myRequest->setMethod('POST');
+        $myRequest->request->add([
+            'action'=>'IsHorseEligibleChecking',
+            'params' => [
+                'EventID'=>$request->EventID,
+                'RiderID'=>$request->RiderID,
+                'HorseID'=>$request->HorseID,
+                'ClassID'=>"1"
+            ]
+        ]);
+        $data = (new FederationController)->execute($myRequest);
+        return response()->json($data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
