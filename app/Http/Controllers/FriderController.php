@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Frider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FriderController extends Controller
 {
@@ -61,6 +62,29 @@ class FriderController extends Controller
         }
         $riders = $riders->whereIn('registeredseasoncode',[13])->paginate($ppage);
         return response()->json(['riders'=>$riders]);
+    }
+
+    public function checkEligibility(Request $request)
+    {
+        $validator = Validator::make($request->all(),[    
+            'RiderID'=>'required',
+            'EventID'=>'required'
+        ]);
+        if($validator->fails()){
+            return response()->json(["error" => $validator->errors()]);
+        }
+        $myRequest = new \Illuminate\Http\Request();
+        $myRequest->setMethod('POST');
+        $myRequest->request->add([
+            'action'=>'IsRiderEligibleChecking',
+            'params' => [
+                'EventID'=>$request->RiderID,
+                'RiderID'=>$request->EventID,
+                'ClassID'=>1
+            ]
+        ]);
+        $data = (new FederationController)->execute($myRequest);
+        return response()->json(['eligibility'=>$data]);
     }
 
     /**

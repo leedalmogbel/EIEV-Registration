@@ -64,8 +64,11 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
     Route::get('startnum',[FentryControler::class,'generateStartnumber']);
     Route::get('addtopool',[SnpoolController::class,'addToPool']);
+    // Route::post('execute', [FederationController::class, 'execute']);
+    Route::get('ridercheck',[FriderController::class,'checkEligibility']);
 });
 Route::domain('localhost')->group(function(){
+    Route::get('ridercheck',[FriderController::class,'checkEligibility']);
     Route::get('getqrcode',[UserprofileController::class,'getQr']);
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
 });
