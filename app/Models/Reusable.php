@@ -43,22 +43,22 @@ class Reusable extends Model
         return (string) Str::orderedUuid();;
     }
 
-    public static function soapCall($action,$data,$fieldlist,$result,$showraw=false)
+    public static function soapCall($action,$params,$fieldlist,$result,$showraw=false)
     {
-      if(isset($data)){
-        $arrkeys= array_keys($data);
+      if(isset($params)){
+        $arrkeys= array_keys($params);
         $validationResult=$this->validateData($fieldlist,$arrkeys);
         if(!$validationResult['allow']){
-          return response()->json(['error'=>$validationResult['msg']],400);
+          return ['error'=>$validationResult['msg']];
         }
       }
       $xml='<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
           <'.$action.' xmlns="http://tempuri.org/">';
-          if(isset($data)){
-            $keys = array_keys($data);
+          if(isset($params)){
+            $keys = array_keys($params);
             foreach ($keys as $key) {
-                $xml.='<'.$key.'>'.$data[$key].'</'.$key.'>';
+                $xml.='<'.$key.'>'.$params[$key].'</'.$key.'>';
             }
           }
           $xml.='<msg></msg>
@@ -81,7 +81,7 @@ class Reusable extends Model
         if($showraw){
             return $response->getBody();
         }
-        return $this->extractData((string)$response->getBody(),'getStableListResult|stables#Stables#LastestUpdate|lastestupdate&Stable_ID|stableid&Name|name&Address|address&Zip|zip&City|city&Country|country&Phone|phone&Email|email&Remarks|remarks&Owner|owner&Discipline|discipline&Category|category&DIVISION|division');
+        return $this->extractData((string)$response->getBody(),$result);
     }
 
     function validateData($fieldlist,$paramlist)

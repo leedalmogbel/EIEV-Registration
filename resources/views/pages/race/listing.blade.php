@@ -19,10 +19,11 @@
                     $createRace = '#';
                     $viewRace = '#';
                     $clDate = substr($race->closingdate, 0, 10);
+                    $cclDate = date('Y-m-d H:i:s', strtotime($race->closingdate));
                     if ($race->statusid == 11) {
                         $createRace = '/entry/create?raceid=' . $race->raceid;
                         $viewRace = '/entry?raceid=' . $race->raceid;
-                        if ($clDate < now()) {
+                        if ($cclDate < now()) {
                             $createRace = '#';
                         }
                     }
@@ -31,7 +32,7 @@
                     if ($race->statusid == 11) {
                         $statusclass = 'text-success';
                         $statuslabel = 'Open for Entries';
-                        if ($clDate < now()) {
+                        if ($cclDate < now()) {
                             $statusclass = 'text-danger';
                             $statuslabel = 'Closed';
                         }
@@ -65,7 +66,7 @@
                     <td>
                         <div>
                             @if ($race->statusid == 11)
-                                @if ($clDate < now())
+                                @if ($cclDate < now())
                                     <a href="{{ $createRace }}" class='btn btn-danger disabled' id="add-entry"><i
                                             class="fa-solid fa-plus"></i> Add Entry</a>
                                     <a href="{{ $viewRace }}" class='btn btn-main' id="view-entry"><i
