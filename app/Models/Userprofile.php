@@ -21,7 +21,7 @@ class Userprofile extends Model
         'stableid',
     ];
 
-    protected $excludes = [
+    protected $hidden = [
         'created_at',
         'updated_at'
     ];
