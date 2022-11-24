@@ -8,6 +8,9 @@ use App\Models\Multi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Validator;
+
 
 class UserprofileController extends Controller
 {
@@ -23,11 +26,29 @@ class UserprofileController extends Controller
         if(isset($request->ppage)){
             $ppage = $request->ppage;
         }
-        $userprofiles = Userprofile::paginate($ppage); 
+        $userprofiles = Userprofile::query(); 
         if(isset($request->SearchEmail)){
-            $userprofiles = Userprofile::where('email','like','%'.$request->SearchEmail.'%')->paginate($ppage);
+            $userprofiles = $userprofiles->where('email','like','%'.$request->SearchEmail.'%');
         }
+        $userprofiles =isset($request->ppage)? $userprofiles->paginate($ppage):$userprofiles->get();
         return response()->json(['userprofiles'=>$userprofiles]);
+    }
+
+    public function syncfromcloud(Request $request)
+    {
+
+        $myRequest = new \Illuminate\Http\Request();
+        $api_url = 'https://devregistration.eiev-app.ae/api/getprofiles/';
+
+        $options = [
+            'headers' => [
+                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+            ],
+        ];
+       
+        $client = new Client();
+        $response = $client->post(env("UAEERF_BASE_URL"), $options);
+        return $response->getBody();
     }
 
     /**
