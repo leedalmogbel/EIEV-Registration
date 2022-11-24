@@ -32,22 +32,22 @@ class FentryControler extends Controller
       }
       $entries = Fentry::query();
       if(isset($request->SearchEntryID)){
-          $entries = $entries->where('code','like',"%".$request->SearchEntryID."%");
+          $entries = $entries->where('code','like',$request->SearchEntryID);
       }
       if(isset($request->SearchEventID)){
-          $entries = $entries->where('eventcode','like',"%".$request->SearchEventID."%");
+          $entries = $entries->where('eventcode','like',"%".$request->SearchEventID);
       }
       if(isset($request->SearchHorseID)){
-          $entries = $entries->where('horseid','like',"%".$request->SearchHorseID."%");
+          $entries = $entries->where('horseid','like',"%".$request->SearchHorseID);
       }
       if(isset($request->SearchRiderID)){
-          $entries = $entries->where('riderid','like',"%".$request->SearchRiderID."%");
+          $entries = $entries->where('riderid','like',"%".$request->SearchRiderID);
       }
       if(isset($request->SearchUserID)){
-          $entries = $entries->where('userid','like',"%".$request->SearchUserID."%");
+          $entries = $entries->where('userid','like',"%".$request->SearchUserID);
       }
       if(isset($request->SearchStableID)){
-          $entries = $entries->where('stableid','like',"%".$request->SearchStableID."%");
+          $entries = $entries->where('stableid','like',"%".$request->SearchStableID);
       }
       $entries = $entries->get();
       return response()->json(['entries'=>$entries]);
