@@ -98,7 +98,7 @@ class Fentry extends Model
     
     public function GetRacecodeAttribute()
     {
-        $frider = Fevent::where('raceid','like',strval(intval($this->eventcode ?? 0)))->first();
+        $frider = Fevent::where('raceid','like','%'.strval(intval($this->eventcode ?? 0)))->first();
         if($frider){
             return Str::contains(Str::lower($frider->typename),'national') ? "1" : "2";
         }
