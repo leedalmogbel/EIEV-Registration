@@ -20,4 +20,9 @@ class Userprofile extends Model
         'bday',
         'stableid',
     ];
+
+    protected $excludes = [
+        'created_at',
+        'updated_at'
+    ];
 }
