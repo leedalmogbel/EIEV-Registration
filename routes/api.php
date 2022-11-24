@@ -68,6 +68,7 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     // Route::post('execute', [FederationController::class, 'execute']);
     Route::get('ridercheck',[FriderController::class,'checkEligibility']);
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
+    Route::get('getentries',[FentryControler::class,'index']);
 });
 Route::domain('localhost')->group(function(){
     Route::get('ridercheck',[FriderController::class,'checkEligibility']);

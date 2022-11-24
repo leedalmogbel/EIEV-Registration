@@ -49,7 +49,7 @@ class FentryControler extends Controller
       if(isset($request->SearchStableID)){
           $entries = $entries->where('stableid','like',"%".$request->SearchStableID."%");
       }
-      $entries = $entries->paginate($ppage);
+      $entries = $entries->get();
       return response()->json(['entries'=>$entries]);
 
     }
