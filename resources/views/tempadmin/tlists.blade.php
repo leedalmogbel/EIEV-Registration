@@ -59,37 +59,37 @@
                     <table id={{$key}} class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th class="a-export">serial</th>
+                                <th class="a-elim a-export m-export d-export">serial</th>
                                 <th>EntryCode</th>
-                                <th class="a-export m-export d-export">StartNo</th>
-                                <th class="a-export m-export d-export">StartCode</th>
+                                <th class="a-elim a-export m-export d-export">StartNo</th>
+                                <th class="a-elim a-export m-export d-export">StartCode</th>
                                 <th class="hide m-export d-export">Rider FName</th>
                                 <th class="hide m-export d-export">Rider LName</th>
-                                <th class="a-export">RiderName</th>
-                                <th class="a-export m-export d-export">RiderEEF</th>
-                                <th class="a-export m-export d-export">RiderFEI</th>
-                                <th class="a-export m-export d-export">RiderNationality</th>
+                                <th class="a-elim a-export">RiderName</th>
+                                <th class="a-elim a-export m-export d-export">RiderEEF</th>
+                                <th class="a-elim a-export m-export d-export">RiderFEI</th>
+                                <th class="a-elim a-export m-export d-export">RiderNationality</th>
                                 <th class="hide d-export">RiderGender</th>
-                                <th class="a-export m-export d-export">HorseName</th>
-                                <th class="a-export m-export d-export">HorseEEF</th>
-                                <th class="a-export m-export d-export">HorseFEI</th>
-                                <th class="a-export m-export d-export">Sex</th>
-                                <th class="a-export m-export d-export">Colour</th>
-                                <th class="a-export m-export d-export">Breed</th>
-                                <th class="a-export m-export d-export">YOB</th>
+                                <th class="a-elim a-export m-export d-export">HorseName</th>
+                                <th class="a-elim a-export m-export d-export">HorseEEF</th>
+                                <th class="a-elim a-export m-export d-export">HorseFEI</th>
+                                <th class="a-elim a-export m-export d-export">Sex</th>
+                                <th class="a-elim a-export m-export d-export">Colour</th>
+                                <th class="a-elim a-export m-export d-export">Breed</th>
+                                <th class="a-elim a-export m-export d-export">YOB</th>
                                 <th class="hide d-export">HorseOrigin</th>
                                 <th class="hide d-export">Horse Chip</th>
                                 <th class="hide d-export">Rider Weight</th>
-                                <th class="a-export m-export d-export">Owner</th>
-                                <th class="a-export m-export d-export">Trainer</th>
-                                <th class="a-export m-export d-export">Stable</th>
+                                <th class="a-elim a-export m-export d-export">Owner</th>
+                                <th class="a-elim a-export m-export d-export">Trainer</th>
+                                <th class="a-elim a-export m-export d-export">Stable</th>
                                 <th class="hide m-export d-export">Division</th>
                                 <th class="hide m-export d-export">TEAM</th>
                                 <th class="hide m-export d-export">Transponsder Code</th>
                                 @if(!in_array($key,["re","pdf","pfr"]))
                                     <th class="d-export">QR</th>
                                 @else
-                                    <th>Remarks</th>
+                                    <th class="a-elim">Remarks</th>
                                 @endif
                                 <th>Status</th>
                                 @if(!in_array($key,["re","pdf","pfr"]))
@@ -397,7 +397,7 @@
                 let re = $('#re').DataTable({
                     dom: dom,
                     buttons:[
-                        {...excel, filename:`(Not Qualified List) ${f[eventval]}_admin`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-export'}},
+                        {...excel, filename:`(Not Qualified List) ${f[eventval]}_admin`, className:'aexport',text:'Admin Excel',exportOptions:{columns:'.a-elim'}},
                         {...excel, filename:`(Not Qualified List) ${f[eventval]}_media`, className:'mexport',text:'Media Excel',exportOptions:{columns:'.m-export'}},
                         {...excel, filename:`(Not Qualified List) ${f[eventval]}_timing`, className:'dexport',text:'Timing Excel',exportOptions:{columns:'.d-export'}},
                         {...pdf, filename:`(Not Qualified List) ${f[eventval]}`, 
