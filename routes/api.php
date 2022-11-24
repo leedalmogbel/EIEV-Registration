@@ -70,10 +70,10 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
     Route::get('getentries',[FentryControler::class,'index']);
     Route::get('getprofiles',[UserprofileController::class,'index']);
-    Route::get('getentries',[FentryController::class,'index']);
 });
 Route::domain('localhost')->group(function(){
-    Route::get('cloudsync',[UserprofileController::class,'syncfromcloud']);
+    Route::get('profilecloudsync',[UserprofileController::class,'syncfromcloud']);
+    Route::get('entrycloudsync',[Fentry::class,'syncfromcloud']);
     Route::get('ridercheck',[FriderController::class,'checkEligibility']);
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
     Route::get('getqrcode',[UserprofileController::class,'getQr']);
