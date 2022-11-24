@@ -75,7 +75,7 @@ class FentryControler extends Controller
             switch ($request->action) {
                 case 'royal':
                     $royalstables = Fstable::where('category','Royal')->pluck('stableid')->toArray();
-                    $entries = Fentry::whereIn('stableid',$royalstables)->where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
+                    $entries = Fentry::whereIn('stableid',$royalstables)->where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as UNSIGNED)')->get();
                     $rsnupdates = array();
                     foreach ($entries as $entry) {
                         $snum = array();
@@ -102,7 +102,7 @@ class FentryControler extends Controller
                     
                     $exclude = Snpool::whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) >0')->orWhere('active',0)->pluck('startno')->toArray();
                     $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
-                    $entries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
+                    $entries = Fentry::where('eventcode',$request->eventId)->where('status','Pending')->where('review','<>','0')->whereNull('startno')->orderByRaw('CAST(code as UNSIGNED)')->get();
                     $osnupdates = array();
                     if($entries){
                         for($i=0;$i<count($entries);$i++){
@@ -119,7 +119,7 @@ class FentryControler extends Controller
                     break;
                 case 'both':
                     $royalstables = Fstable::where('category','Royal')->pluck('stableid')->toArray();
-                    $entries = Fentry::whereIn('stableid',$royalstables)->where('eventcode',$request->eventId)->where('status','Accepted')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
+                    $entries = Fentry::whereIn('stableid',$royalstables)->where('eventcode',$request->eventId)->where('status','Accepted')->whereNull('startno')->orderByRaw('CAST(code as UNSIGNED)')->get();
                     $rsnupdates = array();
                     foreach ($entries as $entry) {
                         $snum = array();
@@ -141,7 +141,7 @@ class FentryControler extends Controller
                     }
                     $exclude = Snpool::whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) >0')->orWhere('active',0)->pluck('startno')->toArray();
                     $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
-                    $entries = Fentry::where('eventcode',$request->eventId)->where('status','Accepted')->whereNull('startno')->orderByRaw('CAST(code as INT)')->get();
+                    $entries = Fentry::where('eventcode',$request->eventId)->where('status','Accepted')->whereNull('startno')->orderByRaw('CAST(code as UNSIGNED)')->get();
                     $osnupdates = array();
                     if($entries){
                         for($i=0;$i<count($entries);$i++){
@@ -168,8 +168,8 @@ class FentryControler extends Controller
           ]);
         $totalcount = 0;
         $tables = Fentry::where('eventcode','like',"%".strval(intval($request->SearchEventID)))->groupBy('stablename')->pluck('stablename')->toArray();
-        $events = Fevent::selectRaw('CONCAT( CAST(raceid as INT), " : ", racename, "    |   Event Date - ", DATE_FORMAT( CAST(racefromdate as DATETIME),"%Y-%m-%d"), "    |   Opening - ", DATE_FORMAT( CAST(openingdate as DATETIME),"%Y-%m-%d %H:%i:%s"), "    |   Closing - ", DATE_FORMAT( CAST(closingdate as DATETIME),"%Y-%m-%d %H:%i:%s") ) as race, CAST(raceid as INT) as raceid')->where('statusname','like','%Entries%')->orWhere('statusname','like','%Closed%')->pluck('race','raceid')->toArray();
-        $eventnames = Fevent::selectRaw('CAST(raceid as INT) as raceid,racename')->pluck('racename','raceid')->toArray();
+        $events = Fevent::selectRaw('CONCAT( CAST(raceid as UNSIGNED), " : ", racename, "    |   Event Date - ", DATE_FORMAT( CAST(racefromdate as DATETIME),"%Y-%m-%d"), "    |   Opening - ", DATE_FORMAT( CAST(openingdate as DATETIME),"%Y-%m-%d %H:%i:%s"), "    |   Closing - ", DATE_FORMAT( CAST(closingdate as DATETIME),"%Y-%m-%d %H:%i:%s") ) as race, CAST(raceid as UNSIGNED) as raceid')->where('statusname','like','%Entries%')->orWhere('statusname','like','%Closed%')->pluck('race','raceid')->toArray();
+        $eventnames = Fevent::selectRaw('CAST(raceid as UNSIGNED) as raceid,racename')->pluck('racename','raceid')->toArray();
         if($validator->fails()){
             return view('tempadmin.tlists',['modelName'=>'entry','stables'=>$tables,'events'=>$events,'eventnames'=>$eventnames,'entries'=>[]]);
         }
@@ -199,19 +199,19 @@ class FentryControler extends Controller
         $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn']);
         $pcentries = $pcentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0');
         if(isset($request->stablename)){
-            $fentries = $fentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as INT) asc');
-            $eentries = $eentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as INT) asc');
-            $pentries = $pentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as INT) asc');
-            $reventries = $reventries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as INT) asc');
+            $fentries = $fentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
+            $eentries = $eentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
+            $pentries = $pentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
+            $reventries = $reventries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
             $rentries = $rentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC');
-            $pcentries = $pcentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as INT) asc');
+            $pcentries = $pcentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
         }
-        $fentries = $fentries->orderByRaw('CAST(startno as INT) asc');
-        $eentries = $eentries->orderByRaw('CAST(startno as INT) asc');
-        $pentries = $pentries->orderByRaw('CAST(startno as INT) asc');
-        $reventries = $reventries->orderByRaw('CAST(startno as INT) asc');
+        $fentries = $fentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $eentries = $eentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $pentries = $pentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $reventries = $reventries->orderByRaw('CAST(startno as UNSIGNED) asc');
         $rentries = $rentries->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC');
-        $pcentries = $pcentries->orderByRaw('CAST(startno as INT) asc');
+        $pcentries = $pcentries->orderByRaw('CAST(startno as UNSIGNED) asc');
         $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
         $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
         $pentries =isset($request->ppage)? $pentries->paginate($ppage): $pentries->get();
@@ -409,11 +409,34 @@ class FentryControler extends Controller
         if(isset($request->code)){
             $profile = Userprofile::where('uniqueid',$request->code)->first();
             if($profile){
-                $actions = ['entryadd'=>'Add Entry','entryswap'=>'Swap Entry','entrysub'=>'Change Rider'];
-                return view('tempadmin.tactions',['actions'=>$actions,'profile'=>$profile]);
+                $entries = Fentry::where('userid',$profile->userid)->where('stableid',$profile->stableid)->get();
+                return view('tempadmin.tactions',['actions'=>['Add Entry','Swap Entry','Update Entry'],'profile'=>$profile,'entries'=>$entries]);
             }
         }
-        return view('tempadmin.tactions',['actions'=>[],'profile'=>[]]);
+        return view('tempadmin.tactions',['actions'=>[],'profile'=>[],'entries'=>[]]);
+    }
+
+
+
+    public function syncfromcloud(Request $request)
+    {
+
+        $api_url = 'https://devregistration.eiev-app.ae/api/getentries/';
+
+        $options = [
+            'headers' => [
+                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+            ],
+        ];
+        $httpClient = new \GuzzleHttp\Client();
+        $client = new Client();
+        $response = $client->request('GET',$api_url, $options);
+        $data = json_decode($response->getBody(),true);
+        if(count($data["entries"])>0){
+            Multi::insertOrUpdate($data["entries"],'fentries');
+            return response()->json(['msg'=>sprintf('Updated %s entries',count($data['entries']))]);
+        }
+        return response()->json(['msg'=>'No action done.']);
     }
 
     /**

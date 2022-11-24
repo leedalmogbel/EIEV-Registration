@@ -50,7 +50,7 @@ class UserprofileController extends Controller
         $data = json_decode($response->getBody(),true);
         if(count($data["userprofiles"])>0){
             Multi::insertOrUpdate($data["userprofiles"],'userprofiles');
-            return response()->json(['msg'=>sprintf('Updated %s profiles',count($data->userprofiles))]);
+            return response()->json(['msg'=>sprintf('Updated %s profiles',count($data['userprofiles']))]);
         }
         return response()->json(['msg'=>'No action done.']);
     }

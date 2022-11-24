@@ -18,10 +18,10 @@
 
             <div class="col">{{QrCode::style($request->style??'square')->encoding('UTF-8')->size($request->size ?? 200)->generate($profile->uniqueid)}}</div>
         </div>
-        <div class="col row">
+        {{-- <div class="col row">
             <div class="col">{{QrCode::style($request->style??'square')->encoding('UTF-8')->size($request->size ?? 200)->generate($profile->uniqueid)}}</div>
             <div class="col">{{QrCode::style($request->style??'square')->encoding('UTF-8')->size($request->size ?? 200)->generate($profile->uniqueid)}}</div>
-        </div>
+        </div> --}}
     </div>
     @endif
     @if(count($actions)>0)
@@ -71,8 +71,15 @@
         });
         $('#search').keyup($.debounce( 500, function(){
             if( $("#search").val() !== ""){
-                console.log($("#search").val());
                 setTimeout(function () {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    let code = $('#search').val();
+                    if(urlParams.has('code')){
+                        urlParams.set('code',code);
+                    }else{
+                        urlParams.append('code',code);
+                    }
+                    window.location.search=urlParams;
                     $("#search").val('');
                     searchfield.focus();
                 },500);
