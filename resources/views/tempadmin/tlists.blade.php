@@ -61,6 +61,7 @@
                             <tr>
                                 <th class="a-elim a-export m-export d-export">serial</th>
                                 <th>EntryCode</th>
+                                <th>UserID</th>
                                 <th class="a-elim a-export m-export d-export">StartNo</th>
                                 <th class="a-elim a-export m-export d-export">StartCode</th>
                                 <th class="hide m-export d-export">Rider FName</th>
@@ -104,6 +105,9 @@
                                     <td class="text-center"></td>
                                     <td class="text-center">
                                     {{$entry->code ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                    {{$entry->userid ?? 'N/A'}}
                                     </td>
                                     <td class="text-center">
                                     {{$entry->startno ?? 'N/A'}}
