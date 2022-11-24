@@ -76,6 +76,7 @@ class Fentry extends Model
 
 
     ];
+    protected $hidden = ['created_at','updated_at'];
     // profile includes
     public function getQrvalAttribute()
     {
@@ -178,4 +179,5 @@ class Fentry extends Model
         }
     }
     // end rider includes
+    
 }
