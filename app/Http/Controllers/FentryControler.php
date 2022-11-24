@@ -13,6 +13,7 @@ use App\Http\Controllers\FederationController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Arr;
+use GuzzleHttp\Client;
 
 class FentryControler extends Controller
 {
