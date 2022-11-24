@@ -73,7 +73,7 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
 });
 Route::domain('localhost')->group(function(){
     Route::get('profilecloudsync',[UserprofileController::class,'syncfromcloud']);
-    Route::get('entrycloudsync',[Fentry::class,'syncfromcloud']);
+    Route::get('entrycloudsync',[FentryControler::class,'syncfromcloud']);
     Route::get('ridercheck',[FriderController::class,'checkEligibility']);
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
     Route::get('getqrcode',[UserprofileController::class,'getQr']);
