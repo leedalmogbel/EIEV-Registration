@@ -124,24 +124,44 @@
                 console.log('eid', eid)
                 console.log('hid', hid)
                 console.log('rid', rid)
+                
+                Promise.all([
+                    $.ajax({
+                        type: 'GET',
+                        url: `https://devregistration.eiev-app.ae/api/ridercheck?RiderID=${rid}&EventID=${eid}`,
+                        success: function(data, status, xhr) { // success callback function
 
-                // $.ajax(`http://127.0.0.1:8000/api/ridercheck?RiderID=${rid}&EventID=${eid}`,
-                $.ajax({
-                    type: 'GET',
-                    url: `https://devregistration.eiev-app.ae/api/ridercheck?RiderID=${rid}&EventID=${eid}`,
-                    success: function(data, status, xhr) { // success callback function
-                        // $('p').append(data.firstName + ' ' + data.middleName + ' ' + data.lastName);
-                        if (data.ridereligibility == 'YES') {
-                            toastr['success']('Rider is eligible');
-                        } else {
-                            toastr['error'](data.ridereligibility);
+                        },
+                        error: function(jqXhr, textStatus, errorMessage) { // error callback
+                            console.log('error', errorMessage);
                         }
-                    },
-                    error: function(jqXhr, textStatus, errorMessage) { // error callback 
-                        // $('p').append('Error: ' + errorMessage);
-                        console.log('error', errorMessage);
+                    }),
+                    $.ajax({
+                        type: 'GET',
+                        url: `https://devregistration.eiev-app.ae/api/horsecheck?RiderID=${rid}&EventID=${eid}&HorseID=${hid}`,
+                        success: function(data, status, xhr) { // success callback function
+
+                        },
+                        error: function(jqXhr, textStatus, errorMessage) { // error callback
+                            console.log('error', errorMessage);
+                        }
+                    }),
+                ]).then((response) => {
+                    if (response[0].ridereligibility == 'YES') {
+                        toastr['success']('Rider is eligible');
+                    } else {
+                        toastr['error'](response[0].ridereligibility);
                     }
+
+                    if (response[1].horseeligibility == 'YES') {
+                        toastr['success']('Entry Horse and Rider is eligible');
+                    } else {
+                        toastr['error'](response[1].horseeligibility);
+                    }
+                    console.log('response', response)
                 });
+                // $.ajax(`http://127.0.0.1:8000/api/ridercheck?RiderID=${rid}&EventID=${eid}`,
+
             });
 
             $(document).on('click', '#entry-submit', function(e) {
