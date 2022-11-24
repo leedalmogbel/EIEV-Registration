@@ -91,7 +91,7 @@
                                 @else
                                     <th class="a-elim">Remarks</th>
                                 @endif
-                                <th>Status</th>
+                                <th class="a-elim">Status</th>
                                 @if(!in_array($key,["re","pdf","pfr"]))
                                     <th width="100" style="text-align:right">ACTIONS</th>
                                 @endif 
