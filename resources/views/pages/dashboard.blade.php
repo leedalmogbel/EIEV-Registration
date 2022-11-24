@@ -52,11 +52,13 @@
                                         $racepath = '#';
                                         $opDate = substr($event->openingdate, 0, 10);
                                         $clDate = substr($event->closingdate, 0, 10);
+                                        $copDate = $event->openingdate;
+                                        $cclDate = $event->closingdate;
                                         $opening = strpos($opDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y H:i:s', strtotime($event->openingdate));
                                         $closing = strpos($clDate, '2022-08-31') !== false ? 'Coming soon' : date('d-m-Y H:i:s', strtotime($event->closingdate));
                                         if ($event->statusid == 11) {
                                             $racepath = '/entry/create?raceid=' . $event->raceid;
-                                            if ($clDate < now()) {
+                                            if ($cclDate < now()) {
                                                 $racepath = '#';
                                             }
                                         }
@@ -73,7 +75,7 @@
                                                                 if ($event->statusid == 11) {
                                                                     $statusclass = 'text-success';
                                                                     $statuslabel = 'Open for Entries';
-                                                                    if ($clDate < now()) {
+                                                                    if ($cclDate < now()) {
                                                                         $statusclass = 'text-danger';
                                                                         $statuslabel = 'Closed';
                                                                     }

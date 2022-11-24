@@ -40,7 +40,7 @@ class EntryController extends Controller
         $event = $eventJson->events->data;
 
         // if($event[0]->)
-        $clDate = substr($event[0]->closingdate, 0, 10);
+        $clDate = date('Y-m-d H:i:s',strtotime($event[0]->closingdate));
         if ($clDate < now()) {
             $this->flashMsg(sprintf('%s', 'Forbidden Action. Entry is already closed'), 'warning');
             return redirect('/race');
