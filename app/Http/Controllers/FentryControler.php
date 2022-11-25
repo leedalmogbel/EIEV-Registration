@@ -174,7 +174,7 @@ class FentryControler extends Controller
                         }
                         
                     }
-                    return response()->json(['msg'=>sprintf('Updated %s entries',count($osnupdates)), 'entries'=>$osnupdates,'rentries'=>$rsnupdates]);
+                    return response()->json(['msg'=>sprintf('Updated %s entries',count($osnupdates)), 'entries'=>$osnupdates]);
                     break;
             }
         }
