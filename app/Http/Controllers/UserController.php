@@ -211,7 +211,7 @@ class UserController extends Controller
         $profile = session()->get('profile');
 
         $headers    = array('Content-Type' => ['png','svg','eps']);
-        $contents = file_get_contents("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl={{$profile->uniqueid}}&choe=UTF-8");
+        $contents = file_get_contents("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=".$profile->uniqueid."&choe=UTF-8");
 
         $filename = 'qrEntry.png';
         \Storage::disk('public')->put($filename, $contents);
