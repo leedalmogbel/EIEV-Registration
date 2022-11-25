@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Fentry;
 use App\Models\Fevent;
-use App\Models\Userprofile;
 use App\Models\Snpool;
 use App\Models\Multi;
 use App\Models\Fstable;
@@ -13,7 +12,7 @@ use App\Http\Controllers\FederationController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Arr;
-use GuzzleHttp\Client;
+use App\Models\Userprofile;
 
 class FentryControler extends Controller
 {
@@ -54,6 +53,8 @@ class FentryControler extends Controller
       return response()->json(['entries'=>$entries]);
 
     }
+
+
 
     public function generateStartnumber(Request $request)  
     {
@@ -140,6 +141,24 @@ class FentryControler extends Controller
                     if(count($rsnupdates)>0){
                         Multi::insertOrUpdate($rsnupdates,'fentries');
                     }
+                    $exclude = Snpool::whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) >0')->orWhere('active',0)->pluck('startno')->toArray();
+                    $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
+                    $entries = Fentry::where('eventcode',$request->eventId)->where('status','Accepted')->whereNull('startno')->orderByRaw('CAST(code as UNSIGNED)')->get();
+                    $osnupdates = array();
+                    if($entries){
+                        for($i=0;$i<count($entries);$i++){
+                            $snum['code']=$entries[$i]->code;
+                            $snum['startno']=$collection[$i];
+                            array_push($osnupdates,$snum);
+                        }
+                        if(count($osnupdates)>0){
+                            Multi::insertOrUpdate($osnupdates,'fentries');
+                        }
+                        
+                    }
+                    return response()->json(['msg'=>sprintf('Updated %s entries',count($osnupdates) + count($rsnupdates)), 'entries'=>$osnupdates,'rentries'=>$rsnupdates]);
+                    break;
+                case 'rem':
                     $exclude = Snpool::whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) >0')->orWhere('active',0)->pluck('startno')->toArray();
                     $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
                     $entries = Fentry::where('eventcode',$request->eventId)->where('status','Accepted')->whereNull('startno')->orderByRaw('CAST(code as UNSIGNED)')->get();
@@ -403,41 +422,6 @@ class FentryControler extends Controller
         }
         $profiles =isset($request->ppage)? $profiles->paginate($ppage): $profiles->get();
         return view('tempadmin.tentry',['modelName'=>'submitentry','profiles'=>$profiles]);
-    }
-
-    public function actions(Request $request)
-    {
-        if(isset($request->code)){
-            $profile = Userprofile::where('uniqueid',$request->code)->first();
-            if($profile){
-                $entries = Fentry::where('userid',$profile->userid)->where('stableid',$profile->stableid)->get();
-                return view('tempadmin.tactions',['actions'=>['Add Entry','Swap Entry','Update Entry'],'profile'=>$profile,'entries'=>$entries]);
-            }
-        }
-        return view('tempadmin.tactions',['actions'=>[],'profile'=>[],'entries'=>[]]);
-    }
-
-
-
-    public function syncfromcloud(Request $request)
-    {
-
-        $api_url = 'https://devregistration.eiev-app.ae/api/getentries/';
-
-        $options = [
-            'headers' => [
-                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
-            ],
-        ];
-        $httpClient = new \GuzzleHttp\Client();
-        $client = new Client();
-        $response = $client->request('GET',$api_url, $options);
-        $data = json_decode($response->getBody(),true);
-        if(count($data["entries"])>0){
-            Multi::insertOrUpdate($data["entries"],'fentries');
-            return response()->json(['msg'=>sprintf('Updated %s entries',count($data['entries']))]);
-        }
-        return response()->json(['msg'=>'No action done.']);
     }
 
     /**
