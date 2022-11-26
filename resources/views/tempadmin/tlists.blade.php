@@ -483,9 +483,6 @@
                         urlParams.append('stablename',a);
                     }
                     window.location.search = urlParams;
-                
-                
-
             });
             $(document).on('click', '#reject-entry', function(e) {
                 e.preventDefault();
