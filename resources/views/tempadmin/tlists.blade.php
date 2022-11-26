@@ -466,12 +466,12 @@
             $('#stableid').on('change',function(e)
             {
                 const eid = e.target.value;
-                const d = JSON.parse('{!! $stables !!}');
+                const d = JSON.parse('{!! json_encode((object)$stables) !!}');
 
                 const a= $.map($('#stableid').val(), function (obj) {
                         return d[obj];
                     });
-            
+                    console.log(a);
                 let urlParams = new URLSearchParams(window.location.search);
                     if(urlParams.has('stablename')){
                         if(a.length==0){
@@ -483,6 +483,9 @@
                         urlParams.append('stablename',a);
                     }
                     window.location.search = urlParams;
+                
+                
+
             });
             $(document).on('click', '#reject-entry', function(e) {
                 e.preventDefault();
