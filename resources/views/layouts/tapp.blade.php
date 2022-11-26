@@ -18,6 +18,10 @@
     <link type="text/css" rel="stylesheet" href="/components/pace-js/themes/green/pace-theme-material.css" />
     <link type="text/css" rel="stylesheet" href="/components/daterangepicker/daterangepicker.css" />
     <link type="text/css" rel="stylesheet" href="/styles/main.css" />
+    <link type="text/css" rel="stylesheet" href="/styles/editor.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/select/1.5.0/css/select.dataTables.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/datetime/1.2.0/css/dataTables.dateTime.min.css" />
+    
 
     <link href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" rel="stylesheet" />
 
@@ -37,7 +41,10 @@
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.colVis.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.5.0/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/datetime/1.2.0/js/dataTables.dateTime.min.js"></script>
     <script type="text/javascript" src="/js/debounce.js"></script>
+    <script type="text/javascript" src="/js/editor.js"></script>
 
 	</head>
 	<body>

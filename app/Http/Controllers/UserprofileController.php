@@ -34,27 +34,6 @@ class UserprofileController extends Controller
         return response()->json(['userprofiles'=>$userprofiles]);
     }
 
-    public function syncfromcloud(Request $request)
-    {
-
-        $api_url = 'https://devregistration.eiev-app.ae/api/getprofiles/';
-
-        $options = [
-            'headers' => [
-                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
-            ],
-        ];
-        $httpClient = new \GuzzleHttp\Client();
-        $client = new Client();
-        $response = $client->request('GET',$api_url, $options);
-        $data = json_decode($response->getBody(),true);
-        if(count($data["userprofiles"])>0){
-            Multi::insertOrUpdate($data["userprofiles"],'userprofiles');
-            return response()->json(['msg'=>sprintf('Updated %s profiles',count($data['userprofiles']))]);
-        }
-        return response()->json(['msg'=>'No action done.']);
-    }
-
     /**
      * Show the form for creating a new resource.
      *

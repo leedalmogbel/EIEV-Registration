@@ -9,6 +9,7 @@ use App\Http\Controllers\FriderController;
 use App\Http\Controllers\FeventController;
 use App\Http\Controllers\SnpoolController;
 use App\Http\Controllers\FentryControler;
+use App\Http\Controllers\LentryController;
 use App\Http\Controllers\FhorseController;
 use App\Http\Middleware\EnsureClientIsValid;
 use App\Http\Middleware\EnsureClientIsFed;
@@ -71,79 +72,26 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('getentries',[FentryControler::class,'index']);
     Route::get('getprofiles',[UserprofileController::class,'index']);
 });
-Route::domain('localhost')->group(function(){
-    Route::get('profilecloudsync',[UserprofileController::class,'syncfromcloud']);
-    Route::get('entrycloudsync',[FentryControler::class,'syncfromcloud']);
+// Route::domain('192.167.1.27:8000')->group(function(){
+    Route::get('profilecloudsync',[LentryController::class,'syncprofilesfromcloud']);
+    Route::get('entrycloudsync',[LentryController::class,'syncentriesfromcloud']);
+    Route::get('execute',function(Request $request)
+    {
+        $myRequest = new \Illuminate\Http\Request();
+        $myRequest->setMethod('POST');
+        $myRequest->request->add([
+            'action'=>$request->action,
+            'includes'=>$request->include,
+            'showraw'=>$request->has('showraw') ? true:false,
+            'params'=>$request->except(['action','showraw','pRiderLocation','include'])
+            ]
+        );
+        $data = (new LentryController)->soapCall($myRequest);
+        return response()->json($data);
+    });
+    Route::get('insertall',[LentryController::class,'uploadAll']);
     Route::get('ridercheck',[FriderController::class,'checkEligibility']);
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
     Route::get('getqrcode',[UserprofileController::class,'getQr']);
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
-    Route::get('execute',function(Request $request)
-    {
-       $data =  Reusable::soapCall('InsertEntries',[
-            'params'=>[
-                'pEvtCateg'=>$request->pEvtCateg,
-                'pIdCode'=>$request->pIdCode,
-                'pStartNo'=>$request->pStartNo,
-                'pStartCode'=>$request->pStartCode,
-                'pRiderName'=>$request->pRiderName,
-                'pRiderFname'=>$request->pRiderFname,
-                'pRiderLname'=>$request->pRiderLname,
-                'pRiderLicenseFei'=>$request->pRiderLicenseFei,
-                'pRiderLicenseEef'=>$request->pRiderLicenseEef,
-                'pRiderNationality'=>$request->pRiderNationality,
-                'pHorseName'=>$request->pHorseName,
-                'pHorseYear'=>$request->pHorseYear,
-                'pHorseGender'=>$request->pHorseGender,
-                'pHorseColor'=>$request->pHorseColor,
-                'pHorseBreed'=>$request->pHorseBreed,
-                'pHorseLicenseFei'=>$request->pHorseLicenseFei,
-                'pHorseLicenseEef'=>$request->pHorseLicenseEef,
-                'pHorseChip'=>$request->pHorseChip,
-                'pOwnerName'=>$request->pOwnerName,
-                'pTrainerName'=>$request->pTrainerName,
-                'pStableName'=>$request->pStableName,
-                'pContactPerson'=>$request->pContactPerson,
-                'pContactNumber'=>$request->pContactNumber,
-                'pRiderImage'=>null,
-                'pExecutedBy'=>$request->pExecutedBy,
-                'pHorseOrigin'=>$request->pHorseOrigin,
-                'pRiderGender'=>$request->pRiderGender,
-                'pBarcodeValue'=>$request->pBarcodeValue
-                ]
-            ],
-            [
-                'pEvtCateg',
-                'pIdCode',
-                'pStartNo',
-                'pStartCode',
-                'pRiderName',
-                'pRiderFname',
-                'pRiderLname',
-                'pRiderLicenseFei',
-                'pRiderLicenseEef',
-                'pRiderNationality',
-                'pHorseName',
-                'pHorseYear',
-                'pHorseGender',
-                'pHorseColor',
-                'pHorseBreed',
-                'pHorseLicenseFei',
-                'pHorseLicenseEef',
-                'pHorseChip',
-                'pOwnerName',
-                'pTrainerName',
-                'pStableName',
-                'pContactPerson',
-                'pContactNumber',
-                'pRiderImage',
-                'pExecutedBy',
-                'pHorseOrigin',
-                'pRiderGender',
-                'pBarcodeValue'
-            ],
-            '!InsertEntriesV2Result|result-Result|inserstatus-ErrorMessage|errormsg-Status|status-Remarks|remarks',
-            true
-        );
-    });
-});
+// });
