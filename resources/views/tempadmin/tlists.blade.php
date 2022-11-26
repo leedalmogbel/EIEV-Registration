@@ -466,7 +466,7 @@
             $('#stableid').on('change',function(e)
             {
                 const eid = e.target.value;
-                const d = '{!! json_encode((object)$stables) !!}';
+                const d = '{!! $stables !!}';
 
                 const a= $.map($('#stableid').val(), function (obj) {
                         return d[obj];
