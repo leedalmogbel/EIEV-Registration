@@ -103,8 +103,7 @@ class FentryControler extends Controller
                 case 'others':
                     
                     $exclude = Snpool::whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) >0')->orWhere('active',0)->pluck('startno')->toArray();
-                    $existingnos = Fentry::where('eventcode',$request->eventId)->where('status','Accepted')->whereNotNull('startno')->orderByRaw('CAST(code as UNSIGNED)')->pluck('startno')->toArray();
-                    $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude,$exstingnos){ if(!in_array($n,$exclude) && !in_array($n,$existingnos)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
+                    $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
                     $entries = Fentry::where('eventcode',$request->eventId)->where('status','Accepted')->whereNull('startno')->orderByRaw('CAST(code as UNSIGNED)')->get();
                     $osnupdates = array();
                     if($entries){
@@ -161,7 +160,8 @@ class FentryControler extends Controller
                     break;
                 case 'rem':
                         $exclude = Snpool::whereRaw('IFNULL(JSON_EXTRACT(assigned,"$.'.$request->eventId.'"),-1) >0')->orWhere('active',0)->pluck('startno')->toArray();
-                        $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude){ if(!in_array($n,$exclude)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
+                        $existingnos = Fentry::where('eventcode',$request->eventId)->where('status','Accepted')->whereNotNull('startno')->orderByRaw('CAST(code as UNSIGNED)')->pluck('startno')->toArray();
+                        $collection = collect(range(1,$totalentries+count($exclude)))->map(function ($n)use ($exclude,$existingnos){ if(!in_array($n,$exclude) && !in_array($n,$existingnos)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
                         $entries = Fentry::where('eventcode',$request->eventId)->where('status','Accepted')->whereNull('startno')->orderByRaw('CAST(code as UNSIGNED)')->get();
                         $osnupdates = array();
                         if($entries){
