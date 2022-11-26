@@ -12,9 +12,8 @@
             if(isset($_GET['stablename'])){
                 $sids= explode(',',$_GET['stablename']);
                 foreach($sids as $sid){
-                    $indexlist = array_keys($stables,$sid);
-                    if(count($indexlist)>0){
-                        array_push($stableidlist,$indexlist[0]);
+                    if(isset($stables[$sid])){
+                        array_push($stableidlist,$sid);
                     }
                 }
             }
@@ -466,21 +465,16 @@
             $('#stableid').on('change',function(e)
             {
                 const eid = e.target.value;
-                const d = JSON.parse('{!! json_encode((object)$stables) !!}');
-
-                const a= $.map($('#stableid').val(), function (obj) {
-                        return d[obj];
-                    });
-            
                 let urlParams = new URLSearchParams(window.location.search);
+
                     if(urlParams.has('stablename')){
-                        if(a.length==0){
+                        if($('#stableid').val().length==0){
                             urlParams.delete('stablename');
                         }else{
-                            urlParams.set('stablename',a);
+                            urlParams.set('stablename',$('#stableid').val());
                         }
                     }else{
-                        urlParams.append('stablename',a);
+                        urlParams.append('stablename',$('#stableid').val());
                     }
                     window.location.search = urlParams;
                 

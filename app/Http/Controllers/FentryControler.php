@@ -188,7 +188,7 @@ class FentryControler extends Controller
             'SearchEventID'=>'required',
           ]);
         $totalcount = 0;
-        $tables = Fentry::where('eventcode','like',"%".strval(intval($request->SearchEventID)))->groupBy('stablename')->pluck('stablename')->toArray();
+        $tables = Fentry::where('eventcode','like',"%".strval(intval($request->SearchEventID)))->distinct('stablename')->pluck('stablename','userid')->toArray();
         $events = Fevent::selectRaw('CONCAT( CAST(raceid as UNSIGNED), " : ", racename, "    |   Event Date - ", DATE_FORMAT( CAST(racefromdate as DATETIME),"%Y-%m-%d"), "    |   Opening - ", DATE_FORMAT( CAST(openingdate as DATETIME),"%Y-%m-%d %H:%i:%s"), "    |   Closing - ", DATE_FORMAT( CAST(closingdate as DATETIME),"%Y-%m-%d %H:%i:%s") ) as race, CAST(raceid as UNSIGNED) as raceid')->where('statusname','like','%Entries%')->orWhere('statusname','like','%Closed%')->pluck('race','raceid')->toArray();
         $eventnames = Fevent::selectRaw('CAST(raceid as UNSIGNED) as raceid,racename')->pluck('racename','raceid')->toArray();
         if($validator->fails()){
@@ -220,12 +220,12 @@ class FentryControler extends Controller
         $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn']);
         $pcentries = $pcentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0');
         if(isset($request->stablename)){
-            $fentries = $fentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
-            $eentries = $eentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
-            $pentries = $pentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
-            $reventries = $reventries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
-            $rentries = $rentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC');
-            $pcentries = $pcentries->whereIn('stablename',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
+            $fentries = $fentries->whereIn('userid',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
+            $eentries = $eentries->whereIn('userid',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
+            $pentries = $pentries->whereIn('userid',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
+            $reventries = $reventries->whereIn('userid',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
+            $rentries = $rentries->whereIn('userid',explode(',',$request->stablename))->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC');
+            $pcentries = $pcentries->whereIn('userid',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
         }
         $fentries = $fentries->orderByRaw('CAST(startno as UNSIGNED) asc');
         $eentries = $eentries->orderByRaw('CAST(startno as UNSIGNED) asc');
@@ -241,7 +241,7 @@ class FentryControler extends Controller
         $pcentries =isset($request->ppage)? $pcentries->paginate($ppage): $pcentries->get();
         $totalcount = count($fentries) + count($eentries) + count($pentries)
         + count($reventries) + count($rentries);
-        dd($tables);
+        
         if(isset($request->presidentcup)){
             $totalcount += count($pcentries);
             return view('tempadmin.tlists',['modelName'=>'entry','total'=>$totalcount,'events'=>$events,'eventnames'=>$eventnames,'stables'=>$tables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'royprov'=>$pcentries,'re'=>$rentries]]);
