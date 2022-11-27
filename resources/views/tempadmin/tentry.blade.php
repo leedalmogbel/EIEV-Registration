@@ -9,7 +9,6 @@
                 <tr>
                     <!-- <th width="300">Race</th> -->
                     <th>ACTIVE</th>
-                    <!-- <th>QR</th> -->
                     <th>EIEVID</th>
                     <th>EMAIL</th>
                     <td>USERID</td>
@@ -27,7 +26,6 @@
                         <td class="text-center">
                             {{ $profile->isactive ?? 'N/A' }}
                         </td>
-                        <!-- <td class="text-center"><strong>{{ QrCode::size(200)->encoding('UTF-8')->generate($profile->uniqueid) }}</strong></td> -->
                         <td class="text-center"><strong>{{ $profile->uniqueid }}</strong></td>
                         <td class="text-center"><strong>{{ $profile->email }}</strong></td>
                         <td class="text-center"><strong>{{ $profile->userid }}</strong></td>
