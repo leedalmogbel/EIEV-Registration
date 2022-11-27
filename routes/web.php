@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\SessionChecker;
 use App\Http\Controllers\FentryControler;
-use App\Http\Controllers\LentryController;
 use App\Http\Controllers\FeventController;
 $defaultRoutes = [
     'get:/create' => [
@@ -178,8 +177,8 @@ Route::domain('devregistration.eiev-app.ae')->group(function ()
         Route::get('/add',[FentryControler::class,'addentry']);
     });
 });
-// Route::domain('localhost')->group(function ()
-// {
+Route::domain('localhost')->group(function ()
+{
     Route::group(['prefix'=>'rideslist'],function ()
     {
         Route::get('/',[FentryControler::class,'getlists']);
@@ -195,9 +194,10 @@ Route::domain('devregistration.eiev-app.ae')->group(function ()
     });
     Route::group(['prefix'=>'actions'],function ()
     {
-        Route::get('/',[LentryController::class,'actions']);
+        Route::get('/',[FentryControler::class,'actions']);
+        Route::get('/add',[FentryControler::class,'addentry']);
     });
-// });
+});
 
 // custom routes
 Route::get('/entry/user/{userId}', "EntryController@horseRider");
