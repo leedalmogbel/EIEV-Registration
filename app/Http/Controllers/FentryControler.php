@@ -425,6 +425,41 @@ class FentryControler extends Controller
         return view('tempadmin.tentry',['modelName'=>'submitentry','profiles'=>$profiles]);
     }
 
+    public function actions(Request $request)
+    {
+        if(isset($request->code)){
+            $profile = Userprofile::where('uniqueid',$request->code)->first();
+            if($profile){
+                $entries = Fentry::where('userid',$profile->userid)->where('stableid',$profile->stableid)->get();
+                return view('tempadmin.tactions',['actions'=>['Add Entry','Swap Entry','Update Entry'],'profile'=>$profile,'entries'=>$entries]);
+            }
+        }
+        return view('tempadmin.tactions',['actions'=>[],'profile'=>[],'entries'=>[]]);
+    }
+
+
+
+    public function syncfromcloud(Request $request)
+    {
+
+        $api_url = 'https://devregistration.eiev-app.ae/api/getentries/';
+
+        $options = [
+            'headers' => [
+                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+            ],
+        ];
+        $httpClient = new \GuzzleHttp\Client();
+        $client = new Client();
+        $response = $client->request('GET',$api_url, $options);
+        $data = json_decode($response->getBody(),true);
+        if(count($data["entries"])>0){
+            Multi::insertOrUpdate($data["entries"],'fentries');
+            return response()->json(['msg'=>sprintf('Updated %s entries',count($data['entries']))]);
+        }
+        return response()->json(['msg'=>'No action done.']);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
