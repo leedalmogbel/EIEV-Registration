@@ -81,7 +81,7 @@
             <div class="visible-print text-center">
                 <p>Click me to download</p>
                 <a href="{{ action('UserController@downloadQRCode') }}">
-                    <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=$profile->uniqueid&choe=UTF-8"
+                    <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl={{ $profile->uniqueid }}&choe=UTF-8"
                         alt="">
                 </a>
             </div>
