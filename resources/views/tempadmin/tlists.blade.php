@@ -7,6 +7,9 @@
         .uhide{
             display: none;
         }
+        .bhide{
+            display: none;
+        }
     </style>
     <div class="">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -476,51 +479,56 @@
 
                 $('#assign-no-action').on('click', function(e){
                     const params = ['startno','entryCode'];
-                    $.ajax({
-                        url:`/api/assignno?${prepareRequestv1(params)}`,
-                        method:'GET',
-                        success:function(data){
-                            toastr.success("Start number assigned.");
-                            fdata = final.row(`#${selectedRows[0]}`).data();
-                            fdata[3] = $(`#startno`).val() ?? 'N/A'
-                            final.row(`#${selectedRows[0]}`).data(fdata).draw(false);
-                        
-                            $('#assign-no-action').addClass('shide');
-                            $('select#startno').addClass('uhide');
-                            $('input#startno').removeClass('uhide');
+                    if($('select#startno').val()!= "" && $('#entryCode').val()!= "" && $('#eventid').val() != ""){
+                        $.ajax({
+                            url:`/api/assignno?${prepareRequestv1(params)}`,
+                            method:'GET',
+                            success:function(data){
+                                toastr.success("Start number assigned.");
+                                fdata = final.row(`#${selectedRows[0]}`).data();
+                                fdata[3] = $(`#startno`).val() ?? 'N/A'
+                                final.row(`#${selectedRows[0]}`).data(fdata).draw(false);
                             
-                            getNos();
-                            clear();
-                            resetSelection();
-                        },
-                        error:function(error){
+                                $('#assign-no-action').addClass('shide');
+                                $('select#startno').addClass('uhide');
+                                $('input#startno').removeClass('uhide');
+                                
+                                getNos();
+                                clear();
+                                resetSelection();
+                            },
+                            error:function(error){
 
-                        }
-                    });
+                            }
+                        });
+                    }
+                    
                 });
 
                 $('#unassign-no-action').on('click', function(e){
                     const params = ['entryCode'];
-                    $.ajax({
-                        url:`/api/assignno?startno=-2&${prepareRequestv1(params)}`,
-                        method:'GET',
-                        success:function(data){
-                            toastr.success("Start number unassigned.");
-                            fdata = final.row(`#${selectedRows[0]}`).data();
-                            fdata[3] = 'N/A'
-                            final.row(`#${selectedRows[0]}`).data(fdata).draw(false);
-                            $('#assign-no-action').removeClass('shide');
-                            $('select#startno').removeClass('uhide');
-                            $('input#startno').addClass('uhide');
-                            getNos();
-                            clear();
-                            resetSelection();
+                    if($('#entryCode').val()!= "" && $('#eventid').val() != ""){
+                        $.ajax({
+                            url:`/api/assignno?startno=-2&${prepareRequestv1(params)}`,
+                            method:'GET',
+                            success:function(data){
+                                toastr.success("Start number unassigned.");
+                                fdata = final.row(`#${selectedRows[0]}`).data();
+                                fdata[3] = 'N/A'
+                                final.row(`#${selectedRows[0]}`).data(fdata).draw(false);
+                                $('#assign-no-action').removeClass('shide');
+                                $('select#startno').removeClass('uhide');
+                                $('input#startno').addClass('uhide');
+                                getNos();
+                                clear();
+                                resetSelection();
 
-                        },
-                        error:function(error){
+                            },
+                            error:function(error){
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 });
 
                 let pfa = $('#pfa').DataTable({
