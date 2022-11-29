@@ -1,5 +1,13 @@
 @extends('layouts.tapp')
 @section('content')
+    <style>
+        .shide{
+            display: none;
+        }
+        .uhide{
+            display: none;
+        }
+    </style>
     <div class="">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -59,6 +67,7 @@
                         <thead>
                             <tr>
                                 <th class="a-elim a-export m-export d-export">serial</th>
+                             
                                 <th>EntryCode</th>
                                 <th>UserID</th>
                                 <th class="a-elim a-export m-export d-export">StartNo</th>
@@ -102,6 +111,7 @@
                             @foreach ($lists as $entry)
                                 <tr>
                                     <td class="text-center"></td>
+                                    
                                     <td class="text-center">
                                     {{$entry->code ?? 'N/A'}}
                                     </td>
@@ -217,6 +227,37 @@
                             @endforeach
                         </tbody>
                     </table>
+                    @if($key == "final")
+                    <div class="d-grid gap-2 col mt-2">
+                        @if(count($actions)>0)
+                            <div class="row">
+                                <div class="col d-flex justify-content-end gap-1">
+                                    @foreach($actions as $key => $value)
+                                        <button class="{{$value['cname']}}" type="button" id={{$key}}-action>{{$value['lbl']}}</button>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                        @foreach($items as $item)
+                            <div class="row gx-1">
+                                @for($i = 0; $i < count($item["flds"]); $i++)
+                                <div class={{$item["cnames"][$i]}}>
+                                    <div class="form-floating mb-3">
+                                        @if($item['flds'][$i] == "startno")
+                                            <select class="form-control" id={{$item["flds"][$i]}}></select>
+                                            <input type="text" class="form-control uhide" disabled id={{$item["flds"][$i]}}>
+                                            <label for={{$item["flds"][$i]}}>{{$item["lbls"][$i]}}</label>
+                                        @else
+                                            <input type="text" class="form-control" disabled id={{$item["flds"][$i]}}>
+                                            <label for={{$item["flds"][$i]}}>{{$item["lbls"][$i]}}</label>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endfor
+                            </div>
+                        @endforeach
+                    </div>
+                    @endif
                 </div>
             @endforeach
             <div class="row mb-2">
@@ -226,6 +267,81 @@
     </div>
         <script type="text/javascript">
             $(document).ready(function(e) {
+                let selectedRows = [];
+                let mutiselectmode = false;
+                let currentCode = -1;
+                function getNos() {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    if(urlParams.has('SearchEventID')){
+                        $.ajax({
+                            url:`/api/getnos?eventid=${$('#eventid').val()}`,
+                            method:"GET",
+                            success:function(data){
+                                if(data.startnos !== undefined){
+                                    toastr['success']('Retrieved Start nos.');
+                                    $('#startno').empty();
+                                    $('#startno').append('<option disabled selected value="-1">Select</option>');
+                                    data.startnos.forEach(element => {
+                                        $('#startno').append(`<option value=${element}>${element}</option>`);
+                                    });
+                                }
+                            },
+                            error:function(error){
+                            }
+                        });
+                    }
+                }
+
+                function clear() {
+                    $("select#startno").val("");
+                    $("#pStartCode").val("");
+                    $("#pRiderName").val("");
+                    $("#pHorseName").val("");
+                    $("#pOwnerName").val("");
+                    $("#pTrainerName").val("");
+                    $("#pStableName").val("");
+                    $("#entryCode").val("");
+
+                }
+
+                function prepareRequestv1(params) {
+                    paramslist = [`eventid=${$('#eventid').val()}`]
+                    params.forEach(element => {
+                        switch (element) {
+                            case "startno":
+                                paramslist.push(`${element}=${$(`select#${element}`).val()}`)
+                                break
+                            default:
+                                paramslist.push(`${element}=${$(`#${element}`).val()}`)
+                                break;
+                        }
+                    });
+
+                    return paramslist.join('&');
+                }
+
+                function resetSelection() {
+                    selectedRows.forEach(element =>{
+                        final.$(`#${element}`).toggleClass('selected');
+                    });
+                    selectedRows = [];
+                }
+
+                function saveStartno(params,fill=false) {
+                    $.ajax({
+                        url:`/api/assignno?eventid=${params['eventid']}&entryCode=${params['entryCode']}&startno=${params['startno']}`,
+                        method:"GET",
+                        success:function(data){
+                            getNos();
+                            return data.success;
+                        },
+                        error:function(error){
+                            return false;
+                        }
+                    });
+                }
+                getNos();
+                
                 const excel = {extend:'excel',messageTop:null,messageBottom:null,title:null};
                 const pdf = {extend:'pdfHtml5',orientation:'landscape',pageSize:'A4',
                     messageTop:null,
@@ -268,11 +384,145 @@
                             searchable: false,
                         },
                     ],
+                    rowId:[1]
                 });
                 let fi= 1;
                 final.cells(null, 0, {}).every(function (cell) {
                     this.data(fi++);
                 });
+                $('#final tbody').on('click','tr',function(){
+                    let finaldata = final.row(this).data();
+                    const idx = final.row(this).id();
+                    final.$(`#${idx}`).toggleClass('selected');
+                    if(finaldata[3] !== "N/A"){
+                        $('#assign-no-action').addClass('shide');
+                        $('select#startno').addClass('uhide');
+                        $('input#startno').removeClass('uhide');
+                    }else{
+                        $('#assign-no-action').removeClass('shide');
+                        $('select#startno').removeClass('uhide');
+                        $('input#startno').addClass('uhide');
+                    }
+                    if($.inArray(idx,selectedRows)==-1){
+                        selectedRows.push(idx);
+                    }else{
+                        if(idx == selectedRows[selectedRows.length-1]){
+                            selectedRows.pop();
+                            selectedRows.pop();
+                        }
+                    }
+                    if(mutiselectmode){
+
+                    }else{
+                        if(selectedRows.length>1){
+                            final.$(`#${selectedRows[0]}`).toggleClass('selected');
+                            selectedRows = selectedRows.splice(1,1);
+                        }
+                        if(finaldata[3]!=="N/A"){
+                            $("input#startno").val(finaldata[3]);
+                        }
+                        $("#pStartCode").val(finaldata[4]);
+                        $("#pRiderName").val(finaldata[7]);
+                        $("#pHorseName").val(finaldata[12]);
+                        $("#pOwnerName").val(finaldata[22]);
+                        $("#pTrainerName").val(finaldata[23]);
+                        $("#pStableName").val(finaldata[24]);
+                        $("#entryCode").val(finaldata[1]);
+                        if(selectedRows.length<=0){
+                            clear();
+                        }
+                    }
+
+                    
+                    // console.log(selectedRows);
+                    // if(selectedRows.length>0){
+                    //     fdata = final.row(`#${selectedRows[0]}`).data();
+                    //     if(fdata[4] == "N/A"){
+                    //         console.log('aa');
+                            
+                    //         $(`#startno_${selectedRows[0]}`).on('change',function(e){
+                    //             const params = {
+                    //                 'entryCode':selectedRows[0],
+                    //                 'eventid':$("#eventid").val(),
+                    //                 'startno':e.target.value
+                    //             }
+                    //             saveStartno(params);
+                    //             console.log(selectedRows);
+                    //             $.ajax({
+                    //                 url:`/api/getentry?entryCode=${selectedRows[0]}`,
+                    //                 method:"GET",
+                    //                 success: function (data) {
+                    //                     fdata = final.row(`#${selectedRows[0]}`).data();
+                    //                     fdata[4] = data.entry.startno ?? 'N/A'
+                    //                     final.row(`#${selectedRows[0]}`).data(fdata).draw(false);
+                    //                     if(fdata[4]=="N/A"){
+                    //                         final.$(`#startno_${selectedRows[0]}`).toggleClass('shide');
+                    //                     }else{
+                    //                         final.$(`#unassignno_${selectedRows[0]}`).toggleClass('uhide');
+                    //                     }
+                    //                     console.log('asdd');
+                    //                 },
+                    //                 error:function(error){
+
+                    //                 }
+                                
+                    //             })
+                    //         });
+                    //     }else{
+    
+                    //     }
+                    // }
+                });
+
+                $('#assign-no-action').on('click', function(e){
+                    const params = ['startno','entryCode'];
+                    $.ajax({
+                        url:`/api/assignno?${prepareRequestv1(params)}`,
+                        method:'GET',
+                        success:function(data){
+                            toastr.success("Start number assigned.");
+                            fdata = final.row(`#${selectedRows[0]}`).data();
+                            fdata[3] = $(`#startno`).val() ?? 'N/A'
+                            final.row(`#${selectedRows[0]}`).data(fdata).draw(false);
+                        
+                            $('#assign-no-action').addClass('shide');
+                            $('select#startno').addClass('uhide');
+                            $('input#startno').removeClass('uhide');
+                            
+                            getNos();
+                            clear();
+                            resetSelection();
+                        },
+                        error:function(error){
+
+                        }
+                    });
+                });
+
+                $('#unassign-no-action').on('click', function(e){
+                    const params = ['entryCode'];
+                    $.ajax({
+                        url:`/api/assignno?startno=-2&${prepareRequestv1(params)}`,
+                        method:'GET',
+                        success:function(data){
+                            toastr.success("Start number unassigned.");
+                            fdata = final.row(`#${selectedRows[0]}`).data();
+                            fdata[3] = 'N/A'
+                            final.row(`#${selectedRows[0]}`).data(fdata).draw(false);
+                            $('#assign-no-action').removeClass('shide');
+                            $('select#startno').removeClass('uhide');
+                            $('input#startno').addClass('uhide');
+                            getNos();
+                            clear();
+                            resetSelection();
+
+                        },
+                        error:function(error){
+
+                        }
+                    });
+                });
+
                 let pfa = $('#pfa').DataTable({
                     dom: dom,
                     buttons:[
@@ -592,6 +842,9 @@
                         }
                     }
                 });
+            });
+            $(document).on('click', '#unassign-no', function(e) {
+                console.log()
             });
         </script>
 @endsection

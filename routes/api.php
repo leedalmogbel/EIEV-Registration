@@ -72,6 +72,9 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('getentries',[FentryControler::class,'index']);
     Route::get('getprofiles',[UserprofileController::class,'index']);
 });
+Route::get('assignno',[FentryControler::class,'assignStartNo']);
+Route::get('getentry',[FentryControler::class,'getEntry']);
+Route::get('getnos',[FentryControler::class,'getAvailSnos']);
 // Route::domain('192.167.1.27:8000')->group(function(){
     Route::get('profilecloudsync',[LentryController::class,'syncprofilesfromcloud']);
     Route::get('entrycloudsync',[LentryController::class,'syncentriesfromcloud']);

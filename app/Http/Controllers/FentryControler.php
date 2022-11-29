@@ -199,8 +199,22 @@ class FentryControler extends Controller
         if(isset($request->ppage)){
             $ppage = $request->ppage;
         }
-
-        
+        $iitems = [
+            [
+                "flds"=>["startno","pStartCode","pRiderName","pHorseName"],
+                "cnames"=>["col-1","col-1","col-5","col-5"],
+                "lbls"=>["START NO","SC","RNAME","HNAME"]
+            ],
+            [
+                "flds"=>["pOwnerName","pTrainerName","pStableName","entryCode"],
+                "cnames"=>["col-3","col-3","col-3","col-3"],
+                "lbls"=>["OWNER","TRAINER","STABLE","ENTRY CODE"]
+            ],
+        ];
+        $actions = [
+            'assign-no'=>["cname"=>"btn btn-success","lbl"=>"Assign"],
+            'unassign-no'=>["cname"=>"btn btn-danger","lbl"=>"Unassign"]
+        ];
         //final list
         $fentries = Fentry::query();
         //limited entries
@@ -244,9 +258,9 @@ class FentryControler extends Controller
         
         if(isset($request->presidentcup)){
             $totalcount += count($pcentries);
-            return view('tempadmin.tlists',['modelName'=>'entry','total'=>$totalcount,'events'=>$events,'eventnames'=>$eventnames,'stables'=>$tables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'royprov'=>$pcentries,'re'=>$rentries]]);
+            return view('tempadmin.tlists',['modelName'=>'entry','actions'=>$actions,'items'=>$iitems,'total'=>$totalcount,'events'=>$events,'eventnames'=>$eventnames,'stables'=>$tables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'royprov'=>$pcentries,'re'=>$rentries]]);
         }
-        return view('tempadmin.tlists',['modelName'=>'entry','total'=>$totalcount,'events'=>$events,'eventnames'=>$eventnames,'stables'=>$tables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'re'=>$rentries]]);
+        return view('tempadmin.tlists',['modelName'=>'entry','actions'=>$actions,'items'=>$iitems,'total'=>$totalcount,'events'=>$events,'eventnames'=>$eventnames,'stables'=>$tables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'re'=>$rentries]]);
     }
 
     public function accept(Request $request)
@@ -330,6 +344,53 @@ class FentryControler extends Controller
         }
         return response()->json(['msg'=>'Nothing to do'],400);
     }
+
+    public function assignStartNo(Request $request)
+    {
+        
+        if(isset($request->startno) && isset($request->entryCode) && isset($request->eventid)){
+            if($request->startno == "-2"){
+                $entry = Fentry::where('status','Accepted')->where('eventcode','like','%'.$request->eventid)->where('code',$request->entryCode)->update(['startno'=>NULL]);
+                return response()->json(['success'=>true]);
+            }else{
+                $entry = Fentry::where('status','Accepted')->where('eventcode','like','%'.$request->eventid)->where('code',$request->entryCode)->first();
+                if($entry){
+                    $entry->startno = $request->startno;
+                    $success = $entry->save();
+                    if($success){
+                        return response()->json(['success'=>true]);
+                    }
+                }
+            }
+        }
+        return response()->json(['success'=>false]);
+    }
+
+    public function getEntry(Request $request)
+    {
+        if(isset($request->entryCode)){
+            $entry= Fentry::where('code',$request->entryCode)->first();
+            if($entry){
+                return response()->json(['entry'=>$entry]);
+            }
+        }
+        return response()->json(['entry'=>null]);
+    }
+
+    public function getAvailSnos(Request $request)
+    {
+        if(isset($request->eventid)){
+            $entries = Fentry::where('status','Accepted')->where('eventcode','like','%'.$request->eventid)->count();
+            $pentries = Fentry::where('status','Pending')->where('review','<>',0)->where('eventcode','like','%'.$request->eventid)->count();
+            $exclude = Snpool::where('active',0)->pluck('startno')->toArray();
+            $existingnos = Fentry::where('status','Accepted')->where('eventcode','like','%'.$request->eventid)->whereNotNull('startno')->pluck('startno')->toArray();
+            $collection = collect(range(1,$entries+$pentries+count($exclude)))->map(function ($n)use ($exclude,$existingnos){ if(!in_array($n,$exclude) && !in_array($n,$existingnos)) return $n;})->reject(function($n){return empty($n);})->sort()->values()->all();
+            return response()->json(['startnos'=>$collection]);
+        }
+    }
+
+
+
     public function reject(Request $request)
     {
         $entry = Fentry::where('code',$request->entrycode)->first();
