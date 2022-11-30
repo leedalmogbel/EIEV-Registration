@@ -309,7 +309,7 @@
                     $("#pTrainerName").val("");
                     $("#pStableName").val("");
                     $("#entryCode").val("");
-
+                    $("#reserved-action").prop('checked',false);
                 }
 
                 function prepareRequestv1(params) {
@@ -503,7 +503,6 @@
                                 resetSelection();
                             },
                             error:function(error){
-
                             }
                         });
                     }
