@@ -234,9 +234,14 @@
                     <div class="d-grid gap-2 col mt-2">
                         @if(count($actions)>0)
                             <div class="row">
-                                <div class="col d-flex justify-content-end gap-1">
+                                <div class="col d-flex justify-content-end align-items-center gap-1">
                                     @foreach($actions as $key => $value)
+                                        @if($key=="reserved")
+                                            <input type="checkbox" class="{{$value['cname']}}" id={{$key}}-action>
+                                            <label for={{$key}}-action>{{$value['lbl']}}</label>
+                                        @else
                                         <button class="{{$value['cname']}}" type="button" id={{$key}}-action>{{$value['lbl']}}</button>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -308,7 +313,7 @@
                 }
 
                 function prepareRequestv1(params) {
-                    paramslist = [`eventid=${$('#eventid').val()}`]
+                    paramslist = [`eventid=${$('#eventid').val()}`,`reserved=${$('#reserved-action').val()}`]
                     params.forEach(element => {
                         switch (element) {
                             case "startno":

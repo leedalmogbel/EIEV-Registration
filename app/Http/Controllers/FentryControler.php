@@ -212,8 +212,9 @@ class FentryControler extends Controller
             ],
         ];
         $actions = [
+            'reserved'=>["cname"=>"form-check-input","lbl"=>"Reserved"],
             'assign-no'=>["cname"=>"btn btn-success","lbl"=>"Assign"],
-            'unassign-no'=>["cname"=>"btn btn-danger","lbl"=>"Unassign"]
+            'unassign-no'=>["cname"=>"btn btn-danger","lbl"=>"Unassign"],
         ];
         //final list
         $fentries = Fentry::query();
@@ -350,12 +351,16 @@ class FentryControler extends Controller
         
         if(isset($request->startno) && isset($request->entryCode) && isset($request->eventid)){
             if($request->startno == "-2"){
-                $entry = Fentry::where('status','Accepted')->where('eventcode','like','%'.$request->eventid)->where('code',$request->entryCode)->update(['startno'=>NULL]);
+                $entry = Fentry::where('status','Accepted')->where('eventcode','like','%'.$request->eventid)->where('code',$request->entryCode)->update(['startno'=>NULL,'reserved'=>0]);
                 return response()->json(['success'=>true]);
             }else{
                 $entry = Fentry::where('status','Accepted')->where('eventcode','like','%'.$request->eventid)->where('code',$request->entryCode)->first();
                 if($entry){
                     $entry->startno = $request->startno;
+                    $reservedstable = Snpool::where('stableid',$entry->stableid)->where('userid',$entry->userid)->where('startno',$request->startno)->first();
+                    if($request->has('reserved') || $reservedstable){
+                        $entry->reserved = 1;
+                    }
                     $success = $entry->save();
                     if($success){
                         return response()->json(['success'=>true]);
