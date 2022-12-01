@@ -176,6 +176,8 @@ Route::domain('devregistration.eiev-app.ae')->group(function ()
         Route::get('/',[FentryControler::class,'actions']);
         Route::get('/add',[FentryControler::class,'addentry']);
     });
+
+    Route::get('/changeentry',[FentryControler::class,'changeEntry']);
 });
 Route::domain('localhost')->group(function ()
 {
@@ -197,6 +199,7 @@ Route::domain('localhost')->group(function ()
         Route::get('/',[FentryControler::class,'actions']);
         Route::get('/add',[FentryControler::class,'addentry']);
     });
+    Route::get('/changeentry',[FentryControler::class,'changeEntry']);
 });
 
 // custom routes

@@ -8,57 +8,75 @@
             <thead>
                 <tr>
                     <!-- <th width="300">Race</th> -->
-                    <th>ACTIVE</th>
-                    <th>EIEVID</th>
-                    <th>EMAIL</th>
-                    <td>USERID</td>
-                    <td>STABLEID</td>
-                    <th>FIRSTNAME</th>
-                    <th>LASTNAME</th>
-                    <th>MOBILENO</th>
-                    <th>BDAY</th>
+                    <th>HORSE</th>
+                    <th>RIDER</th>
+                    <th>TRAINER</th>
+                    <td>STABLE/OWNER</td>
+                    <td>USER</td>
+                    <th>ENTRYCODE</th>
+                    <th>STATUS</th>
+                    <th>STARTNO</th>
                     <th width="100" style="text-align:right">ACTIONS</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($profiles as $profile)
+                @foreach ($entries as $entry)
                     <tr>
                         <td class="text-center">
-                            {{ $profile->isactive ?? 'N/A' }}
-                        </td>
-                        <td class="text-center"><strong>{{ $profile->uniqueid }}</strong></td>
-                        <td class="text-center"><strong>{{ $profile->email }}</strong></td>
-                        <td class="text-center"><strong>{{ $profile->userid }}</strong></td>
-                        <td class="text-center"><strong>{{ $profile->stableid }}</strong></td>
-                        <td class="text-center">
-                            {{ $profile->fname ?? 'UNK' }}
+                            <p class="h6">{{ $entry->horsename }}</p>
+                            <p class="h6">{{ $entry->horsenfid }} / {{ $entry->horseid }}</p>
+                            <p class="h6">{{ $entry->horsefeiid }}</p>
                         </td>
                         <td class="text-center">
-                            {{ $profile->lname ?? 'UNK' }}
+                            <p class="h6">{{ $entry->ridername }}</p>
+                            <p class="h6">{{ $entry->ridernfid }} / {{ $entry->riderid }}</p>
+                            <p class="h6">{{ $entry->riderfeiid }}</p>
                         </td>
                         <td class="text-center">
-                            {{ $profile->mobileno ?? 'UNK' }}
+                            <p class="h6">{{ $entry->trainername }}</p>
+                            <p class="h6">{{ $entry->trainernfid }} / {{ $entry->trainerid }}</p>
+                            <p class="h6">{{ $entry->trainerfeiid }}</p>
                         </td>
                         <td class="text-center">
-                            {{ date('Y-m-d', strtotime($profile->bday)) ?? 'UNK' }}
+                            <p class="h6">{{ $entry->ownername }} / {{ $entry->ownerid }} </p>
+                            <p class="h6">{{ $entry->stablename }} / {{ $entry->stableid }}</p>
                         </td>
                         <td class="text-center">
-                            <div>
-                                <a id="select-data"
+                            <p class="h6">{{ $entry->userid }}</p>
+                        </td>
+                        <td class="text-center">
+                            <p class="h6">{{ $entry->code }}</p>
+                        </td>
+                        <td class="text-center">
+                            <p class="h6">{{ $entry->status }}</p>
+                        </td>
+                        <td class="text-center">
+                            <p class="h6">{{ $entry->startno }}</p>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-block">
+                                <a href="#" class="btn btn-success" id="sub-entry"
+                                    data-entrycode="{{ $entry->code }}" data-userid="{{ $entry->userid }}">
+                                    <i class="fa-solid fa-shuffle"></i>
+                                    Substitute
+                                </a>
+
+                                <a href="#" class="btn btn-success" id="swab-entry">
+                                    <i class="fa-solid fa-rotate"></i>
+                                    Swap
+                                </a>
+                                {{-- <a id="select-data"
                                     href={{ $profile->stableid == 'E0000014'
                                         ? 'AdminUserID|' . $profile->userid . '|' . $profile->userid
                                         : 'StableID|' . $profile->stableid . '|' . $profile->userid }}
-                                    class="btn btn-main">SELECT</a>
-
-                                <a href="/changeentry?code={{ $profile->uniqueid }}&event=4542"
-                                    class="btn btn-main">CHANGE</a>
+                                    class="btn btn-main">SELECT</a> --}}
                             </div>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        <div class="entries container py-5">
+        <div class="sub-entries container py-5 d-none">
             <div class="row entry">
                 <div class="col">
                     <div class="form-group mb-3">
@@ -72,15 +90,10 @@
                         <select class="rider-select select-2-basic col-12"></select>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="form-group mb-3">
-                        <label for="">Event</label>
-                        <select class="event-select select-2-basic col-12"></select>
-                    </div>
-                </div>
+
             </div>
         </div>
-        <div class="entries container">
+        <div class="sub-entries1 container">
             <div class="row entry">
                 <div class="col">
                     <div class="form-group mb-3">
@@ -99,9 +112,12 @@
     <script type="text/javascript">
         $(document).ready(function() {
             let uid = 0;
-            $('.event-select.select-2-basic').select2({
+            let entryCode = '';
+            let userID = '';
+            $('.entry-select.select-2-basic').select2({
                 ajax: {
-                    url: 'https://registration.eiev-app.ae/api/ajax/searchevent',
+                    url: 'http://localhost:8000/api/ajax/searchentry',
+                    // url: 'https://registration.eiev-app.ae/api/ajax/searchevent',
                     dataType: 'json',
                     type: 'GET',
                     processResults: function(data) {
@@ -117,14 +133,15 @@
                     }
                 }
             });
-            $('#submitentry').DataTable();
+            $('#changeentry').DataTable({});
 
             $(document).on('click', '#check-combo', function(e) {
                 e.preventDefault();
-                const eid = $('.event-select.select-2-basic').val();
+                let params = new URLSearchParams(window.location.search);
                 const hid = $('.horse-select.select-2-basic').val();
                 const rid = $('.rider-select.select-2-basic').val();
-                console.log('eid', eid)
+                const eid = params.get('event');
+                console.log('eid', params.get('event'))
                 console.log('hid', hid)
                 console.log('rid', rid)
 
@@ -149,6 +166,17 @@
                             console.log('error', errorMessage);
                         }
                     }),
+                    $.ajax({
+                        type: 'GET',
+                        // url: `https://devregistration.eiev-app.ae/api/entrycheck?RiderID=${rid}&HorseID=${hid}`,
+                        url: `http://localhost:8000/api/entrycheck?RiderID=${rid}&HorseID=${hid}&eventcode=${eid}`,
+                        success: function(data, status, xhr) { // success callback function
+
+                        },
+                        error: function(jqXhr, textStatus, errorMessage) { // error callback
+                            console.log('error', errorMessage);
+                        }
+                    }),
                 ]).then((response) => {
                     if (response[0].ridereligibility == 'YES') {
                         toastr['success']('Rider is eligible');
@@ -157,9 +185,15 @@
                     }
 
                     if (response[1].horseeligibility == 'YES') {
-                        toastr['success']('Entry Horse and Rider is eligible');
+                        toastr['success']('Horse is eligible');
                     } else {
                         toastr['error'](response[1].horseeligibility);
+                    }
+
+                    if (response[2].entryexist) {
+                        toastr['error'](response[2].msg);
+                    } else {
+                        toastr['success']('entry is free');
                     }
                     console.log('response', response)
                 });
@@ -172,17 +206,18 @@
                 e.preventDefault();
                 let self = this;
                 let href = $(self).attr('href');
-                const eid = $('.event-select.select-2-basic').val();
+                let params = new URLSearchParams(window.location.search);
+                const eid = params.get('event');
+                // const eid = $('.event-select.select-2-basic').val();
                 const hid = $('.horse-select.select-2-basic').val();
                 const rid = $('.rider-select.select-2-basic').val();
-                if (uid > 0) {
-                    href =
-                        `https://devregistration.eiev-app.ae/${href}?params[EventID]=${eid}&params[HorseID]=${hid}&params[RiderID]=${rid}&params[UserID]=${uid}`;
-                    window.location.href = href
-                }
+                href =
+                    // `https://devregistration.eiev-app.ae/processentry?params[EventID]=${eid}&params[HorseID]=${hid}&params[RiderID]=${rid}&params[UserID]=${uid}`;
+                    `http://localhost:8000/api/processentry?eventcode=${eid}&horseID=${hid}&riderID=${rid}&userID=${userID}&entrycode=${entryCode}`;
+                window.location.href = href;
             });
 
-            $(document).on('click', '#select-data', function(e) {
+            $(document).on('click', '#sub-entry', function(e) {
                 e.preventDefault();
                 let self = this;
                 const href = $(self).attr('href');
@@ -191,6 +226,11 @@
                 const dkey = ddata[0];
                 const dval = ddata[1];
                 uid = ddata[2];
+                entryCode = this.dataset.entrycode;
+                userID = this.dataset.userid;
+                console.log('asdasd', entryCode)
+                console.log('asd1asd', userID)
+                $('.sub-entries').removeClass('d-none');
                 $('.horse-select.select-2-basic').val(null).trigger('change');
                 $('.rider-select.select-2-basic').val(null).trigger('change');
                 $('.horse-select.select-2-basic').select2({
