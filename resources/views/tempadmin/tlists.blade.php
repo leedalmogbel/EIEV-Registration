@@ -104,7 +104,7 @@
                                     <th class="a-elim">Remarks</th>
                                 @endif
                                 <th class="a-elim">Status</th>
-                                <th class="">Reserved</th>
+                                <th class="hide">Reserved</th>
                                 @if(!in_array($key,["re","pdf","pfr"]))
                                     <th width="100" style="text-align:right">ACTIONS</th>
                                 @endif 
