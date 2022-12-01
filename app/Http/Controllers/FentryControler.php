@@ -557,7 +557,6 @@ class FentryControler extends Controller
        
         $response = $httpClient->request('POST', $api_url, $options);
         $subEntry = json_decode($response->getBody());
-        dd($subEntry);
         // $entries = $hasEntries->entries->data;
         if($subEntry) {
             $this->flashMsg(sprintf('Entry changed successfully. Entry Code: %s',$request->entrycode), 'success');
