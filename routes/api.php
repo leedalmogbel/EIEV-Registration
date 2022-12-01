@@ -14,6 +14,7 @@ use App\Http\Controllers\FhorseController;
 use App\Http\Middleware\EnsureClientIsValid;
 use App\Http\Middleware\EnsureClientIsFed;
 use App\Models\Reusable;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,10 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
     Route::get('getentries',[FentryControler::class,'index']);
     Route::get('getprofiles',[UserprofileController::class,'index']);
+});
+Route::get('entrysync',function (Request $request)
+{
+    Artisan::call('command:syncentries --ip='.$request->ip.' --host='.$request->host);
 });
 Route::get('assignno',[FentryControler::class,'assignStartNo']);
 Route::get('reserve',[FentryControler::class,'reserveNumber']);
