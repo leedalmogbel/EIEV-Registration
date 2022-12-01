@@ -73,6 +73,7 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('getprofiles',[UserprofileController::class,'index']);
 });
 Route::get('assignno',[FentryControler::class,'assignStartNo']);
+Route::get('reserve',[FentryControler::class,'reserveNumber']);
 Route::get('getentry',[FentryControler::class,'getEntry']);
 Route::get('getnos',[FentryControler::class,'getAvailSnos']);
 // Route::domain('192.167.1.27:8000')->group(function(){

@@ -358,7 +358,7 @@ class FentryControler extends Controller
                 if($entry){
                     $entry->startno = $request->startno;
                     $reservedstable = Snpool::where('stableid',$entry->stableid)->where('userid',$entry->userid)->where('startno',$request->startno)->first();
-                    if($request->has('reserved') || $reservedstable){
+                    if(!in_array($request->reserved,[false,"false","FALSE"]) || $reservedstable){
                         $entry->reserved = 1;
                     }
                     $success = $entry->save();
@@ -369,6 +369,22 @@ class FentryControler extends Controller
             }
         }
         return response()->json(['success'=>false]);
+    }
+
+    public function reserveNumber(Request $request)
+    {
+        if(isset($request->startno) && isset($request->entryCode) && isset($request->eventid)){
+            $entry = Fentry::where('status','Accepted')->where('eventcode','like','%'.$request->eventid)->where('code',$request->entryCode)->first();
+            if($entry){
+                if(!in_array($request->reserved,["false",false])){
+                    $entry->reserved=1;
+                }else{
+                    $entry->reserved=0;
+                }
+                $entry->save();
+                return response()->json(['success'=>true]);
+            }
+        }
     }
 
     public function getEntry(Request $request)

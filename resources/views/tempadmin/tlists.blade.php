@@ -104,6 +104,7 @@
                                     <th class="a-elim">Remarks</th>
                                 @endif
                                 <th class="a-elim">Status</th>
+                                <th class="">Reserved</th>
                                 @if(!in_array($key,["re","pdf","pfr"]))
                                     <th width="100" style="text-align:right">ACTIONS</th>
                                 @endif 
@@ -206,6 +207,9 @@
                                     @endif
                                     <td class="text-center">
                                     {{$entry->status ?? 'N/A'}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{$entry->reserved ?? 'N/A'}}
                                     </td>
                                     @if(!in_array($key,["re","pdf","pfr"]))
                                     <td class="text-center">
@@ -313,7 +317,7 @@
                 }
 
                 function prepareRequestv1(params) {
-                    paramslist = [`eventid=${$('#eventid').val()}`,`reserved=${$('#reserved-action').val()}`]
+                    paramslist = [`eventid=${$('#eventid').val()}`,`reserved=${$("#reserved-action").is(':checked')}`]
                     params.forEach(element => {
                         switch (element) {
                             case "startno":
@@ -411,6 +415,11 @@
                         $('select#startno').removeClass('uhide');
                         $('input#startno').addClass('uhide');
                     }
+                    if(finaldata[30]=="1" || finaldata==1){
+                        $("#reserved-action").prop('checked',true);
+                    }else{
+                        $("#reserved-action").prop('checked',false);
+                    }
                     if($.inArray(idx,selectedRows)==-1){
                         selectedRows.push(idx);
                     }else{
@@ -507,6 +516,26 @@
                         });
                     }
                     
+                });
+
+                $('#reserved-action').on('change',function(){
+                    $(this).val(!this.checked);
+                    const params = ['startno','entryCode'];
+                    if($('select#startno').val()!= "" && $('#entryCode').val()!= "" && $('#eventid').val() != ""){
+                        $.ajax({
+                            url:`/api/reserve?${prepareRequestv1(params)}`,
+                            method:'GET',
+                            success:function(data){
+                                if($("#reserved-action").is(':checked')){
+                                    toastr.success("Start number reserved.");
+                                }else{
+                                    toastr.success("Start number unreserved.");
+                                }
+                            },
+                            error:function(error){
+                            }
+                        });
+                    }
                 });
 
                 $('#unassign-no-action').on('click', function(e){
