@@ -526,11 +526,15 @@
                             url:`/api/reserve?${prepareRequestv1(params)}`,
                             method:'GET',
                             success:function(data){
+                                fdata = final.row(`#${selectedRows[0]}`).data();
                                 if($("#reserved-action").is(':checked')){
                                     toastr.success("Start number reserved.");
+                                    fdata[30] = 1;
                                 }else{
                                     toastr.success("Start number unreserved.");
+                                    fdata[30] = 0;
                                 }
+                                final.row(`#${selectedRows[0]}`).data(fdata).draw(false);
                             },
                             error:function(error){
                             }
