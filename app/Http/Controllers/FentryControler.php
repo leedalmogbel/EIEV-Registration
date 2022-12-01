@@ -564,7 +564,7 @@ class FentryControler extends Controller
             $this->flashMsg(sprintf('Entry changed failed. Entry Code: %s',$request->entrycode), 'warning');
         }
         
-        return redirect(sprintf('/%s', 'changeentry?code='.$request->entrycode.'&event='.$request->eventcode));
+        return redirect(sprintf('/%s', 'changeentry?code='.$request->userID.'&event='.$request->eventcode));
     }
 
     public function actions(Request $request)
