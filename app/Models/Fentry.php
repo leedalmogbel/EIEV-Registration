@@ -145,7 +145,7 @@ class Fentry extends Model
     {
         $fhorse = Fhorse::where('horseid',$this->horseid)->first();
         if($fhorse){
-            return $fhorse->dob;
+            return date('Y',strtotime($fhorse->dob));
         }
     }
     // end horse includes
