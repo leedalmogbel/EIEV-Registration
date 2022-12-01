@@ -246,7 +246,7 @@ class FentryControler extends Controller
         $eentries = $eentries->orderByRaw('CAST(startno as UNSIGNED) asc');
         $pentries = $pentries->orderByRaw('CAST(startno as UNSIGNED) asc');
         $reventries = $reventries->orderByRaw('CAST(startno as UNSIGNED) asc');
-        $rentries = $rentries->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC');
+        $rentries = $rentries->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC,status DESC');
         $pcentries = $pcentries->orderByRaw('CAST(startno as UNSIGNED) asc');
         $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
         $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
