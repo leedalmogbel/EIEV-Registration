@@ -208,11 +208,12 @@
                 let href = $(self).attr('href');
                 let params = new URLSearchParams(window.location.search);
                 const eid = params.get('event');
+                const bcode = params.get('code');
                 // const eid = $('.event-select.select-2-basic').val();
                 const hid = $('.horse-select.select-2-basic').val();
                 const rid = $('.rider-select.select-2-basic').val();
                 href =
-                    `https://devregistration.eiev-app.ae/api/processentry?eventcode=${eid}&horseID=${hid}&riderID=${rid}&userID=${userID}&entrycode=${entryCode}`;
+                    `https://devregistration.eiev-app.ae/api/processentry?eventcode=${eid}&horseID=${hid}&riderID=${rid}&userID=${userID}&entrycode=${entryCode}&bcode=${bcode}`;
                 window.location.href = href;
             });
 
