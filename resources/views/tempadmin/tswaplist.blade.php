@@ -212,7 +212,7 @@
                 const hid = $('.horse-select.select-2-basic').val();
                 const rid = $('.rider-select.select-2-basic').val();
                 href =
-                    `https://devregistration.eiev-app.ae/processentry?eventcode=${eid}&horseID=${hid}&riderID=${rid}&userID=${userID}&entrycode=${entryCode}`;
+                    `https://devregistration.eiev-app.ae/api/processentry?eventcode=${eid}&horseID=${hid}&riderID=${rid}&userID=${userID}&entrycode=${entryCode}`;
                 window.location.href = href;
             });
 
