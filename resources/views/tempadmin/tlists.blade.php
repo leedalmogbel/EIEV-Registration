@@ -75,6 +75,9 @@
                                 <th>UserID</th>
                                 <th class="a-elim a-export m-export d-export">StartNo</th>
                                 <th class="a-elim a-export m-export d-export">StartCode</th>
+                                @if(in_array($key,['re']))
+                                    <th>Withdraw Time</th>
+                                @endif
                                 <th class="hide m-export d-export">Rider FName</th>
                                 <th class="hide m-export d-export">Rider LName</th>
                                 <th class="a-elim a-export">RiderName</th>
@@ -128,6 +131,11 @@
                                     <td class="text-center">
                                     {{$entry->racestartcode ?? 'N/A'}}
                                     </td>
+                                    @if(in_array($key,['re']))
+                                    <td class="text-center">
+                                    {{date('Y-m-d H:i:s',strtotime($entry->withdrawdate ?? '2050-01-01T00:00:00')) }}
+                                    </td>
+                                    @endif
                                     <td class="text-center">
                                     {{$entry->rfname ?? 'N/A'}}
                                     </td>
