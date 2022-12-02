@@ -32,6 +32,7 @@ Route::group(['prefix'=>'ajax'],function ()
     Route::get('searchrider',[FriderController::class,'index']);
     Route::get('searchhorse',[FhorseController::class,'index']);
     Route::get('searchevent',[FeventController::class,'index']);
+    Route::get('searchentry',[FentryControler::class,'index']);
 });
 
 Route::group(['middleware'=>[EnsureClientIsValid::class],'prefix'=>'uaeerf'],function () {
@@ -70,6 +71,8 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     // Route::post('execute', [FederationController::class, 'execute']);
     Route::get('ridercheck',[FriderController::class,'checkEligibility']);
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
+    Route::get('entrycheck',[FentryControler::class,'checkEligibility']);
+    Route::get('processentry',[FentryControler::class,'processEntry']);
     Route::get('getentries',[FentryControler::class,'index']);
     Route::get('getprofiles',[UserprofileController::class,'index']);
 });
@@ -101,6 +104,8 @@ Route::get('getnos',[FentryControler::class,'getAvailSnos']);
     Route::get('insertall',[LentryController::class,'uploadAll']);
     Route::get('ridercheck',[FriderController::class,'checkEligibility']);
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
+    Route::get('entrycheck',[FentryControler::class,'checkEligibility']);
+    Route::get('processentry',[FentryControler::class,'processEntry']);
     Route::get('getqrcode',[UserprofileController::class,'getQr']);
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
 // });

@@ -507,6 +507,66 @@ class FentryControler extends Controller
         return view('tempadmin.tentry',['modelName'=>'submitentry','profiles'=>$profiles]);
     }
 
+    public function checkEligibility(Request $request)
+    {
+        $data = array('entryexist' => false);
+        $horseEntryExist = Fentry::where('horseid', $request->HorseID)->where('status','Accepted')->where('eventcode', 'like', '%'.$request->eventcode)->first();
+        $riderEntryExist = Fentry::where('riderid', $request->RiderID)->where('status','Accepted')->where('eventcode', 'like', '%'.$request->eventcode)->first();
+        if (isset($horseEntryExist)) {
+            $data['entryexist'] = true;
+            $data['msg'][] = sprintf('Horse entry already exists %s', $horseEntryExist->horseid);
+        }
+
+        if (isset($riderEntryExist)) {
+            $data['entryexist'] = true;
+            $data['msg'][] = sprintf('Rider entry already exists %s', $riderEntryExist->riderid);
+        }
+
+        return response()->json($data);
+    }
+
+    public function changeEntry (Request $request) {
+        $entries = '';
+        $event = isset($request->event) ? $request->event : '4542';
+        if(isset($request->code)){
+            $profile = Userprofile::where('uniqueid',$request->code)->first();
+
+            if($profile){
+                $entries = Fentry::where('userid',$profile->userid)->where('stableid',$profile->stableid)->where('status','Accepted')->where('eventcode', $event)->get();
+            }
+        }
+
+        return view('tempadmin.tswaplist',[
+            'modelName' => 'changeentry',
+            'profile' => $profile,
+            'entries' => $entries,
+        ]);
+    }
+
+    public function processEntry(Request $request) {
+        $httpClient = new \GuzzleHttp\Client();
+        $api_url = '';
+        $api_url = 'https://registration.eiev-app.ae/api/uaeerf/execute?action=UpdateEntry&params[EntryID]='.$request->entrycode.'&params[EventID]='.$request->eventcode.'&params[HorseID]='.$request->horseID.'&params[RiderID]='.$request->riderID.'&params[UserID]='.$request->userID;
+        // $api_url = 'http://192.168.1.161:8000/api/uaeerf/updateentry?params[EventID]='.$raceid.'&params[SearchEntryID]='.$entrycode.'&params[Entrystatus]='.$status.'&params[Remarks]=Withdrawn';
+
+        $options = [
+            'headers' => [
+                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+            ],
+        ];
+       
+        $response = $httpClient->request('POST', $api_url, $options);
+        $subEntry = json_decode($response->getBody());
+        // $entries = $hasEntries->entries->data;
+        if($subEntry) {
+            $this->flashMsg(sprintf('Entry changed successfully. Entry Code: %s',$request->entrycode), 'success');
+        } else {
+            $this->flashMsg(sprintf('Entry changed failed. Entry Code: %s',$request->entrycode), 'warning');
+        }
+        
+        return redirect(sprintf('/%s', 'changeentry?code='.$request->userID.'&event='.$request->eventcode));
+    }
+
     public function actions(Request $request)
     {
         if(isset($request->code)){
