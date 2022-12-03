@@ -116,7 +116,7 @@
             let userID = '';
             $('.entry-select.select-2-basic').select2({
                 ajax: {
-                    url: 'http://localhost:8000/api/ajax/searchentry',
+                    url: '/api/ajax/searchentry',
                     // url: 'https://registration.eiev-app.ae/api/ajax/searchevent',
                     dataType: 'json',
                     type: 'GET',
@@ -169,7 +169,7 @@
                     $.ajax({
                         type: 'GET',
                         // url: `https://devregistration.eiev-app.ae/api/entrycheck?RiderID=${rid}&HorseID=${hid}`,
-                        url: `http://localhost:8000/api/entrycheck?RiderID=${rid}&HorseID=${hid}&eventcode=${eid}`,
+                        url: `/api/entrycheck?RiderID=${rid}&HorseID=${hid}&eventcode=${eid}`,
                         success: function(data, status, xhr) { // success callback function
 
                         },
