@@ -107,13 +107,18 @@
 
 <body>
     <div class="login-wrapper">
-        <div class="row">
-            <div class="col-md sidebar">
+        <div class="row g-0">
+            <div class="col-md sidebar d-none d-md-block">
                 <img src="/assets/images/eiev-logo.png" class="login-logo" />
             </div>
             <div class="col-lg main-div">
+                <div class="container-fluid">
+
+                
                 <div class="row login-form">
-                    <div class="col-7 form">
+                    <div class="col-12 col-md-7 form">
+                        <img src="/assets/images/eiev-logo.png" class="login-logo d-block d-md-none img-fluid" />
+
                         <h1>Login into your account</h1>
                         <form method="post" action="/login">
                             <!-- Info Alert -->
@@ -153,7 +158,7 @@
                         </form>
 						
                     </div>
-					<div class="col-5 d-flex align-items-center">
+					<div class="col-12 col-md-5 d-flex align-items-center">
 						<div class="eiev-inquiry">
 							
 						</div>
@@ -181,6 +186,7 @@
 						</div>
 					</div>
                 </div>
+            </div>
             </div>
         </div>
     </div>

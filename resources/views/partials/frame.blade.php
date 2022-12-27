@@ -79,8 +79,28 @@
             background: rgba(19, 33, 74, 0.7);
         }
     </style>
+    <style>
+        span.content__hamburger, span.content__title {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        span.content__hamburger {
+            background-color: #13214A;
+        }
+
+        nav.navbar.navbar-inverse.navbar-fixed-top {
+            background-color: #13214A;
+        }
+    </style>
 	<body>  
 		<div class="container-fluid">
+            <div class="row">
+                <nav class="navbar navbar-inverse navbar-fixed-top p-2">
+                    <span class="content__hamburger" id="nav-header"><i class="fa-solid fa-bars"></i></span>
+                    <span class="content__title"> EIEV REGISTRATION</span>
+                </nav>
+            </div>
 			<div class="row no-gutters">
 				@include('partials.sidebar')
 				@yield('content')
@@ -117,7 +137,7 @@
             }
 
 
-            $('.sidebar').height($(document).height());
+            // $('.sidebar').height($(document).height());
 
             const overlayPage = (show) => {
                 if (show) {
@@ -162,6 +182,26 @@
             window.onpopstate = (event) => {
                 window.location.href = document.location;
             };
+
+            $(document).ready(function() {
+                const sidebar = $('.sidebar')[0];
+                const hamburger = $('.content__hamburger')[0];
+                const closeBtn = $('.sidebar__close')[0];
+
+                $(hamburger).on('click', function() {
+                    $(sidebar).toggleClass('sidebar--show');
+                    $('body').toggleClass('overflow-hidden');
+                });
+
+                $(closeBtn).on('click', function() {
+                    $(sidebar).removeClass('sidebar--show');
+                    $('body').removeClass('overflow-hidden');
+                });
+
+                $('#nav-header').click(function() {
+                    $(this).find('i').toggleClass('fa-bars fa-xmark')
+                });
+            });
         </script>
  </body>
 </html>

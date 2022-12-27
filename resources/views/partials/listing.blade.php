@@ -1,6 +1,6 @@
 @extends('partials.frame')
 @section('content')
-    <div class="content col-9">
+    <div class="content col col-md col-xl col-xxl-10 align-items-center justify-content-center">
         {{-- <div class="btn-toolbar mb-3 float-end" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group mr-2" role="group" aria-label="First group">
                 <a href="/{{ $modelName }}/create" class="btn btn-main create-btn">
@@ -20,13 +20,16 @@
                 </div>
             @endif
         </div> --}}
-        <h1>{{ ucwords(\Str::plural($modelName)) }}</h1>
-        <br />
-        <div class="listing-content">
-            @include("pages.$modelName.listing")
+        <div class="row">
+            <h1>{{ ucwords(\Str::plural($modelName)) }}</h1>
             <br />
-            {{-- @include('partials.pagination', ['object' => ${Str::plural($modelName)}]) --}}
+            <div class="listing-content">
+                @include("pages.$modelName.listing")
+                <br />
+                {{-- @include('partials.pagination', ['object' => ${Str::plural($modelName)}]) --}}
+            </div>
         </div>
+
         <script>
             $('.approve-action').click(function(e) {
                 e.preventDefault();
