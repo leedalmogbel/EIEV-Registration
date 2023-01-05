@@ -291,7 +291,7 @@ class EntryController extends Controller
             $this->flashMsg(sprintf('Entry changed failed. Entry Code: %s',$request->entrycode), 'warning');
         }
         
-        // return redirect(sprintf('/%s', 'entry?raceid='.$request->entrycode));
+        return redirect(sprintf('/%s', 'entry?raceid='.$request->entrycode));
     }
 
     public function swapEntryForm(Request $request) {
