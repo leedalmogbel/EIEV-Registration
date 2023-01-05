@@ -225,11 +225,12 @@
                 const ddata = href.split("|");
                 const dkey = ddata[0];
                 const dval = ddata[1];
+                console.log('ddata', ddata[1])
                 uid = ddata[2];
                 entryCode = this.dataset.entrycode;
                 userID = this.dataset.userid;
-                console.log('asdasd', entryCode)
-                console.log('asd1asd', userID)
+                console.log('entryCode', entryCode)
+                console.log('uid', userID)
                 $('.sub-entries').removeClass('d-none');
                 $('.horse-select.select-2-basic').val(null).trigger('change');
                 $('.rider-select.select-2-basic').val(null).trigger('change');

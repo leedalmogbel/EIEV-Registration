@@ -74,6 +74,7 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('entrycheck',[FentryControler::class,'checkEligibility']);
     Route::get('processentry',[FentryControler::class,'processEntry']);
     Route::get('getentries',[FentryControler::class,'index']);
+    Route::get('substituteentry',[EntryControler::class,'processSubstituteEntry']);
     Route::get('getprofiles',[UserprofileController::class,'index']);
 });
 Route::get('entrysync',function (Request $request)
@@ -106,6 +107,7 @@ Route::get('getnos',[FentryControler::class,'getAvailSnos']);
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
     Route::get('entrycheck',[FentryControler::class,'checkEligibility']);
     Route::get('processentry',[FentryControler::class,'processEntry']);
+    Route::get('substituteentry',[EntryControler::class,'processSubstituteEntry']);
     Route::get('getqrcode',[UserprofileController::class,'getQr']);
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
 // });

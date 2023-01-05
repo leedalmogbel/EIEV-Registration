@@ -4,6 +4,13 @@
     .select2-container--default .select2-results>.select2-results__options {
         max-height: 700px;
     }
+
+    .select2 span,
+    .select2-results li {
+        color: #444;
+        font-weight: 600;
+        font-size: 16px;
+    }
 </style>
 {{-- <h2 class="text-danger">Race / Event Detail</h2>
 @include('partials.formFields.selectFormGroup', [
@@ -33,8 +40,8 @@
         @if (old('data') && is_array(old('data')))
             @foreach (old('data') as $index => $data)
                 {{ $index }}
-                <div class="row entry">
-                    <div class="col">
+                <div class="row no-gutters entry align-items-center mb-2">
+                    <div class="col-12 col-md">
                         <div><small class="text-danger">You can't select expired horses</small></div>
                         @include('partials.formFields.selectFormGroup', [
                             'label' => 'Horse',
@@ -46,7 +53,7 @@
                             'options' => $horses,
                         ])
                     </div>
-                    <div class="col">
+                    <div class="col-12 col-md">
                         <div><small class="text-danger">You can't select expired riders</small></div>
                         @include('partials.formFields.selectFormGroup', [
                             'label' => 'Rider',
@@ -58,7 +65,7 @@
                             'options' => $riders,
                         ])
                     </div>
-                    <div class="col-1">
+                    <div class="col-1 col-md">
                         <a href="#" class="btn btn-danger remove-this">&times;</a>
                     </div>
                 </div>
@@ -76,8 +83,8 @@
  <p class="alert alert-warning" role="alert"><i class="fa-solid fa-circle-info"></i> If you agree on this, All of the rules here will be accepted by you.</p>
 </script>
 <script type="text/tpl" id="horse-rider">
-	<div class="row entry">
-		<div class="col">
+	<div class="row entry align-items-center mb-2">
+		<div class="col-11 col-md">
 			@include('partials.formFields.selectFormGroup', [
                 'label' => 'Horse',
                 'name' => 'data[__i__][horse]',
@@ -88,7 +95,7 @@
                 'options' => [],
             ])
 		</div>
-		<div class="col">
+		<div class="col-11 col-md">
 			@include('partials.formFields.selectFormGroup', [
                 'label' => 'Rider',
                 'name' => 'data[__i__][rider]',
@@ -99,7 +106,7 @@
                 'options' => [],
             ])
 		</div>
-        <div class="col-1">
+        <div class="col-1 col-md-1">
 			<a href="#" class="btn btn-danger remove-this">&times;</a>
 		</div>
 	</div>

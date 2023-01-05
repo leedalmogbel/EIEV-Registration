@@ -14,6 +14,9 @@ use Str;
 use App\Models\Multi;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Artisan;
+use App\Models\Userprofile;
+use App\Models\Fentry;
+
 
 class EntryController extends Controller
 {
@@ -41,10 +44,10 @@ class EntryController extends Controller
 
         // if($event[0]->)
         $clDate = date('Y-m-d H:i:s',strtotime($event[0]->closingdate));
-        if ($clDate < now()) {
-            $this->flashMsg(sprintf('%s', 'Forbidden Action. Entry is already closed'), 'warning');
-            return redirect('/race');
-        }
+        // if ($clDate < now()) {
+        //     $this->flashMsg(sprintf('%s', 'Forbidden Action. Entry is already closed'), 'warning');
+        //     return redirect('/race');
+        // }
         
         if (method_exists($this, 'prepTPLVars')) {
             $tpl_vars = $this->prepTPLVars();
@@ -243,6 +246,74 @@ class EntryController extends Controller
         $tpl_vars['eef_entries'] = $entries;
 
         return view(sprintf(self::LIST_TPL, $this->model), $tpl_vars);
+    }
+
+    public function changeEntryForm(Request $request) {
+        $entries = '';
+        $profile = '';
+        $oldEntry = '';
+        $event = isset($request->raceid) ? $request->raceid : '4542';
+        $entrycode = $request->entrycode;
+        if(isset($request->user)){
+            $profile = Userprofile::where('userid',intval($request->user))->first();
+
+            if($profile){
+                $entries = Fentry::where('userid', intval($profile->userid))->where('stableid',$profile->stableid)->where('status','Accepted')->where('eventcode', $event)->where('code', '!=' ,$entrycode)->get();
+            }
+            $oldEntry = Fentry::where('userid', intval($profile->userid))->where('stableid',$profile->stableid)->where('status','Accepted')->where('eventcode', $event)->where('code', $entrycode)->first();
+        }
+
+        return view('pages.entry.change',[
+            'modelName' => 'change entry',
+            'profile' => $profile,
+            'entries' => $entries,
+            'oldEntry' => $oldEntry
+        ]);
+    }
+
+    public function processSubstituteEntry(Request $request) {
+        $httpClient = new \GuzzleHttp\Client();
+        $api_url = '';
+        $api_url = 'https://registration.eiev-app.ae/api/uaeerf/execute?action=UpdateEntry&params[EntryID]='.$request->entrycode.'&params[EventID]='.$request->eventcode.'&params[HorseID]='.$request->horseID.'&params[RiderID]='.$request->riderID.'&params[UserID]='.$request->userID;
+
+        $options = [
+            'headers' => [
+                "38948f839e704e8dbd4ea2650378a388" => "0b5e7030aa4a4ee3b1ccdd4341ca3867"
+            ],
+        ];
+    
+        $response = $httpClient->request('POST', $api_url, $options);
+        $subEntry = json_decode($response->getBody());
+        // $entries = $hasEntries->entries->data;
+        if($subEntry) {
+            $this->flashMsg(sprintf('Entry changed successfully. Entry Code: %s',$request->entrycode), 'success');
+        } else {
+            $this->flashMsg(sprintf('Entry changed failed. Entry Code: %s',$request->entrycode), 'warning');
+        }
+        
+        // return redirect(sprintf('/%s', 'entry?raceid='.$request->entrycode));
+    }
+
+    public function swapEntryForm(Request $request) {
+        $entries = '';
+        $profile = '';
+        $oldEntry = '';
+        $event = isset($request->raceid) ? $request->raceid : '4542';
+        $entrycode = $request->entrycode;
+        if(isset($request->user)){
+            $profile = Userprofile::where('userid',intval($request->user))->first();
+
+            if($profile){
+                $entries = Fentry::where('userid', intval($profile->userid))->where('stableid',$profile->stableid)->where('status','Accepted')->where('eventcode', $event)->where('code', '!=' ,$entrycode)->get();
+            }
+            $oldEntry = Fentry::where('userid', intval($profile->userid))->where('stableid',$profile->stableid)->where('status','Accepted')->where('eventcode', $event)->where('code', $entrycode)->first();
+        }
+
+        return view('pages.entry.swap',[
+            'modelName' => 'swap entry',
+            'entries' => $entries,
+            'oldEntry' => $oldEntry
+        ]);
     }
 
     public function withdrawn(Request $request) {
