@@ -286,12 +286,12 @@ class EntryController extends Controller
         $subEntry = json_decode($response->getBody());
         // $entries = $hasEntries->entries->data;
         if($subEntry) {
-            $this->flashMsg(sprintf('Entry changed successfully. Entry Code: %s',$request->entrycode), 'success');
+            $this->flashMsg(sprintf('Entry changed successfully. Entry Code: %s',$request->eventcode), 'success');
         } else {
-            $this->flashMsg(sprintf('Entry changed failed. Entry Code: %s',$request->entrycode), 'warning');
+            $this->flashMsg(sprintf('Entry changed failed. Entry Code: %s',$request->eventcode), 'warning');
         }
         
-        return redirect(sprintf('/%s', 'entry?raceid='.$request->entrycode));
+        return redirect(sprintf('/%s', 'entry?raceid='.$request->eventcode));
     }
 
     public function swapEntryForm(Request $request) {
