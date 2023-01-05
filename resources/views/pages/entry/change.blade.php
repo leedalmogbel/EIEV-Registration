@@ -216,7 +216,7 @@
             const hid = $('.horse-select.select-2-basic').val();
             const rid = $('.rider-select.select-2-basic').val();
             href =
-                `https://devregistration.eiev-app.ae/api/substituteentry?eventcode=${eid}&entrycode=${entryCode}&horseID=${hid}&riderID=${rid}&userID=${uid}`;
+                `https://registration.eiev-app.ae/api/substituteentry?eventcode=${eid}&entrycode=${entryCode}&horseID=${hid}&riderID=${rid}&userID=${uid}`;
             window.location.href = href;
         });
     </script>
