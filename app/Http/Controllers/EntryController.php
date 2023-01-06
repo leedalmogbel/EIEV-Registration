@@ -285,6 +285,7 @@ class EntryController extends Controller
         $response = $httpClient->request('POST', $api_url, $options);
         $subEntry = json_decode($response->getBody());
         // $entries = $hasEntries->entries->data;
+        Artisan::call('command:syncentries --ip=eievadmin --host=admineiev');
         if($subEntry) {
             $this->flashMsg(sprintf('Entry changed successfully. Entry Code: %s',$request->eventcode), 'success');
         } else {
