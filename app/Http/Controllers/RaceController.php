@@ -55,6 +55,14 @@ class RaceController extends Controller
         //         return $obj;
         //     } 
         // });
+        $events = array_filter($events, function($item) {
+            return $item->statusid != 4;
+        });
+
+        usort($events, function($a, $b)
+        {
+            return strcmp($a->racetodate, $b->racetodate);
+        });
 
         $tpl_vars['eef_events'] = $events;
 
