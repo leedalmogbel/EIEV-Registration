@@ -64,18 +64,20 @@
                                     Withdrawn
                                 </span>
                             </a>
-                            <a id="swap"
-                                href="/entry/entryswap?user={{ session()->get('profile')->userid }}&entrycode={{ $entry->code }}&raceid={{ $entry->eventcode }}"
-                                class="btn btn-success my-1" id="view-entry">
-                                <i class="fa-solid fa-arrows-rotate"></i>
-                                <span class="d-none d-xl-block">Swap Rider</span>
-                            </a>
-                            <a id="change"
-                                href="/entry/entrychange?user={{ session()->get('profile')->userid }}&entrycode={{ $entry->code }}&raceid={{ $entry->eventcode }}"
-                                class="btn btn-warning my-1 text-light" id="view-entry">
-                                <i class="fa-solid fa-shuffle"></i>
-                                <span class="d-none d-xl-block">Change Entry</span>
-                            </a>
+                            @if ($entry->status == 'Accepted')
+                                <a id="swap"
+                                    href="/entry/entryswap?user={{ session()->get('profile')->userid }}&entrycode={{ $entry->code }}&raceid={{ $entry->eventcode }}"
+                                    class="btn btn-success my-1" id="view-entry">
+                                    <i class="fa-solid fa-arrows-rotate"></i>
+                                    <span class="d-none d-xl-block">Swap Rider</span>
+                                </a>
+                                <a id="change"
+                                    href="/entry/entrychange?user={{ session()->get('profile')->userid }}&entrycode={{ $entry->code }}&raceid={{ $entry->eventcode }}"
+                                    class="btn btn-warning my-1 text-light" id="view-entry">
+                                    <i class="fa-solid fa-shuffle"></i>
+                                    <span class="d-none d-xl-block">Change Entry</span>
+                                </a>
+                            @endif
                         @else
                             No Action Available
                         @endif
