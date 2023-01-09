@@ -78,16 +78,12 @@
                                     <a href="{{ $viewRace }}" class='btn btn-main' id="view-entry"><i
                                             class="fa-regular fa-eye"></i> View Entry</a>
                                 @endif
-                                {{-- @else --}}
+                            @else
                                 <a href="{{ $createRace }}" class='btn btn-danger disabled'id="add-entry"><i
                                         class="fa-solid fa-plus"></i> Add Entry</a>
                                 <a href="{{ $viewRace }}" class='btn btn-danger disabled' id="view-entry"><i
                                         class="fa-regular fa-eye"></i> View Entry</a>
                             @endif
-                            <a href="{{ $createRace }}" class='btn btn-danger'id="add-entry"><i
-                                    class="fa-solid fa-plus"></i> Add Entry</a>
-                            <a href="{{ $viewRace }}" class='btn btn-danger' id="view-entry"><i
-                                    class="fa-regular fa-eye"></i> View Entry</a>
                         </div>
                     </td>
                     {{-- <td>
