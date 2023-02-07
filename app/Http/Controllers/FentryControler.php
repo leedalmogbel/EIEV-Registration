@@ -256,8 +256,8 @@ class FentryControler extends Controller
         $pcentries =isset($request->ppage)? $pcentries->paginate($ppage): $pcentries->get();
         $totalcount = count($fentries) + count($eentries) + count($pentries)
         + count($reventries) + count($rentries);
-        
-        if(isset($request->presidentcup)){
+        $eventpcstat = Fevent::where('raceid','like',"%".strval(intval($request->SearchEventID)))->first();
+        if($eventpcstat->ispc){
             $totalcount += count($pcentries);
             return view('tempadmin.tlists',['modelName'=>'entry','actions'=>$actions,'items'=>$iitems,'total'=>$totalcount,'events'=>$events,'eventnames'=>$eventnames,'stables'=>$tables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'royprov'=>$pcentries,'re'=>$rentries]]);
         }
