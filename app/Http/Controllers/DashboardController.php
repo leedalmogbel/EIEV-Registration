@@ -48,6 +48,15 @@ class DashboardController extends Controller
             return strcmp($a->code, $b->code);
         });
 
+        $events = array_filter($events, function($item) {
+            return $item->statusid != 4;
+        });
+
+        usort($events, function($a, $b)
+        {
+            return strcmp($a->racetodate, $b->racetodate);
+        });
+
         // $events = array_filter($events, function($obj){
         //     if ($obj->statusname !== "Pending") {
         //         return $obj;

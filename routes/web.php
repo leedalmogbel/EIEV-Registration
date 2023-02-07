@@ -214,3 +214,5 @@ Route::get('/generate-pdf', "DashboardController@entriesPDF");
 Route::get('/entry/withdrawn', "EntryController@withdrawn");
 Route::get('/me', 'UserController@me');
 Route::get('/qrcode', 'UserController@downloadQRCode');
+Route::get('/entry/entrychange', 'EntryController@changeEntryForm');
+Route::get('/entry/entryswap', 'EntryController@swapEntryForm');

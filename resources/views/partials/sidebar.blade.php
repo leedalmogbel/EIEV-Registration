@@ -1,5 +1,6 @@
-<div class="sidebar px-0 col-3 col-md-3 col-xxl-2">
-    <div class="logo"><img src="/assets/images/dash-logo-white.png" /></div>
+<div class="sidebar px-0 col-3 col-xl-3 col-xxl-2">
+    {{-- <span class="sidebar__close text-light d-xl-none">Close</span> --}}
+    <div class="logo"><img src="/assets/images/dash-logo-white.png" class="img-fluid" /></div>
     <ul class="side-menu">
         <li>
             <a href="/dashboard" class="{{ $modelName == 'dashboard' ? 'active' : '' }}">

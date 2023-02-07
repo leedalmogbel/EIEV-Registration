@@ -5,9 +5,9 @@
                 <th width="300">Race</th>
                 <th>Location</th>
                 {{-- <th>Contact</th> --}}
-                <td>Race Dates</td>
-                <td>Status</td>
-                <th>Actions</th>
+                <th width="300">Race Dates</th>
+                <th>Status</th>
+                <th width="300">Actions</th>
                 {{-- <th width="100" style="text-align:right">ACTIONS</th> --}}
             </tr>
         </thead>
@@ -20,6 +20,9 @@
                     $viewRace = '#';
                     $clDate = substr($race->closingdate, 0, 10);
                     $cclDate = date('Y-m-d H:i:s', strtotime($race->closingdate));
+                    // dd($race);
+                    $createRace = '/entry/create?raceid=' . $race->raceid;
+                    $viewRace = '/entry?raceid=' . $race->raceid;
                     if ($race->statusid == 11) {
                         $createRace = '/entry/create?raceid=' . $race->raceid;
                         $viewRace = '/entry?raceid=' . $race->raceid;
@@ -54,9 +57,7 @@
                 <div><small class="text-success">{{ $race->contact['number'] }}</small></div>
             </td> --}}
                     <td>
-                        <div>Race Date: <strong>{{ date('M d, Y', strtotime($race->racetodate)) }}</strong></div>
-                        <div>From Date: <strong>{{ date('M d, Y', strtotime($race->racefromdate)) }}</strong></div>
-                        <div>To Date: <strong>{{ date('M d, Y', strtotime($race->racetodate)) }}</strong></div>
+                        <div><strong>{{ date('M d, Y', strtotime($race->racetodate)) }}</strong></div>
                     </td>
                     <td>
                         <div>

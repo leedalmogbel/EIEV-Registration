@@ -8,7 +8,7 @@ body {
 	background-size: contain;
 }
 .image-container-trainers {
-	background: url('/assets/images/rider-icon.png');
+	background: url('/assets/images/trainer-icon.png');
 	background-repeat: no-repeat;
 	background-size: contain;
 }
@@ -27,10 +27,18 @@ body {
 .wrapper { width: 100%; }
 
 .sidebar {
+	position: absolute;
+	width: 100%;
+	z-index: 1000;
+	overflow-y: scroll;
+	transform: translateX(-100%);
 	background: #13214A;
-	/* max-width: 300px; */
-	min-height: 100vh !important;
-	padding-right: 0px;
+	height: 100vh;
+	transition: transform 0.5s ease-in-out;
+}
+
+.sidebar--show {
+	transform: translateX(0%);
 }
 
 .sidebar .logo {
@@ -56,7 +64,7 @@ body {
 	border-bottom: 1px solid #f1f1f1;
 	display: block;
 	color: #fff;
-	padding: 10px;
+	padding: 20px;
 	padding-left: 30px;
 }
 
@@ -169,4 +177,31 @@ a:focus,
 	background: #f1f1f1;
 	border: 1px solid #ccc;
 	padding: 20px;
+}
+
+@media screen and (min-width: 1200px) {
+
+	body.overflow-hidden {
+		overflow: auto !important;
+	}
+
+	.sidebar {
+		position: initial;
+    width: 16.66666667%;	
+    transform: translateX(0%);
+    max-width: initial;
+		height: auto;
+		margin-left: -16.66666667%;
+		transition: margin .5s ease-in-out;
+	}
+
+	.sidebar--show {
+		margin-left: 0;
+	}
+
+	.side-menu li a {
+		padding: 10px;
+	}
+
+	
 }

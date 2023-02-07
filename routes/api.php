@@ -9,6 +9,7 @@ use App\Http\Controllers\FriderController;
 use App\Http\Controllers\FeventController;
 use App\Http\Controllers\SnpoolController;
 use App\Http\Controllers\FentryControler;
+use App\Http\Controllers\EntryController;
 use App\Http\Controllers\LentryController;
 use App\Http\Controllers\FhorseController;
 use App\Http\Middleware\EnsureClientIsValid;
@@ -74,6 +75,7 @@ Route::domain('devregistration.eiev-app.ae')->group(function(){
     Route::get('entrycheck',[FentryControler::class,'checkEligibility']);
     Route::get('processentry',[FentryControler::class,'processEntry']);
     Route::get('getentries',[FentryControler::class,'index']);
+    Route::get('substituteentry',[EntryController::class,'processSubstituteEntry']);
     Route::get('getprofiles',[UserprofileController::class,'index']);
 });
 Route::get('entrysync',function (Request $request)
@@ -106,6 +108,7 @@ Route::get('getnos',[FentryControler::class,'getAvailSnos']);
     Route::get('horsecheck',[FhorseController::class,'checkEligibility']);
     Route::get('entrycheck',[FentryControler::class,'checkEligibility']);
     Route::get('processentry',[FentryControler::class,'processEntry']);
+    Route::get('substituteentry',[EntryController::class,'processSubstituteEntry']);
     Route::get('getqrcode',[UserprofileController::class,'getQr']);
     Route::get('generateUniqueids',[UserprofileController::class,'generateUnique']);
 // });
