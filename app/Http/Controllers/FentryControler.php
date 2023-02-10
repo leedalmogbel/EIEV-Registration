@@ -242,12 +242,12 @@ class FentryControler extends Controller
             $rentries = $rentries->whereIn('userid',explode(',',$request->stablename))->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC');
             $pcentries = $pcentries->whereIn('userid',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
         }
-        $fentries = isset($request->checking) ? $fentries->orderBy('ownername')->orderBy('stablename') : $fentries->orderByRaw('CAST(startno as UNSIGNED) asc');
-        $eentries = isset($request->checking) ? $eentries->orderBy('ownername')->orderBy('stablename') : $eentries->orderByRaw('CAST(startno as UNSIGNED) asc');
-        $pentries = isset($request->checking) ? $pentries->orderBy('ownername')->orderBy('stablename') : $pentries->orderByRaw('CAST(startno as UNSIGNED) asc');
-        $reventries = isset($request->checking) ? $reventries->orderBy('ownername')->orderBy('stablename') : $reventries->orderByRaw('CAST(startno as UNSIGNED) asc');
-        $rentries = isset($request->checking) ? $rentries->orderBy('ownername')->orderBy('stablename') : $rentries->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC,status DESC');
-        $pcentries = isset($request->checking) ? $pcentries->orderBy('ownername')->orderBy('stablename') : $pcentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $fentries = isset($request->checking) ? $fentries->orderByRaw('ownername asc, stablename asc') : $fentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $eentries = isset($request->checking) ? $eentries->orderByRaw('ownername asc, stablename asc') : $eentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $pentries = isset($request->checking) ? $pentries->orderByRaw('ownername asc, stablename asc') : $pentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $reventries = isset($request->checking) ? $reventries->orderByRaw('ownername asc, stablename asc') : $reventries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $rentries = isset($request->checking) ? $rentries->orderByRaw('ownername asc, stablename asc') : $rentries->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC,status DESC');
+        $pcentries = isset($request->checking) ? $pcentries->orderByRaw('ownername asc, stablename asc') : $pcentries->orderByRaw('CAST(startno as UNSIGNED) asc');
         $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
         $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
         $pentries =isset($request->ppage)? $pentries->paginate($ppage): $pentries->get();
