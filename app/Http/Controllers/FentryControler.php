@@ -499,7 +499,7 @@ class FentryControler extends Controller
             $ppage = $request->ppage;
         }
         $profiles = Userprofile::query();
-        $profiles = $profiles->where('stableid','like','E%');
+        $profiles = $profiles->where('stableid','like','E%')->where('isactive','true');
         if($request->SearchEmail){
             $profiles = $profiles->where('eventcode','like',"%".$request->SearchEventID."%")->where('status', 'Accepted');
         }
