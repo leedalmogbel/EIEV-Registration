@@ -242,12 +242,12 @@ class FentryControler extends Controller
             $rentries = $rentries->whereIn('userid',explode(',',$request->stablename))->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC');
             $pcentries = $pcentries->whereIn('userid',explode(',',$request->stablename))->orderByRaw('CAST(startno as UNSIGNED) asc');
         }
-        $fentries = $fentries->orderByRaw('CAST(startno as UNSIGNED) asc');
-        $eentries = $eentries->orderByRaw('CAST(startno as UNSIGNED) asc');
-        $pentries = $pentries->orderByRaw('CAST(startno as UNSIGNED) asc');
-        $reventries = $reventries->orderByRaw('CAST(startno as UNSIGNED) asc');
-        $rentries = $rentries->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC,status DESC');
-        $pcentries = $pcentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $fentries = isset($request->checking) ? $fentries->orderBy('stablename')->orderBy('ownername') : $fentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $eentries = isset($request->checking) ? $eentries->orderBy('stablename')->orderBy('ownername') : $eentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $pentries = isset($request->checking) ? $pentries->orderBy('stablename')->orderBy('ownername') : $pentries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $reventries = isset($request->checking) ? $reventries->orderBy('stablename')->orderBy('ownername') : $reventries->orderByRaw('CAST(startno as UNSIGNED) asc');
+        $rentries = isset($request->checking) ? $rentries->orderBy('stablename')->orderBy('ownername') : $rentries->orderByRaw('DATE_FORMAT(withdrawdate,"%Y-%m-%d %H:%i%s") DESC,status DESC');
+        $pcentries = isset($request->checking) ? $pcentries->orderBy('stablename')->orderBy('ownername') : $pcentries->orderByRaw('CAST(startno as UNSIGNED) asc');
         $fentries =isset($request->ppage)? $fentries->paginate($ppage): $fentries->get();
         $eentries =isset($request->ppage)? $eentries->paginate($ppage): $eentries->get();
         $pentries =isset($request->ppage)? $pentries->paginate($ppage): $pentries->get();
