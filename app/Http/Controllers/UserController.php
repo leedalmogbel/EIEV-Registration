@@ -67,7 +67,7 @@ class UserController extends Controller
             $response = $httpClient->request('POST', $api_url, $options);
             $loginSuccess = json_decode($response->getBody());
             info($request->all());
-            info($loginSuccess);
+            info(strval($loginSuccess));
             if (!$loginSuccess->success) {
                 throw new FieldException(json_encode([
                     'username' => 'Invalid username and password.',
