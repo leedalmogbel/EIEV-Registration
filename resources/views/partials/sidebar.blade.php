@@ -7,6 +7,12 @@
                 <i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
             </a>
         </li>
+        <li>
+            <a href="/kiosk" class="{{ $modelName == 'Kiosk Qr' ? 'active' : '' }}">
+                <i class="fa-solid fa-tablet-screen-button"></i> Kiosk QR <small
+                    class="blink"><strong>DOWNLOAD</strong></small>
+            </a>
+        </li>
         {{-- <li>
             <a href="#">
                 <i class="fa fa-users" aria-hidden="true"></i> Users
