@@ -304,9 +304,14 @@ class FentryControler extends Controller
     public function moveall(Request $request)
     {
         if(isset($request->list) && isset($request->eventid)){
+            $excludelist = [];
+
+            if(isset($request->exclude)){
+                $excludelist = explode(',',$request->exclude);
+            }
             switch ($request->list) {
                 case 'main':
-                    $entries = Fentry::where('status',"Pending")->where('review','<>','0')->where('eventcode','like','%'.strval(intval($request->eventid)))->get();
+                    $entries = Fentry::whereNotIn('code',$excludelist)->where('status',"Pending")->where('review','<>','0')->where('eventcode','like','%'.strval(intval($request->eventid)))->get();
                     $plist = array();
                     if($entries){
                         foreach ($entries as $entry) {
@@ -323,7 +328,7 @@ class FentryControler extends Controller
                     }
                         break;
                 case 'final':
-                    $entries = Fentry::where('status',"Eligible")->where('eventcode','like','%'.strval(intval($request->eventid)))->get();
+                    $entries = Fentry::whereNotIn('code',$excludelist)->where('status',"Eligible")->where('eventcode','like','%'.strval(intval($request->eventid)))->get();
                     if($entries){
                         $plist = array();
                         foreach ($entries as $entry) {
