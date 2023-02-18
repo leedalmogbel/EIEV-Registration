@@ -206,6 +206,21 @@ class UserController extends Controller
         ]);
     }
 
+    public function kiosk() {
+        $uprofile = session()->get('profile');
+        $modelName = 'Kiosk Qr';
+        if (empty($uprofile)) {
+            $this->flashMsg('Forbidden Action', 'warning');
+            // then redirect to login
+            return redirect('/dashboard');
+        }
+
+        return view('pages.kiosk', [
+            'profile' => $uprofile,
+            'modelName' => $modelName
+        ]);
+    }
+
     public function downloadQRCode(Request $request)
     {
         $profile = session()->get('profile');
