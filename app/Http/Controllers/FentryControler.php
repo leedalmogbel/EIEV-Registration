@@ -216,6 +216,7 @@ class FentryControler extends Controller
             'assign-no'=>["cname"=>"btn btn-success","lbl"=>"Assign"],
             'unassign-no'=>["cname"=>"btn btn-danger","lbl"=>"Unassign"],
         ];
+        $eventpcstat = Fevent::where('raceid','like',"%".strval(intval($request->SearchEventID)))->first();
         //final list
         $fentries = Fentry::query();
         //limited entries
@@ -230,7 +231,10 @@ class FentryControler extends Controller
         $pcentries = Fentry::query();
         $fentries = $fentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('status', 'Accepted');
         $eentries = $eentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"1")->whereIn('status',['Eligible']);
-        $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0');
+        $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"3")->where('status', 'Pending')->where('review','<>','0');
+        if($eventpcstat->ispc){
+            $pentries = $pentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"4")->where('status', 'Pending')->where('review','<>','0');
+        }
         $reventries = $reventries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->where('status','Pending')->where('review','0');
         $rentries = $rentries->where('eventcode','like','%'.strval(intval($request->SearchEventID)))->whereIn('status',['Rejected','Withdrawn','Substituted']);
         $pcentries = $pcentries->where('eventcode','like',"%".strval(intval($request->SearchEventID)))->where('classcode',"3")->where('status', 'Pending')->where('review','<>','0');
@@ -256,7 +260,7 @@ class FentryControler extends Controller
         $pcentries =isset($request->ppage)? $pcentries->paginate($ppage): $pcentries->get();
         $totalcount = count($fentries) + count($eentries) + count($pentries)
         + count($reventries) + count($rentries);
-        $eventpcstat = Fevent::where('raceid','like',"%".strval(intval($request->SearchEventID)))->first();
+        
         if($eventpcstat->ispc){
             $totalcount += count($pcentries);
             return view('tempadmin.tlists',['modelName'=>'entry','actions'=>$actions,'items'=>$iitems,'total'=>$totalcount,'events'=>$events,'eventnames'=>$eventnames,'stables'=>$tables,'entries'=>['final'=>$fentries,'pfa'=>$eentries,'pfr'=>$reventries,'prov'=>$pentries,'royprov'=>$pcentries,'re'=>$rentries]]);
