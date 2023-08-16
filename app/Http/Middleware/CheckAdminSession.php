@@ -19,9 +19,8 @@ class CheckAdminSession
     public function handle(Request $request, Closure $next, $role)
     {
         $userRole = session('role');
-        dd($userRole->role);
 
-        if ($userRole !== $role) {
+        if ($userRole->role !== $role) {
             Session::flash('message', __('Forbidden Request'));
             Session::flash('message_type', 'error');
             return redirect('/login');
