@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
+use Session;
+
 class CheckAdminSession
 {
     /**
@@ -16,12 +18,13 @@ class CheckAdminSession
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        $userRole = session('role'); // Adjust this to your session data
+        $userRole = session('role');
 
-        // Check if the user's role matches the required role
+
         if ($userRole !== $role) {
-            // Redirect or return a response based on unauthorized access
-            return redirect()->route('login'); // Adjust the route as needed
+            Session::flash('message', __('Forbidden Request'));
+            Session::flash('message_type', 'error');
+            return redirect('/login');
         }
         return $next($request);
     }
