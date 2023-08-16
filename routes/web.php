@@ -158,7 +158,7 @@ foreach ($adminRoutes as $modelControl => $routes) {
 //
 Route::domain('devregistration.eiev-app.ae')->group(function ()
 {
-    Route::group(['prefix'=>'rideslist'],function ()
+    Route::middleware(['checkAdminSession'])->group(['prefix'=>'rideslist'],function ()
     {
         Route::get('/',[FentryControler::class,'getlists']);
         Route::get('/accept',[FentryControler::class,'accept']);
@@ -166,12 +166,12 @@ Route::domain('devregistration.eiev-app.ae')->group(function ()
         Route::get('/reject',[FentryControler::class,'reject']);
         Route::get('/withdraw',[FentryControler::class,'withdraw']);
     });
-    Route::group(['prefix'=>'submitentry'],function ()
+    Route::middleware(['checkAdminSession'])->group(['prefix'=>'submitentry'],function ()
     {
         Route::get('/',[FentryControler::class,'entryadd']);
         Route::get('/add',[FentryControler::class,'addentry']);
     });
-    Route::group(['prefix'=>'actions'],function ()
+    Route::middleware(['checkAdminSession'])->group(['prefix'=>'actions'],function ()
     {
         Route::get('/',[FentryControler::class,'actions']);
         Route::get('/add',[FentryControler::class,'addentry']);
