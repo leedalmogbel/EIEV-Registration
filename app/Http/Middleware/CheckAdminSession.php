@@ -21,7 +21,7 @@ class CheckAdminSession
         if (!session()->has('role')) {
             Session::flash('message', __('Operation not allowed'));
             Session::flash('message_type', 'warning');
-            return redirect('/login'); 
+            return redirect('/dashboard'); 
         }
         return $next($request);
     }

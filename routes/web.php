@@ -160,21 +160,21 @@ Route::domain('devregistration.eiev-app.ae')->group(function ()
 {
     Route::middleware(['checkAdminSession'])->group(['prefix'=>'rideslist'],function ()
     {
-        Route::get('/',[FentryControler::class,'getlists']);
-        Route::get('/accept',[FentryControler::class,'accept']);
-        Route::get('/mainlist',[FentryControler::class,'mainlist']);
-        Route::get('/reject',[FentryControler::class,'reject']);
-        Route::get('/withdraw',[FentryControler::class,'withdraw']);
+        Route::get('/',FentryControler::class,'getlists');
+        Route::get('/accept',FentryControler::class,'accept');
+        Route::get('/mainlist',FentryControler::class,'mainlist');
+        Route::get('/reject',FentryControler::class,'reject');
+        Route::get('/withdraw',FentryControler::class,'withdraw');
     });
     Route::middleware(['checkAdminSession'])->group(['prefix'=>'submitentry'],function ()
     {
-        Route::get('/',[FentryControler::class,'entryadd']);
-        Route::get('/add',[FentryControler::class,'addentry']);
+        Route::get('/',FentryControler::class,'entryadd');
+        Route::get('/add',FentryControler::class,'addentry');
     });
     Route::middleware(['checkAdminSession'])->group(['prefix'=>'actions'],function ()
     {
-        Route::get('/',[FentryControler::class,'actions']);
-        Route::get('/add',[FentryControler::class,'addentry']);
+        Route::get('/',FentryControler::class,'actions');
+        Route::get('/add',FentryControler::class,'addentry');
     });
 
     Route::get('/changeentry',[FentryControler::class,'changeEntry']);
