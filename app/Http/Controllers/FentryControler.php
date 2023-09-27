@@ -552,6 +552,49 @@ class FentryControler extends Controller
         ]);
     }
 
+    public function swapEntry(Request $request) {
+        // dd($request);
+        $entries = '';
+        $profile = '';
+        $oldEntry = '';
+        $event = isset($request->event) ? $request->event : '4542';
+        $code = $request->entrycode;
+        if(isset($request->user)){
+            $profile = Userprofile::where('userid',intval($request->user))->first();
+            
+            if($profile){
+                $entries = Fentry::where('userid', intval($profile->userid))->where('stableid',$profile->stableid)->where('status','Accepted')->where('eventcode', $event)->where('code', '!=' ,$code)->get();
+                // dd($entries);
+            }
+            $oldEntry = Fentry::where('userid', intval($profile->userid))->where('stableid',$profile->stableid)->where('status','Accepted')->where('eventcode', $event)->where('code', $code)->first();
+            // dd($oldEntry);
+        }
+        return view('tempadmin.tswapentry',[
+            'modelName' => 'swap entry',
+            'entries' => $entries,
+            'oldEntry' => $oldEntry,
+            'profile' => $profile,
+        ]);
+    }
+
+    // public function swapEntry (Request $request) {
+    //     $entries = '';
+    //     $event = isset($request->event) ? $request->event : '4542';
+    //     if(isset($request->code)){
+    //         $profile = Userprofile::where('uniqueid',$request->code)->first();
+
+    //         if($profile){
+    //             $entries = Fentry::where('userid',$profile->userid)->where('stableid',$profile->stableid)->where('status','Accepted')->where('eventcode', $event)->get();
+    //         }
+    //     }
+
+    //     return view('tempadmin.tswapentry',[
+    //         'modelName' => 'swapentry',
+    //         'profile' => $profile,
+    //         'entries' => $entries,
+    //     ]);
+    // }
+
     public function processEntry(Request $request) {
         $httpClient = new \GuzzleHttp\Client();
         $api_url = '';

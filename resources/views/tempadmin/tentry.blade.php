@@ -1,9 +1,19 @@
 @extends('layouts.tapp')
 @section('content')
+    <div class="container events my-5">
+        <h1>{{ Str::upper('Events') }}</h1>
+        <div class="col">
+            <div class="form-group mb-3">
+                <label for="">Event</label>
+                <select class="event-select select-2-basic col-12"></select>
+            </div>
+        </div>
+    </div>
     <div>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <h1>{{ Str::upper($modelName) }}</h1>
+        {{-- <h1>{{ Str::upper($modelName) }}</h1> --}}
+        <h1>{{ Str::upper('Add New Entry') }}</h1>
         <table id={{ $modelName }} class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -48,10 +58,13 @@
                                     href={{ $profile->stableid == 'E0000014'
                                         ? 'AdminUserID|' . $profile->userid . '|' . $profile->userid
                                         : 'StableID|' . $profile->stableid . '|' . $profile->userid }}
-                                    class="btn btn-main">SELECT</a>
+                                    class="btn btn-main my-3"><i class="fa-solid fa-clipboard-check"></i> SELECT</a>
 
-                                <a href="/changeentry?code={{ $profile->uniqueid }}&event=4542"
-                                    class="btn btn-main">CHANGE</a>
+                                <a href="/changeentry?code={{ $profile->uniqueid }}" class="btn btn-main entry-change my-3"
+                                    data-uniqueid="{{ $profile->uniqueid }}"><i class="fa-solid fa-right-left"></i>
+                                    CHANGE</a>
+                                {{-- <a href="/swapentry?code={{ $profile->uniqueid }}" class="btn btn-main entry-swap my-3"
+                                    data-uniqueid="{{ $profile->uniqueid }}"><i class="fa-solid fa-repeat"></i> SWAP</a> --}}
                             </div>
                         </td>
                     </tr>
@@ -70,12 +83,6 @@
                     <div class="form-group mb-3">
                         <label for="">Rider</label>
                         <select class="rider-select select-2-basic col-12"></select>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group mb-3">
-                        <label for="">Event</label>
-                        <select class="event-select select-2-basic col-12"></select>
                     </div>
                 </div>
             </div>
@@ -181,6 +188,57 @@
                     window.location.href = href
                 }
             });
+
+            $(document).on('change', '.event-select', function(e) {
+                // Get the selected option value
+                let selectedValue = $(this).val();
+                eventCode = selectedValue.replace('000', '');
+
+                // Update href attribute of the link
+                // var linkHref = 'https://example.com/' + selectedValue; // Update the URL pattern as needed
+                // $('.entry-change').attr('href', linkHref);
+                console.log('eventCode', eventCode)
+                let newUrl = window.location.origin + window.location.pathname + '?event=' + eventCode;
+                history.pushState(null, null, newUrl);
+                // $('.entry-change').each(function() {
+                //     let uniqueid = $(this).data('uniqueid');
+                //     let originalHref = $(this).attr('href');
+                //     let newHref = originalHref.split('?')[0]; // Remove previous query parameters
+                //     newHref += '?code=' + uniqueid + '&event=' + eventCode;
+                //     console.log('newhrf', newHref);
+                //     // var extraHref = selectedValue;
+                //     // var originalHref = $(this).attr('href');
+                //     // var newHref = originalHref + '&extra=' + extraHref; // Append the extra value
+                //     $(this).attr('href', newHref);
+
+                //     // $(this).attr('href', newHref);
+                // });
+            });
+
+            $(document).on('click', '.entry-change', function(e) {
+                console.log('tga');
+                e.preventDefault();
+                let href = $(this).attr('href');
+                let searchParams = new URLSearchParams(window.location.search)
+                let params = searchParams.get('event');
+                console.log('params', params);
+                href += '&event=' + params;
+                console.log('href', href);
+                window.location.href = href;
+            });
+
+            // $(document).on('click', '.entry-swap', function(e) {
+            //     console.log('tga');
+            //     e.preventDefault();
+            //     let href = $(this).attr('href');
+            //     let searchParams = new URLSearchParams(window.location.search)
+            //     let params = searchParams.get('event');
+            //     console.log('asdasd' + $(this).val())
+            //     console.log('params', params);
+            //     href += '&event=' + params;
+            //     console.log('href', href);
+            //     window.location.href = href;
+            // });
 
             $(document).on('click', '#select-data', function(e) {
                 e.preventDefault();

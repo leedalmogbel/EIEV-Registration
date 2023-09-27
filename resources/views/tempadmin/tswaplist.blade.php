@@ -3,6 +3,27 @@
     <div>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <style>
+            .select2-container--default .select2-results>.select2-results__options {
+                max-height: 700px;
+            }
+
+            .select2 span,
+            .select2-results li {
+                color: #444;
+                font-weight: 600;
+                font-size: 16px;
+            }
+
+            .jconfirm-box {
+                /* max-width: 600px; */
+                width: 600px;
+            }
+
+            .select2-drop {
+                z-index: 99999;
+            }
+        </style>
         <h1>{{ Str::upper($modelName) }}</h1>
         <table id={{ $modelName }} class="table table-striped table-bordered">
             <thead>
@@ -61,7 +82,8 @@
                                     Substitute
                                 </a>
 
-                                <a href="#" class="btn btn-success" id="swab-entry">
+                                <a href="/swapentry?code={{ $profile->uniqueid }}" class="btn btn-success swap-entry"
+                                    data-entrycode="{{ $entry->code }}" data-userid="{{ $entry->userid }}">
                                     <i class="fa-solid fa-rotate"></i>
                                     Swap
                                 </a>
@@ -286,6 +308,56 @@
 
             });
 
+            let entries = {!! json_encode($entries) !!};
+            console.log(entries);
+            let data = $.map(entries, function(value, key) {
+                console.log(value)
+                return {
+                    id: value.code,
+                    text: value.horsenfid + ' | ' + value.horsename + ' | ' + value.horsefeiid + ' | ' +
+                        value.ridernfid + ' | ' + value.ridername + ' | ' + value.riderfeiid,
+                };
+            });
+
+            $('.swap-entry').click(function(e) {
+                e.preventDefault();
+                let self = this;
+                let href = $(this).attr('href');
+                let searchParams = new URLSearchParams(window.location.search)
+                let params = searchParams.get('event');
+                entryCode = this.dataset.entrycode;
+                userID = this.dataset.userid;
+                console.log('entryCode', entryCode)
+                console.log('uid', userID)
+                console.log('params', params);
+                href += '&event=' + params + '&entrycode=' + entryCode + '&user=' + userID;
+                console.log('href', href);
+                window.location.href = href;
+            });
+
+            $('.entry-select').select2({
+                dropdownParent: $('.jconfirm-open')
+            });
+            $('.entry-select').each(function() {
+                $(this).select2({
+                    dropdownParent: $(this).parent(), // fix select2 search input focus bug
+                })
+            })
+
+            // fix select2 bootstrap modal scroll bug
+            $(document).on('select2:close', '.entry-select', function(e) {
+                var evt = "scroll.select2"
+                $(e.target).parents().off(evt)
+                $(window).off(evt)
+            })
+
+            $('select:not(.normal)').each(function() {
+                $(this).select2({
+                    dropdownParent: $(this).parent().parent()
+                });
+            });
         });
     </script>
+
+    <script></script>
 @endsection

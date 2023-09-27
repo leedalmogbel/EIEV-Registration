@@ -178,6 +178,7 @@ Route::domain('devregistration.eiev-app.ae')->group(function ()
     });
 
     Route::get('/changeentry',[FentryControler::class,'changeEntry'])->middleware('checkAdminSession:superadmin');
+    Route::get('/swapentry',[FentryControler::class,'swapEntry'])->middleware('checkAdminSession:superadmin');
 });
 Route::domain('localhost')->group(function ()
 {
@@ -200,6 +201,7 @@ Route::domain('localhost')->group(function ()
         Route::get('/add',[FentryControler::class,'addentry']);
     });
     Route::get('/changeentry',[FentryControler::class,'changeEntry']);
+    Route::get('/swapentry',[FentryControler::class,'swapEntry']);
 });
 
 // custom routes
