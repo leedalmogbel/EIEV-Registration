@@ -94,12 +94,13 @@
             let uid = params.get('user');
             console.log('entryCode', entryCode)
             console.log('uid', uid)
+            let eiev_url = '{{ env('EIEV_URL') }}';
             $('.sub-entries').removeClass('d-none');
             $('.horse-select.select-2-basic').val(null).trigger('change');
             $('.rider-select.select-2-basic').val(null).trigger('change');
             $('.horse-select.select-2-basic').select2({
                 ajax: {
-                    url: 'https://registration.eiev-app.ae/api/ajax/searchhorse',
+                    url: `${eiev_url}/ajax/searchhorse`,
                     dataType: 'json',
                     type: 'GET',
                     data: function(params) {
@@ -129,7 +130,7 @@
             });
             $('.rider-select.select-2-basic').select2({
                 ajax: {
-                    url: 'https://registration.eiev-app.ae/api/ajax/searchrider',
+                    url: `${eiev_url}/ajax/searchrider`,
                     dataType: 'json',
                     type: 'GET',
                     data: function(params) {
@@ -164,11 +165,11 @@
             console.log('eid', params.get('raceid'));
             console.log('hid', hid)
             console.log('rid', rid)
-
+            let eiev_admin_url = '{{ env('EIEV_ADMIN_URL') }}'
             Promise.all([
                 $.ajax({
                     type: 'GET',
-                    url: `https://devregistration.eiev-app.ae/api/ridercheck?RiderID=${rid}&EventID=${eid}`,
+                    url: `${eiev_admin_url}/ridercheck?RiderID=${rid}&EventID=${eid}`,
                     success: function(data, status, xhr) { // success callback function
 
                     },
@@ -178,7 +179,7 @@
                 }),
                 $.ajax({
                     type: 'GET',
-                    url: `https://devregistration.eiev-app.ae/api/horsecheck?RiderID=${rid}&EventID=${eid}&HorseID=${hid}`,
+                    url: `${eiev_admin_url}/horsecheck?RiderID=${rid}&EventID=${eid}&HorseID=${hid}`,
                     success: function(data, status, xhr) { // success callback function
 
                     },
@@ -215,8 +216,9 @@
             let uid = params.get('user');
             const hid = $('.horse-select.select-2-basic').val();
             const rid = $('.rider-select.select-2-basic').val();
+            let eiev_url = '{{ env('EIEV_URL') }}';
             href =
-                `https://registration.eiev-app.ae/api/substituteentry?eventcode=${eid}&entrycode=${entryCode}&horseID=${hid}&riderID=${rid}&userID=${uid}`;
+                `${eiev_url}/substituteentry?eventcode=${eid}&entrycode=${entryCode}&horseID=${hid}&riderID=${rid}&userID=${uid}`;
             window.location.href = href;
         });
     </script>

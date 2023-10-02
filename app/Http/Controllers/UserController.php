@@ -17,13 +17,14 @@ use Str;
 class UserController extends Controller
 {
     protected $modelName = 'user';
-    
+
     /**
      * Triggers GET /login
      *
      * @return view()
      */
-    public function loginForm() {
+    public function loginForm()
+    {
         return view('login');
     }
 
@@ -32,13 +33,14 @@ class UserController extends Controller
      *
      * @param Illuminate\Http\Request $request
      */
-    public function login (Request $request) {
+    public function login(Request $request)
+    {
         // EEF API CALL
 
-        
+
         $validator = Validator::make($request->all(), [
-            'username'=>'required',
-            'password'=>'required',
+            'username' => 'required',
+            'password' => 'required',
         ]);
         if ($validator->fails()) {
             throw new FieldException(json_encode([
@@ -49,10 +51,10 @@ class UserController extends Controller
 
         $username = Str::lower($request->username);
         $password = $request->password;
-        if($username != "eiev@eiev.ae"){
+        if ($username != "eiev@eiev.ae") {
 
             $httpClient = new \GuzzleHttp\Client();
-            $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/userlogin';
+            $api_url = env("UAEERF_PROCESS_URL") . '/userlogin';
             // $api_url = 'http:/192.168.1.161:8000/api/uaeerf/userlogin';
             $options = [
                 'headers' => [
@@ -63,7 +65,7 @@ class UserController extends Controller
                     "password" => $password
                 ]
             ];
-            
+
             $response = $httpClient->request('POST', $api_url, $options);
             $loginSuccess = json_decode($response->getBody());
             info($request->all());
@@ -74,9 +76,9 @@ class UserController extends Controller
                     'password' => 'Invalid username and password.',
                 ]));
             }
-    
+
             $checkIfExist = UserModel::where('email', $username)->first();
-            if(!$checkIfExist) {
+            if (!$checkIfExist) {
                 $uDetail = $loginSuccess->uprofile;
                 $newUser = array(
                     'email' => $username,
@@ -106,52 +108,51 @@ class UserController extends Controller
                     'phone' => $uDetail->mobileno,
                     'pwd' => $password,
                 );
-    
+
                 $checkIfExist = $checkIfExist->update($newUser);
             }
             try {
-                Auth::login($checkIfExist,$request->has('remember'));
+                Auth::login($checkIfExist, $request->has('remember'));
             } catch (\Throwable $th) {
-    
             }
-    
+
             // login service
             $user = ServiceProvider::userAuth($request->except('_token'))
-                  ->login();
-    
+                ->login();
+
             $url = '/dashboard';
             if (isset(session()->get('role')->home_url)) {
                 $url = session()->get('role')->home_url;
             }
 
-            $dbprofile = Userprofile::where('userid',$loginSuccess->uprofile->userid)->first();            
-            if($dbprofile){
+            $dbprofile = Userprofile::where('userid', $loginSuccess->uprofile->userid)->first();
+            if ($dbprofile) {
                 $loginSuccess->uprofile->uniqueid = $dbprofile->uniqueid;
             }
 
             session()->put('profile', $loginSuccess->uprofile);
 
             return redirect($url);
-        }else{
+        } else {
             $user = ServiceProvider::userAuth($request->except('_token'))
-                  ->login();
-    
+                ->login();
+
             $url = '/dashboard';
             if (isset(session()->get('role')->home_url)) {
                 $url = session()->get('role')->home_url;
             }
-    
+
             session()->put('profile', (object) array(
-                "latestupdate"=>"2022-11-14T19:56:01",
-                "isactive"=>"true",
-                "email"=>"oecryk@gmail.com",
-                "userid"=>"6671",
-                "fname"=>"Amer",
-                "lname"=>"Ali Amer",
-                "mobileno"=>"00971529550336",
-                "bday"=>"1998-10-21T00:00:00",
-                "stableid"=>"E0000014",
-                "stablename"=>"Private Individual Stables"
+                "latestupdate" => "2022-11-14T19:56:01",
+                "isactive" => "true",
+                "email" => "oecryk@gmail.com",
+                "userid" => "6671",
+                "fname" => "Amer",
+                "lname" => "Ali Amer",
+                "mobileno" => "00971529550336",
+                "bday" => "1998-10-21T00:00:00",
+                "stableid" => "E0000014",
+                "stablename" => "Private Individual Stables"
             ));
             return redirect($url);
         }
@@ -163,13 +164,14 @@ class UserController extends Controller
      *
      * @return view()
      */
-    public function registerForm() {
+    public function registerForm()
+    {
         $tpl_vars = [];
         // get available locations
         // and discipline
         $tpl_vars['locations'] = UserModel::AVAILABLE_LOCATIONS;
         $tpl_vars['disciplines'] = UserModel::AVAILABLE_DISCIPLINES;
-        
+
         return view('register', $tpl_vars);
     }
 
@@ -178,12 +180,13 @@ class UserController extends Controller
      *
      * @param Illuminate\Http\Request $request
      */
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         // TODO: Documents upload;
 
         // register service
         $user = ServiceProvider::userAuth($request->except('_token'))
-              ->register($request->input('c_pass'));
+            ->register($request->input('c_pass'));
 
         // It passed here, so this must be success
         $this->flashMsg('Registration complete', 'success');
@@ -191,7 +194,8 @@ class UserController extends Controller
         return redirect('/login');
     }
 
-    public function me() {
+    public function me()
+    {
         $uprofile = session()->get('profile');
         $modelName = 'profile';
         if (empty($uprofile)) {
@@ -206,7 +210,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function kiosk() {
+    public function kiosk()
+    {
         $uprofile = session()->get('profile');
         $modelName = 'Kiosk Qr';
         if (empty($uprofile)) {
@@ -225,13 +230,13 @@ class UserController extends Controller
     {
         $profile = session()->get('profile');
 
-        $headers    = array('Content-Type' => ['png','svg','eps']);
-        $contents = file_get_contents("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=".$profile->uniqueid."&choe=UTF-8");
+        $headers    = array('Content-Type' => ['png', 'svg', 'eps']);
+        $contents = file_get_contents("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=" . $profile->uniqueid . "&choe=UTF-8");
 
         $filename = 'qrEntry.png';
         \Storage::disk('public')->put($filename, $contents);
 
-        $qrFile = \Storage::path('public/'.$filename);
+        $qrFile = \Storage::path('public/' . $filename);
 
         return response()->download($qrFile)->deleteFileAfterSend(true);
     }

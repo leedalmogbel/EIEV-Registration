@@ -106,9 +106,12 @@
     <script type="text/javascript">
         $(document).ready(function() {
             let uid = 0;
+            let eiev_api_url = '{{ env('EIEV_API_URL') }}';
+            let eiev_admin_url = '{{ env('EIEV_ADMIN_URL') }}';
+            console.log('eiev_url', eiev_api_url)
             $('.event-select.select-2-basic').select2({
                 ajax: {
-                    url: 'https://registration.eiev-app.ae/api/ajax/searchevent',
+                    url: `${eiev_api_url}/ajax/searchevent`,
                     dataType: 'json',
                     type: 'GET',
                     processResults: function(data) {
@@ -138,7 +141,7 @@
                 Promise.all([
                     $.ajax({
                         type: 'GET',
-                        url: `https://devregistration.eiev-app.ae/api/ridercheck?RiderID=${rid}&EventID=${eid}`,
+                        url: `${eiev_admin_url}/ridercheck?RiderID=${rid}&EventID=${eid}`,
                         success: function(data, status, xhr) { // success callback function
 
                         },
@@ -148,7 +151,7 @@
                     }),
                     $.ajax({
                         type: 'GET',
-                        url: `https://devregistration.eiev-app.ae/api/horsecheck?RiderID=${rid}&EventID=${eid}&HorseID=${hid}`,
+                        url: `${eiev_admin_url}/horsecheck?RiderID=${rid}&EventID=${eid}&HorseID=${hid}`,
                         success: function(data, status, xhr) { // success callback function
 
                         },
@@ -183,8 +186,10 @@
                 const hid = $('.horse-select.select-2-basic').val();
                 const rid = $('.rider-select.select-2-basic').val();
                 if (uid > 0) {
+                    // href = `https://devregistration.eiev-app.ae/${href}?params[EventID]=${eid}&params[HorseID]=${hid}&params[RiderID]=${rid}&params[UserID]=${uid}`;
                     href =
-                        `https://devregistration.eiev-app.ae/${href}?params[EventID]=${eid}&params[HorseID]=${hid}&params[RiderID]=${rid}&params[UserID]=${uid}`;
+                        `http://localhost:8000/${href}?params[EventID]=${eid}&params[HorseID]=${hid}&params[RiderID]=${rid}&params[UserID]=${uid}`;
+                    console.log(href)
                     window.location.href = href
                 }
             });
@@ -253,7 +258,7 @@
                 $('.rider-select.select-2-basic').val(null).trigger('change');
                 $('.horse-select.select-2-basic').select2({
                     ajax: {
-                        url: 'https://registration.eiev-app.ae/api/ajax/searchhorse',
+                        url: `${eiev_api_url}/ajax/searchhorse`,
                         dataType: 'json',
                         type: 'GET',
                         data: function(params) {
@@ -278,7 +283,7 @@
                 });
                 $('.rider-select.select-2-basic').select2({
                     ajax: {
-                        url: 'https://registration.eiev-app.ae/api/ajax/searchrider',
+                        url: `${eiev_api_url}/ajax/searchrider`,
                         dataType: 'json',
                         type: 'GET',
                         data: function(params) {

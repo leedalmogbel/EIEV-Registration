@@ -14,7 +14,8 @@ class TrainerController extends Controller
 
     protected $model = 'trainer';
 
-    protected function prepTPLVars() {
+    protected function prepTPLVars()
+    {
         $tplVars = [];
         $tplVars['discipline'] = TrainerModel::DISCIPLINE;
         $tplVars['visa_types'] = TrainerModel::VISA_TYPES;
@@ -22,20 +23,21 @@ class TrainerController extends Controller
         return $tplVars;
     }
 
-    public function listing(Request $request) {
+    public function listing(Request $request)
+    {
         $tpl_vars = [];
 
         $service = ServiceProvider::{$this->model}();
         $tpl_vars[Str::plural($this->model)] = $service->listing($request->except('_token'));
         $tpl_vars['isSearchable'] = $service->isSearchable();
-        
+
         $httpClient = new \GuzzleHttp\Client();
         $api_url = '';
         $profile = session()->get('profile');
 
-        $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/trainerlist?params[StableID]='.$profile->stableid;
+        $api_url = env("UAEERF_PROCESS_URL") . '/trainerlist?params[StableID]=' . $profile->stableid;
         if (isset($profile->stableid) && $profile->stableid == "E0000014") {
-            $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/trainerlist?params[AdminUserID]='.$profile->userid;
+            $api_url = env("UAEERF_PROCESS_URL") . '/trainerlist?params[AdminUserID]=' . $profile->userid;
         }
         $options = [
             'headers' => [

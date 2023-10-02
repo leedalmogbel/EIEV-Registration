@@ -26,9 +26,9 @@
                     if ($race->statusid == 11) {
                         $createRace = '/entry/create?raceid=' . $race->raceid;
                         $viewRace = '/entry?raceid=' . $race->raceid;
-                        if ($cclDate < now()) {
-                            $createRace = '#';
-                        }
+                        // if ($cclDate < now()) {
+                        //     $createRace = '#';
+                        // }
                     }
                     $statusclass = '';
                     $statuslabel = '';
@@ -67,17 +67,17 @@
                     <td>
                         <div>
                             @if ($race->statusid == 11)
-                                @if ($cclDate < now())
+                                {{-- @if ($cclDate < now())
                                     <a href="{{ $createRace }}" class='btn btn-danger disabled' id="add-entry"><i
                                             class="fa-solid fa-plus"></i> Add Entry</a>
                                     <a href="{{ $viewRace }}" class='btn btn-main' id="view-entry"><i
                                             class="fa-regular fa-eye"></i> View Entry</a>
-                                @else
-                                    <a href="{{ $createRace }}" class='btn btn-main' id="add-entry"><i
-                                            class="fa-solid fa-plus"></i> Add Entry</a>
-                                    <a href="{{ $viewRace }}" class='btn btn-main' id="view-entry"><i
-                                            class="fa-regular fa-eye"></i> View Entry</a>
-                                @endif
+                                @else --}}
+                                <a href="{{ $createRace }}" class='btn btn-main' id="add-entry"><i
+                                        class="fa-solid fa-plus"></i> Add Entry</a>
+                                <a href="{{ $viewRace }}" class='btn btn-main' id="view-entry"><i
+                                        class="fa-regular fa-eye"></i> View Entry</a>
+                                {{-- @endif --}}
                             @else
                                 <a href="{{ $createRace }}" class='btn btn-danger disabled'id="add-entry"><i
                                         class="fa-solid fa-plus"></i> Add Entry</a>

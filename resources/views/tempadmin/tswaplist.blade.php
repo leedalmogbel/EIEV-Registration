@@ -136,6 +136,9 @@
             let uid = 0;
             let entryCode = '';
             let userID = '';
+            let eiev_admin_url = '{{ env('EIEV_ADMIN_URL') }}';
+            let eiev_url = '{{ env('EIEV_URL') }}';
+            let eiev_api_url = '{{ env('EIEV_API_URL') }}';
             $('.entry-select.select-2-basic').select2({
                 ajax: {
                     url: '/api/ajax/searchentry',
@@ -170,7 +173,7 @@
                 Promise.all([
                     $.ajax({
                         type: 'GET',
-                        url: `https://devregistration.eiev-app.ae/api/ridercheck?RiderID=${rid}&EventID=${eid}`,
+                        url: `${eiev_admin_url}/ridercheck?RiderID=${rid}&EventID=${eid}`,
                         success: function(data, status, xhr) { // success callback function
 
                         },
@@ -180,7 +183,7 @@
                     }),
                     $.ajax({
                         type: 'GET',
-                        url: `https://devregistration.eiev-app.ae/api/horsecheck?RiderID=${rid}&EventID=${eid}&HorseID=${hid}`,
+                        url: `${eiev_admin_url}/horsecheck?RiderID=${rid}&EventID=${eid}&HorseID=${hid}`,
                         success: function(data, status, xhr) { // success callback function
 
                         },
@@ -235,13 +238,14 @@
                 const hid = $('.horse-select.select-2-basic').val();
                 const rid = $('.rider-select.select-2-basic').val();
                 href =
-                    `https://devregistration.eiev-app.ae/api/processentry?eventcode=${eid}&horseID=${hid}&riderID=${rid}&userID=${userID}&entrycode=${entryCode}&bcode=${bcode}`;
+                    `${eiev_admin_url}/processentry?eventcode=${eid}&horseID=${hid}&riderID=${rid}&userID=${userID}&entrycode=${entryCode}&bcode=${bcode}`;
                 window.location.href = href;
             });
 
             $(document).on('click', '#sub-entry', function(e) {
                 e.preventDefault();
                 let self = this;
+
                 const href = $(self).attr('href');
                 console.log('href', href);
                 const ddata = href.split("|");
@@ -258,7 +262,7 @@
                 $('.rider-select.select-2-basic').val(null).trigger('change');
                 $('.horse-select.select-2-basic').select2({
                     ajax: {
-                        url: 'https://registration.eiev-app.ae/api/ajax/searchhorse',
+                        url: `${eiev_api_url}/ajax/searchhorse`,
                         dataType: 'json',
                         type: 'GET',
                         data: function(params) {
@@ -283,7 +287,7 @@
                 });
                 $('.rider-select.select-2-basic').select2({
                     ajax: {
-                        url: 'https://registration.eiev-app.ae/api/ajax/searchrider',
+                        url: `${eiev_api_url}/ajax/searchrider`,
                         dataType: 'json',
                         type: 'GET',
                         data: function(params) {

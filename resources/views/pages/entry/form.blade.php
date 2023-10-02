@@ -75,8 +75,7 @@
         <p><em>Fetching horses and riders...</em></p>
     @endif
 </div>
-<a href="#" class="btn btn-main{{ old('user_id') ? '' : ' hidden' }}" id="add-entry"><i
-        class="fa-solid fa-plus"></i> Add Another</a>
+<a href="#" class="btn btn-main" id="add-entry"><i class="fa-solid fa-plus"></i> Add Another</a>
 
 <script type="text/tpl" id="rules-content">
  <p>Lorem ipsum dolor sit amet, possim facilisis iracundia mea ut, usu eu malorum eripuit democritum. Cu veritus facilisi mel, elit dicat expetendis ad his. In putant possim aperiri nec, ius purto corpora instructior ne. At cum tota indoctum vituperatoribus, an eius meliore conceptam his. Sea id sint nostro causae, ne eius veri nam, nam et fuisset accusamus. Partem nemore facilis mei eu, ubique officiis intellegam ei nam. Ea quo duis graeco expetenda, blandit epicurei has ad, cum modo dicat inciderint ut. Sit ea summo adipisci. Est eu mucius praesent, qui ceteros prodesset te. Duis novum dicam sea no, vim an scripta accusata vulputate. Agam eius an eos, decore cetero suscipit ne sed. Eu invidunt instructior mea, purto suavitate definiebas sed et. Nullam apeirian at eos. Veritus invidunt an eum, decore nostrum consequat quo ut. Discere delicata accusamus mea ei. Eu menandri instructior sit. Id has albucius splendide. Erant constituto ius in, legendos salutatus qui at, voluptatum assueverit sed at. Eu nihil docendi noluisse duo, cu zril petentium ius. Everti iudicabit no sit. Eu eum error eirmod, nec veri posse simul at. An animal facilis pri.</p>
@@ -116,6 +115,7 @@
         let entryCount = 0;
         let horses = JSON.parse('{!! $jsonHorse !!}');
         let riders = JSON.parse('{!! $jsonRider !!}');
+        let eiev_url = '{{ env('EIEV_URL') }}'
         const selected = function(className) {
             let data = [];
             for (let i = 0; i < $(`.${className}-select`).length; i++) {
@@ -187,7 +187,7 @@
             $('.rider-select.select-2-basic').select2({
                 minimumInputLength: 3,
                 ajax: {
-                    url: 'https://registration.eiev-app.ae/api/ajax/searchrider',
+                    url: `${eiev_url}/ajax/searchrider`,
                     dataType: 'json',
                     type: 'GET',
                     data: function(params) {

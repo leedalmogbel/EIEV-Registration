@@ -73,12 +73,14 @@
             let entryid2 = $('.entry-select.select-2-basic').val();
             console.log('entryid2', entryid2)
             console.log('href', href)
+            let env_url = '{{ env('UAEERF_PROCESS_URL') }}';
             $.ajax({
                 type: 'POST',
                 headers: {
                     '38948f839e704e8dbd4ea2650378a388': '0b5e7030aa4a4ee3b1ccdd4341ca3867'
                 },
-                url: `https://ebe.eiev-app.ae/api/uaeerf/swapentries?params[UserID]=${uid}&params[EventID]=${eid}&params[EntryID]=${entryid1}&params[EntryID2]=${entryid2}`,
+
+                url: `${env_url}/swapentries?params[UserID]=${uid}&params[EventID]=${eid}&params[EntryID]=${entryid1}&params[EntryID2]=${entryid2}`,
                 success: function(data, status, xhr) { // success callback function
                     if (data.swapresult == 'true') {
                         toastr['success']('Swapping Entry is currently in progress')

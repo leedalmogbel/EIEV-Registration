@@ -87,6 +87,12 @@ class UserprofileController extends Controller
         return response()->json(['msg'=>'No profile found'],400);
     }
 
+    public function generateQrCode() {
+        //  TODO: generate qr code for jeffrey
+        // redirect the user on url if its ios or android
+        // $url = 'htts://registration.eiev-app.com/';
+    }
+
     /**
      * Display the specified resource.
      *

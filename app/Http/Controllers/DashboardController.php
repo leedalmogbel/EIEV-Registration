@@ -9,20 +9,21 @@ class DashboardController extends Controller
 {
     //
 
-    public function index() {
+    public function index()
+    {
         $modelName = 'dashboard';
         $httpClient = new \GuzzleHttp\Client();
         $api_url = '';
         $profile = session()->get('profile');
-        if(!$profile){
+        if (!$profile) {
             return redirect('login');
         }
-        $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/stablestats?params[StableID]='.$profile->stableid;
+        $api_url = env("UAEERF_PROCESS_URL") . '/stablestats?params[StableID]=' . $profile->stableid;
         if (isset($profile->stableid) && $profile->stableid == "E0000014") {
-            $api_url = 'https://ebe.eiev-app.ae/api/uaeerf/stablestats?params[AdminUserID]='.$profile->userid;
+            $api_url = env("UAEERF_PROCESS_URL") . '/stablestats?params[AdminUserID]=' . $profile->userid;
         }
-        $apiEvents_url = 'https://ebe.eiev-app.ae/api/uaeerf/eventlist';
-        $apiEntries_url = 'https://ebe.eiev-app.ae/api/uaeerf/entries?params[SearchUserID]='.$profile->userid.'&params[SearchEventID]=0003900';
+        $apiEvents_url = env("UAEERF_PROCESS_URL") . '/eventlist';
+        $apiEntries_url = env("UAEERF_PROCESS_URL") . '/entries?params[SearchUserID]=' . $profile->userid . '&params[SearchEventID]=0003900';
 
         $options = [
             'headers' => [
@@ -43,17 +44,15 @@ class DashboardController extends Controller
         $hasEntries = json_decode($entryRes->getBody());
         $entries = $hasEntries->entries->data;
 
-        usort($entries, function($a, $b)
-        {
+        usort($entries, function ($a, $b) {
             return strcmp($a->code, $b->code);
         });
 
-        $events = array_filter($events, function($item) {
+        $events = array_filter($events, function ($item) {
             return $item->statusid != 4;
         });
 
-        usort($events, function($a, $b)
-        {
+        usort($events, function ($a, $b) {
             return strcmp($a->racetodate, $b->racetodate);
         });
 
@@ -71,10 +70,11 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function entriesPDF(Request $request) {
+    public function entriesPDF(Request $request)
+    {
         $httpClient = new \GuzzleHttp\Client();
         $profile = session()->get('profile');
-        $apiEntries_url = 'https://ebe.eiev-app.ae/api/uaeerf/entries?params[SearchUserID]='.$profile->userid.'&params[SearchEventID]=0003900';
+        $apiEntries_url = env("UAEERF_PROCESS_URL") . '/entries?params[SearchUserID]=' . $profile->userid . '&params[SearchEventID]=0003900';
 
         $options = [
             'headers' => [
@@ -86,19 +86,18 @@ class DashboardController extends Controller
         $hasEntries = json_decode($entryRes->getBody());
         $entries = $hasEntries->entries->data;
 
-        usort($entries, function($a, $b)
-        {
+        usort($entries, function ($a, $b) {
             return strcmp($a->code, $b->code);
         });
 
-        $entries = array_filter($entries, function($obj){
+        $entries = array_filter($entries, function ($obj) {
             if ($obj->status === "Eligible") {
                 return $obj;
-            } 
+            }
         });
 
         $pdf = PDF::loadView('partials.entriesPdf', compact('entries'));
-        
+
         return $pdf->download('entries.pdf');
     }
 }

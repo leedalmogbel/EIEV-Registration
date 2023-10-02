@@ -21,7 +21,7 @@
     <link type="text/css" rel="stylesheet" href="/styles/editor.css" />
     <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/select/1.5.0/css/select.dataTables.min.css" />
     <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/datetime/1.2.0/css/dataTables.dateTime.min.css" />
-    
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <link href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" rel="stylesheet" />
 
@@ -103,7 +103,7 @@
             };
 
             window.onpopstate = (event) => {
-                window.location.href = document.location;
+                // window.location.href = document.location;
             };
         </script>
  </body>
