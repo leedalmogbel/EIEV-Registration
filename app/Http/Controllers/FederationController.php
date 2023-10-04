@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Multi;
 
 class FederationController extends Controller
 {
@@ -48,7 +49,6 @@ class FederationController extends Controller
             $data[$ekl[1]] = null;
           }
         }
-
 
         foreach ($parampipes as $param) {
           if (Str::contains($param, "@")) {
@@ -343,6 +343,10 @@ class FederationController extends Controller
 
     $client = new Client();
     $response = $client->post(env("UAEERF_BASE_URL_DEV"), $options);
+
+    // SYNC entries after add entry
+    $this->syncEntries($request);
+
     if (isset($request->showraw)) {
       return $response->getBody();
     }
@@ -370,6 +374,7 @@ class FederationController extends Controller
       </soap:Header>
       <soap:Body>
         <GetEIEVEventList xmlns="http://ws.uaeerf.ae/">';
+
     if (isset($request->params)) {
       $keys = array_keys($request->params);
       foreach ($keys as $key) {
@@ -444,6 +449,10 @@ class FederationController extends Controller
     ];
     $client = new Client();
     $response = $client->post(env("UAEERF_BASE_URL_DEV"), $options);
+
+    // SYNC entries
+    $this->syncEntries($request);
+
     if (isset($request->showraw)) {
       return $response->getBody();
     }
@@ -554,6 +563,10 @@ class FederationController extends Controller
     ];
     $client = new Client();
     $response = $client->post(env("UAEERF_BASE_URL_DEV"), $options);
+
+    // SYNC entries
+    $this->syncEntries($request);
+
     if (isset($request->showraw)) {
       return $response->getBody();
     }
@@ -816,6 +829,10 @@ class FederationController extends Controller
 
     $client = new Client();
     $response = $client->post(env("UAEERF_BASE_URL_DEV"), $options);
+
+    // SYNC entries
+    $this->syncEntries($request);
+
     if (isset($request->showraw)) {
       return $response->getBody();
     }
@@ -946,5 +963,21 @@ class FederationController extends Controller
       return $response->getBody();
     }
     return $this->extractData((string)$response->getBody(), 'getStableListResult|stables#Stables#LastestUpdate|lastestupdate&Stable_ID|stableid&Name|name&Address|address&Zip|zip&City|city&Country|country&Phone|phone&Email|email&Remarks|remarks&Owner|owner&Discipline|discipline&Category|category&DIVISION|division', $debug);
+  }
+
+  public function syncEntries(Request $request)
+  {
+    $id = Str::uuid();
+    // $result = array();
+    $data = $this->getentries(new Request);
+    if ($data) {
+      info("`{$id}` - Automated Check data count.");
+      $dcount = count($data['entries']['data']);
+      if ($dcount > 0) {
+        Multi::insertOrUpdate($data['entries']['data'], 'fentries');
+        info("Automated `{$id}` - `{$dcount}` records synced.");
+      }
+      // $result[$process]['message'] = "{$process} --- {$id} - {$dcount} records synced.";
+    }
   }
 }

@@ -36,3 +36,9 @@ UniqueID Generator
 - username: `eiev@eiev.ae`
 - password: `eievteam1234$`
 - There is also APIs to fetch the DATA and merge it into your local machine. Be informered that you need to get a copy of the existing DATA from the live and import it to the local machine.
+- {domain name}/api/eievsync?sync=entries to fetch the updated ENTRIES FEDERATION DATA and merge it into your local machine.
+- {domain name}/api/eievsync?sync=events to fetch the updated EVENTS FEDERATION DATA and merge it into your local machine.
+- {domain name}/api/eievsync?sync=horses to fetch the updated ENTRIES FEDERATION DATA and merge it into your local machine.
+- {domain name}/api/eievsync?sync=trainers to fetch the updated EVENTS FEDERATION DATA and merge it into your local machine.
+- {domain name}/api/eievsync?sync=owners to fetch the updated ENTRIES FEDERATION DATA and merge it into your local machine.
+- {domain name}/api/eievsync?sync=stables to fetch the updated EVENTS FEDERATION DATA and merge it into your local machine.

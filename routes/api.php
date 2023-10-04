@@ -41,36 +41,100 @@ Route::group(['prefix' => 'ajax'], function () {
 Route::get('eievsync', function (Request $request) {
     $process = $request->sync;
     $id = Str::uuid();
+    $result = array();
 
-    switch ($process) {
-        case 'events':
-            $data = (new FederationController)->geteieveventlist(new Request);
-            if ($data) {
-                info("`{$id}` - Check data count.");
-                $dcount = count($data['events']['data']);
-                if ($dcount > 0) {
-                    Multi::insertOrUpdate($data['events']['data'], 'fevents');
-                    info("`{$id}` - `{$dcount}` records synced.");
-                }
+    if ($process == 'events') {
+        $data = (new FederationController)->geteieveventlist(new Request);
+        if ($data) {
+            info("`{$id}` - Check data count.");
+            $dcount = count($data['events']['data']);
+            if ($dcount > 0) {
+                Multi::insertOrUpdate($data['events']['data'], 'fevents');
+                info("`{$id}` - `{$dcount}` records synced.");
             }
-            break;
-
-        case 'entries':
-            $data = (new FederationController)->getentries(new Request);
-            if ($data) {
-                info("`{$id}` - Check data count.");
-                $dcount = count($data['entries']['data']);
-                if ($dcount > 0) {
-                    Multi::insertOrUpdate($data['entries']['data'], 'fentries');
-                    info("`{$id}` - `{$dcount}` records synced.");
-                }
-            }
-            break;
-
-        default:
-            # code...
-            break;
+            $result[$process]['message'] = "{$process} --- {$id} - {$dcount} records synced.";
+        }
     }
+
+    if ($process == 'entries') {
+        $data = (new FederationController)->getentries(new Request);
+        if ($data) {
+            info("`{$id}` - Check data count.");
+            $dcount = count($data['entries']['data']);
+            if ($dcount > 0) {
+                Multi::insertOrUpdate($data['entries']['data'], 'fentries');
+                info("`{$id}` - `{$dcount}` records synced.");
+            }
+            $result[$process]['message'] = "{$process} --- {$id} - {$dcount} records synced.";
+        }
+    }
+
+    if ($process == 'horses') {
+        $data = (new FederationController)->searchhorselist(new Request);
+        if ($data) {
+            info("`{$id}` - Check data count.");
+            $dcount = count($data['horses']['data']);
+            if ($dcount > 0) {
+                Multi::insertOrUpdate($data['horses']['data'], 'fhorses');
+                info("`{$id}` - `{$dcount}` records synced.");
+            }
+            $result[$process]['message'] = "{$process} --- {$id} - {$dcount} records synced.";
+        }
+    }
+
+    if ($process == 'riders') {
+        $data = (new FederationController)->searchriderlist(new Request);
+        if ($data) {
+            info("`{$id}` - Check data count.");
+            $dcount = count($data['riders']['data']);
+            if ($dcount > 0) {
+                Multi::insertOrUpdate($data['riders']['data'], 'friders');
+                info("`{$id}` - `{$dcount}` records synced.");
+            }
+        }
+        $result[$process]['message'] = "{$process} --- {$id} - {$dcount} records synced.";
+    }
+
+    if ($process == 'trainers') {
+        $data = (new FederationController)->searchtrainerlist(new Request);
+        if ($data) {
+            info("`{$id}` - Check data count.");
+            $dcount = count($data['trainers']['data']);
+            if ($dcount > 0) {
+                Multi::insertOrUpdate($data['trainers']['data'], 'ftrainers');
+                info("`{$id}` - `{$dcount}` records synced.");
+            }
+        }
+        $result[$process]['message'] = "{$process} --- {$id} - {$dcount} records synced.";
+    }
+
+    if ($process == 'owners') {
+        $data = (new FederationController)->searchownerlist(new Request);
+        if ($data) {
+            info("`{$id}` - Check data count.");
+            $dcount = count($data['owners']['data']);
+            if ($dcount > 0) {
+                Multi::insertOrUpdate($data['owners']['data'], 'fowners');
+                info("`{$id}` - `{$dcount}` records synced.");
+            }
+        }
+        $result[$process]['message'] = "{$process} --- {$id} - {$dcount} records synced.";
+    }
+
+    if ($process == 'stables') {
+        $data = (new FederationController)->getstablelist(new Request);
+        if ($data) {
+            info("`{$id}` - Check data count.");
+            $dcount = count($data['stables']['data']);
+            if ($dcount > 0) {
+                Multi::insertOrUpdate($data['stables']['data'], 'fstables');
+                info("`{$id}` - `{$dcount}` records synced.");
+            }
+        }
+        $result[$process]['message'] = "{$process} --- {$id} - {$dcount} records synced.";
+    }
+
+    return response()->json($result);
 });
 
 

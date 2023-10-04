@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\FederationController;
 use App\Models\Psetting;
 use App\Models\Multi;
+
 class HorseSyncCommand extends Command
 {
     /**
@@ -41,41 +42,40 @@ class HorseSyncCommand extends Command
      */
     public function handle()
     {
-        $id =  $this->option('id') != "null"?$this->option('id'): Str::uuid();
+        $id =  $this->option('id') != "null" ? $this->option('id') : Str::uuid();
         try {
             info("`{$id}` - Started horse Sync");
-            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->first();
-            if($settings){
-                if(!$settings->processing_horses){
+            $settings = Psetting::where('ipaddress', $this->option('ip'))->where('host', $this->option('host'))->first();
+            if ($settings) {
+                if (!$settings->processing_horses) {
                     info("`{$id}` - Check Sync all if enabled");
-                    if($settings->syncall){
-        
-                    }else{
+                    if ($settings->syncall) {
+                    } else {
                         info("`{$id}` - Sync all not enabled. Check Sync horse if enabled");
-                        if($settings->synchorses){
+                        if ($settings->synchorses) {
                             info("`{$id}` - Sync horse enabled. Call API");
                             $settings->processing_horses = 1;
                             $settings->save();
-                            $data = (new FederationController)->searchhorselist(new Request,$this->option('horseid'));
-                            if($data){
+                            $data = (new FederationController)->searchhorselist(new Request, $this->option('horseid'));
+                            if ($data) {
                                 info("`{$id}` - Check data count.");
                                 $dcount = count($data['horses']['data']);
-                                if($dcount>0){
-                                    Multi::insertOrUpdate($data['horses']['data'],'fhorses');
+                                if ($dcount > 0) {
+                                    Multi::insertOrUpdate($data['horses']['data'], 'fhorses');
                                     info("`{$id}` - `{$dcount}` records synced.");
                                 }
                             }
-                            $settings = Psetting::where('ipaddress',$this->option('ip'))->where('host',$this->option('host'))->update(['processing_horses'=>0]);
-                        }else{
+                            $settings = Psetting::where('ipaddress', $this->option('ip'))->where('host', $this->option('host'))->update(['processing_horses' => 0]);
+                        } else {
                             info("`{$id}` - Sync all not enabled. Sync horse not enabled");
                         }
                     }
-                }else{
+                } else {
                     info("`{$id}` - Horse Sync command already processing. Sync cancelled.");
                 }
             }
         } catch (\Throwable $th) {
-            info("Error occured in `{$id}`. Check logs.",['error'=>strval($th)]);
+            info("Error occured in `{$id}`. Check logs.", ['error' => strval($th)]);
         }
         info("`{$id}` - Finished horse Sync");
     }

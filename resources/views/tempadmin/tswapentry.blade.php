@@ -74,7 +74,9 @@
             console.log('entryid2', entryid2)
             console.log('href', href)
             let env_url = '{{ env('UAEERF_PROCESS_URL') }}';
+            let env_api_url = '{{ env('EIEV_API_URL') }}';
             console.log('env_url', env_url)
+            console.log('env_api_url', env_api_url)
             $.ajax({
                 type: 'POST',
                 headers: {
@@ -84,6 +86,21 @@
                 success: function(data, status, xhr) { // success callback function
                     if (data.swapresult == 'true') {
                         toastr['success']('Swapping Entry is currently in progress')
+
+                        // call sync
+                        $.ajax({
+                            type: 'GET',
+                            url: `${env_api_url}/eievsync?sync=entries`,
+                            success: function() {
+                                console.log('result', result);
+                                console.log("sync entries successfully");
+                                toastr['success']('Sync Entries is currently in progress')
+                            },
+                            error: function(jqXhr, textStatus, errorMessage) { // error callback
+                                console.log('entry sync error', errorMessage);
+                            }
+                        });
+
                         let redirect = `{!! url()->previous() !!}`;
                         setTimeout(function() {
                             window.location.href = redirect;

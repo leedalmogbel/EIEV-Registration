@@ -58,7 +58,6 @@ class FentryControler extends Controller
     }
 
 
-
     public function generateStartnumber(Request $request)
     {
         if (isset($request->eventId) && isset($request->action)) {
@@ -297,8 +296,8 @@ class FentryControler extends Controller
             // Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid=' . $entry->code);
         }
 
-        // Sync Entries from Federation
-        $this->syncEntries($request);
+        // syncEntries
+        (new FederationController)->syncEntries($request);
 
         if (isset($request->stablename)) {
             return redirect('/rideslist?SearchEventID=' . $entry->eventcode . '&stablename=' . $request->stablename);
@@ -318,6 +317,10 @@ class FentryControler extends Controller
             $data = (new FederationController)->moveentrytomain($myRequest);
             // Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid=' . $entry->code);
         }
+
+        // syncEntries
+        (new FederationController)->syncEntries($request);
+
         if (isset($request->stablename)) {
             return redirect('/rideslist?SearchEventID=' . $entry->eventcode . '&stablename=' . $request->stablename);
         }
@@ -347,6 +350,10 @@ class FentryControler extends Controller
                             $data = (new FederationController)->moveentrytomain($myRequest);
                             array_push($plist, $data);
                         }
+
+                        // syncEntries
+                        (new FederationController)->syncEntries($request);
+
                         // Artisan::call('command:syncentries --ip=eievadmin --host=admineiev');
                         return response()->json(['msg' => sprintf('Process %s entries', count($plist)), 'data' => $plist]);
                     }
@@ -367,6 +374,10 @@ class FentryControler extends Controller
                             $data = (new FederationController)->updateentry($myRequest);
                             array_push($plist, $data);
                         }
+
+                        // syncEntries
+                        (new FederationController)->syncEntries($request);
+
                         // Artisan::call('command:syncentries --ip=eievadmin --host=admineiev');
                         return response()->json(['msg' => sprintf('Process %s entries', count($plist)), 'data' => $plist]);
                     }
@@ -464,9 +475,14 @@ class FentryControler extends Controller
             $data = (new FederationController)->updateentry($myRequest);
             // Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid=' . $entry->code);
         }
+
+        // syncEntries
+        (new FederationController)->syncEntries($request);
+
         if (isset($request->stablename)) {
             return redirect('/rideslist?SearchEventID=' . $entry->eventcode . '&stablename=' . $request->stablename);
         }
+
         return redirect('/rideslist?SearchEventID=' . $entry->eventcode);
     }
 
@@ -488,6 +504,10 @@ class FentryControler extends Controller
             $data = (new FederationController)->updateentry($myRequest);
             // Artisan::call('command:syncentries --ip=eievadmin --host=admineiev --entryid=' . $entry->code);
         }
+
+        // syncEntries
+        (new FederationController)->syncEntries($request);
+
         if (isset($request->stablename)) {
             return redirect('/rideslist?SearchEventID=' . $entry->eventcode . '&stablename=' . $request->stablename);
         }
@@ -525,6 +545,10 @@ class FentryControler extends Controller
                 $this->flashMsg(sprintf('%s', 'Entry not added.'), 'warning');
             }
         }
+
+        // syncEntries
+        (new FederationController)->syncEntries($request);
+
         return redirect('/submitentry');
     }
 
@@ -647,6 +671,9 @@ class FentryControler extends Controller
         } else {
             $this->flashMsg(sprintf('Entry changed failed. Entry Code: %s', $request->entrycode), 'warning');
         }
+
+        // syncEntries
+        (new FederationController)->syncEntries($request);
 
         return redirect(sprintf('/%s', 'submitentry'));
     }
