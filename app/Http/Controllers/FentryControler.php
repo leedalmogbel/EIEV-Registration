@@ -273,6 +273,9 @@ class FentryControler extends Controller
         $totalcount = count($fentries) + count($eentries) + count($pentries)
             + count($reventries) + count($rentries);
 
+        // sync entries on every refresh
+        (new FederationController)->syncEntries($request);
+
         if ($eventpcstat->ispc) {
             $totalcount += count($pcentries);
             return view('tempadmin.tlists', ['modelName' => 'entry', 'actions' => $actions, 'items' => $iitems, 'total' => $totalcount, 'events' => $events, 'eventnames' => $eventnames, 'stables' => $tables, 'entries' => ['final' => $fentries, 'pfa' => $eentries, 'pfr' => $reventries, 'prov' => $pentries, 'royprov' => $pcentries, 're' => $rentries]]);
@@ -460,6 +463,7 @@ class FentryControler extends Controller
     public function reject(Request $request)
     {
         $entry = Fentry::where('code', $request->entrycode)->first();
+        // dd($entry);
         if ($entry) {
             $myRequest = new \Illuminate\Http\Request();
             $myRequest->setMethod('POST');
@@ -477,7 +481,7 @@ class FentryControler extends Controller
         }
 
         // syncEntries
-        (new FederationController)->syncEntries($request);
+        (new FederationController)->syncEntries(new Request);
 
         if (isset($request->stablename)) {
             return redirect('/rideslist?SearchEventID=' . $entry->eventcode . '&stablename=' . $request->stablename);

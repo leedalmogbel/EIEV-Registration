@@ -450,9 +450,6 @@ class FederationController extends Controller
     $client = new Client();
     $response = $client->post(env("UAEERF_BASE_URL_DEV"), $options);
 
-    // SYNC entries
-    $this->syncEntries($request);
-
     if (isset($request->showraw)) {
       return $response->getBody();
     }
