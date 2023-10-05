@@ -575,8 +575,9 @@ class FentryControler extends Controller
     public function checkEligibility(Request $request)
     {
         $data = array('entryexist' => false);
-        $horseEntryExist = Fentry::where('horseid', $request->HorseID)->where('status', 'Accepted')->where('eventcode', 'like', '%' . $request->eventcode)->first();
-        $riderEntryExist = Fentry::where('riderid', $request->RiderID)->where('status', 'Accepted')->where('eventcode', 'like', '%' . $request->eventcode)->first();
+        $eventcode = '3900'; // $request->eventcode hardcode for testing entry
+        $horseEntryExist = Fentry::where('horseid', $request->HorseID)->where('status', 'Accepted')->where('eventcode', 'like', '%' . $eventcode)->first();
+        $riderEntryExist = Fentry::where('riderid', $request->RiderID)->where('status', 'Accepted')->where('eventcode', 'like', '%' . $eventcode)->first();
         if (isset($horseEntryExist)) {
             $data['entryexist'] = true;
             $data['msg'][] = sprintf('Horse entry already exists %s', $horseEntryExist->horseid);

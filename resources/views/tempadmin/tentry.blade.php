@@ -159,6 +159,16 @@
                             console.log('error', errorMessage);
                         }
                     }),
+                    $.ajax({
+                        type: 'GET',
+                        url: `/api/entrycheck?RiderID=${rid}&HorseID=${hid}&eventcode=${eid}`,
+                        success: function(data, status, xhr) { // success callback function
+
+                        },
+                        error: function(jqXhr, textStatus, errorMessage) { // error callback
+                            console.log('error', errorMessage);
+                        }
+                    }),
                 ]).then((response) => {
                     if (response[0].ridereligibility == 'YES') {
                         toastr['success']('Rider is eligible');
@@ -170,6 +180,13 @@
                         toastr['success']('Entry Horse and Rider is eligible');
                     } else {
                         toastr['error'](response[1].horseeligibility);
+                    }
+
+                    if (response[2].entryexist) {
+                        toastr['error'](response[2].msg[0] +
+                            '\n' + response[2].msg[1]);
+                    } else {
+                        toastr['success']('entry is free');
                     }
                     console.log('response', response)
                 });
