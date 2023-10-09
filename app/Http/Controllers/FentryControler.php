@@ -688,7 +688,11 @@ class FentryControler extends Controller
             return response()->json(['error' => 'eventID is required']);
         }
 
-        $entries = Fentry::where('eventcode', 'like', "%" . strval(intval($request->eventID)))->where('status', 'Accepted')->orderByRaw('CAST(startno as UNSIGNED) asc')->get();
+        $entries = Fentry::where('eventcode', 'like', "%" . strval(intval($request->eventID)))
+            ->where('status', 'Accepted')
+            ->orderByRaw('CAST(startno as UNSIGNED) asc')
+            ->join('userprofiles', 'fentries.userid', '=', 'userprofiles.userid')
+            ->get(['fentries.*', 'userprofiles.*']);
 
         return response()->json([
             'entries' => $entries,
