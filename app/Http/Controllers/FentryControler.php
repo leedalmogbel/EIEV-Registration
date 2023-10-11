@@ -774,6 +774,100 @@ class FentryControler extends Controller
         ]);
     }
 
+    public function generatePostStartlist(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'eventID' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'eventID is required']);
+        }
+
+        $entries = Fentry::where('eventcode', 'like', "%" . strval(intval($request->eventID)))
+            ->where('status', 'Accepted')
+            ->orderByRaw('CAST(startno as UNSIGNED) asc')
+            ->join('userprofiles', 'fentries.userid', '=', 'userprofiles.userid')
+            ->get(['fentries.*', 'userprofiles.*']);
+
+        if ($entries->isEmpty()) {
+            return response()->json(['error' => 'No entries found for the provided eventID']);
+        }
+
+        // $headers = array(
+        //     "Content-type"        => "text/csv",
+        //     "Content-Disposition" => "attachment; filename=startlist.csv",
+        //     "Pragma"              => "no-cache",
+        //     "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+        //     "Expires"             => "0"
+        // );
+
+        $columns = array('RegNo', 'RegPrefix', 'HorseID', 'RiderID', 'OwnerID', 'TrainerID', 'StableID', 'WebUserID', 'EventCode', 'EntryCode');
+
+        // $callback = function () use ($entries, $columns) {
+        //     $file = fopen('php://output', 'w');
+        //     fputcsv($file, $columns);
+
+        //     foreach ($entries as $entry) {
+        //         $row['RegNo']  = $entry->startno;
+        //         $row['RegPrefix']    = 'W';
+        //         $row['HorseID']    = $entry->horseid;
+        //         $row['RiderID']  = $entry->riderid;
+        //         $row['OwnerID']  = $entry->ownerid;
+        //         $row['TrainerID']  = $entry->trainerid;
+        //         $row['StableID']  = $entry->stableid;
+        //         $row['WebUserID']  = $entry->userid;
+        //         $row['EventCode']  = $entry->eventcode;
+
+        //         fputcsv($file, array($row['RegNo'], $row['RegPrefix'], $row['HorseID'], $row['RiderID'], $row['OwnerID'], $row['TrainerID'], $row['StableID'], $row['WebUserID'], $row['EventCode']));
+        //     }
+
+        //     fclose($file);
+        // };
+
+        // dd($callback);
+
+        // return response()->stream($callback, 200, $headers);
+        // Define the file path and name
+        $filePath = storage_path('app/public/startlist.csv');
+
+        // Open the CSV file for writing
+        $file = fopen($filePath, 'w');
+
+        // Write CSV header
+        fputcsv($file, $columns);
+
+        // Write CSV data
+        foreach ($entries as $entry) {
+            $row = [
+                $entry->startno,
+                'W',
+                $entry->horseid,
+                $entry->riderid,
+                $entry->ownerid,
+                $entry->trainerid,
+                $entry->stableid,
+                $entry->userid,
+                $entry->eventcode,
+                $entry->code
+            ];
+
+            fputcsv($file, $row);
+        }
+
+        // Close the file
+        fclose($file);
+
+        // Set CSV response headers
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="startlist.csv"',
+        ];
+
+        // Send the CSV file for download
+        return response()->download($filePath, 'startlist.csv', $headers);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

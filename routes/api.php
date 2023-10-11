@@ -152,7 +152,7 @@ Route::get('eievsync', function (Request $request) {
 });
 
 Route::get('startlist', [FentryControler::class, 'fetchStartlist']);
-
+Route::get('generatestartlist', [FentryControler::class, 'generatePostStartlist']);
 
 Route::group(['middleware' => [EnsureClientIsValid::class], 'prefix' => 'uaeerf'], function () {
     Route::post('addentry', [FederationController::class, 'addentry']);
