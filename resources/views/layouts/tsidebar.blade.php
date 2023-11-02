@@ -9,7 +9,7 @@
             <ul class="nav  nav-pills nav-fill ">
                 <li class="nav-item">
                     <a href="rideslist" class="text-white nav-link {{ $modelName == 'entry' ? 'active' : '' }}">
-                        <i class="fa fa-paw" aria-hidden="true"></i> Entries
+                        <i class="fa-solid fa-list-check" aria-hidden="true"></i> Entries
                     </a>
                 </li>
                 <li class="nav-item">
@@ -18,23 +18,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="swapentry" class=" text-white nav-link {{ $modelName == 'sentry' ? 'active' : '' }}">
-                        <i class="fa fa-home" aria-hidden="true"></i> Swap Entry
+                    <a href="medialist" class=" text-white nav-link {{ $modelName == 'media' ? 'active' : '' }}">
+                        <i class="fa-solid fa-pager" aria-hidden="true"></i> Media
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="rideeligibility"
-                        class="text-white nav-link {{ $modelName == 'rechecker' ? 'active' : '' }}">
-                        <i class="fa fa-cloud" aria-hidden="true"></i> Rider Eligibity Checker
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="horseeligibility"
-                        class="text-white nav-link {{ $modelName == 'hechecker' ? 'active' : '' }}">
-                        <i class="fa fa-user" aria-hidden="true"></i> Horse Eligibity Checker
-                    </a>
-                </li>
-
             </ul>
         </div>
 

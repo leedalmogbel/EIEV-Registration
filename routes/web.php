@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SessionChecker;
 use App\Http\Controllers\FentryControler;
 use App\Http\Controllers\FeventController;
+use App\Http\Controllers\MediaController;
+
 $defaultRoutes = [
     'get:/create' => [
         'createForm',
@@ -118,8 +120,8 @@ $adminRoutes['stable']['post:/update/{id}'][1] = ['sessionChecker:superadmin,adm
 Route::get('/', function () {
     if (Auth::viaRemember() || Auth::check()) {
         return redirect()->intended('dashboard');
-    }else{
-        if(session()->get('user')==null){
+    } else {
+        if (session()->get('user') == null) {
             return redirect('/login');
         }
         return redirect('/dashboard');
@@ -143,10 +145,10 @@ foreach ($adminRoutes as $modelControl => $routes) {
     foreach ($routes as $methodRoute => $actions) {
         list($controlMethod, $middleware) = $actions;
         list($method, $route) = explode(':', $methodRoute);
-        
+
         Route::$method($modelControl . $route, "{$controller}@{$controlMethod}")->middleware($middleware);
     }
-    
+
     /*Route::get("/$route/create", "{$controller}@createForm");
     Route::post("/$route/create", "{$controller}@create");
     Route::get("/$route", "{$controller}@listing");
@@ -156,52 +158,48 @@ foreach ($adminRoutes as $modelControl => $routes) {
     Route::post("/$route/update/{id}", "{$controller}@update");*/
 }
 //
-Route::domain('devregistration.eiev-app.ae')->group(function ()
-{
-    Route::group(['prefix'=>'rideslist'],function ()
-    {
-        Route::get('/',[FentryControler::class,'getlists'])->middleware('checkAdminSession:superadmin');
-        Route::get('/accept',[FentryControler::class,'accept'])->middleware('checkAdminSession:superadmin');
-        Route::get('/mainlist',[FentryControler::class,'mainlist'])->middleware('checkAdminSession:superadmin');
-        Route::get('/reject',[FentryControler::class,'reject'])->middleware('checkAdminSession:superadmin');
-        Route::get('/withdraw',[FentryControler::class,'withdraw'])->middleware('checkAdminSession:superadmin');
+Route::domain('devregistration.eiev-app.ae')->group(function () {
+    Route::group(['prefix' => 'rideslist'], function () {
+        Route::get('/', [FentryControler::class, 'getlists'])->middleware('checkAdminSession:superadmin');
+        Route::get('/accept', [FentryControler::class, 'accept'])->middleware('checkAdminSession:superadmin');
+        Route::get('/mainlist', [FentryControler::class, 'mainlist'])->middleware('checkAdminSession:superadmin');
+        Route::get('/reject', [FentryControler::class, 'reject'])->middleware('checkAdminSession:superadmin');
+        Route::get('/withdraw', [FentryControler::class, 'withdraw'])->middleware('checkAdminSession:superadmin');
     });
-    Route::group(['prefix'=>'submitentry'],function ()
-    {
-        Route::get('/',[FentryControler::class,'entryadd'])->middleware('checkAdminSession:superadmin');
-        Route::get('/add',[FentryControler::class,'addentry'])->middleware('checkAdminSession:superadmin');
+    Route::group(['prefix' => 'submitentry'], function () {
+        Route::get('/', [FentryControler::class, 'entryadd'])->middleware('checkAdminSession:superadmin');
+        Route::get('/add', [FentryControler::class, 'addentry'])->middleware('checkAdminSession:superadmin');
     });
-    Route::group(['prefix'=>'actions'],function ()
-    {
-        Route::get('/',[FentryControler::class,'actions'])->middleware('checkAdminSession:superadmin');
-        Route::get('/add',[FentryControler::class,'addentry'])->middleware('checkAdminSession:superadmin');
+    Route::group(['prefix' => 'actions'], function () {
+        Route::get('/', [FentryControler::class, 'actions'])->middleware('checkAdminSession:superadmin');
+        Route::get('/add', [FentryControler::class, 'addentry'])->middleware('checkAdminSession:superadmin');
     });
 
-    Route::get('/changeentry',[FentryControler::class,'changeEntry'])->middleware('checkAdminSession:superadmin');
-    Route::get('/swapentry',[FentryControler::class,'swapEntry'])->middleware('checkAdminSession:superadmin');
+    Route::get('/changeentry', [FentryControler::class, 'changeEntry'])->middleware('checkAdminSession:superadmin');
+    Route::get('/swapentry', [FentryControler::class, 'swapEntry'])->middleware('checkAdminSession:superadmin');
+
+    Route::get('/medialist', [MediaController::class, 'index']);
 });
-Route::domain('localhost')->group(function ()
-{
-    Route::group(['prefix'=>'rideslist'],function ()
-    {
-        Route::get('/',[FentryControler::class,'getlists']);
-        Route::get('/accept',[FentryControler::class,'accept']);
-        Route::get('/mainlist',[FentryControler::class,'mainlist']);
-        Route::get('/reject',[FentryControler::class,'reject']);
-        Route::get('/withdraw',[FentryControler::class,'withdraw']);
+Route::domain('localhost')->group(function () {
+    Route::group(['prefix' => 'rideslist'], function () {
+        Route::get('/', [FentryControler::class, 'getlists']);
+        Route::get('/accept', [FentryControler::class, 'accept']);
+        Route::get('/mainlist', [FentryControler::class, 'mainlist']);
+        Route::get('/reject', [FentryControler::class, 'reject']);
+        Route::get('/withdraw', [FentryControler::class, 'withdraw']);
     });
-    Route::group(['prefix'=>'submitentry'],function ()
-    {
-        Route::get('/',[FentryControler::class,'entryadd']);
-        Route::get('/add',[FentryControler::class,'addentry']);
+    Route::group(['prefix' => 'submitentry'], function () {
+        Route::get('/', [FentryControler::class, 'entryadd']);
+        Route::get('/add', [FentryControler::class, 'addentry']);
     });
-    Route::group(['prefix'=>'actions'],function ()
-    {
-        Route::get('/',[FentryControler::class,'actions']);
-        Route::get('/add',[FentryControler::class,'addentry']);
+    Route::group(['prefix' => 'actions'], function () {
+        Route::get('/', [FentryControler::class, 'actions']);
+        Route::get('/add', [FentryControler::class, 'addentry']);
     });
-    Route::get('/changeentry',[FentryControler::class,'changeEntry']);
-    Route::get('/swapentry',[FentryControler::class,'swapEntry']);
+    Route::get('/changeentry', [FentryControler::class, 'changeEntry']);
+    Route::get('/swapentry', [FentryControler::class, 'swapEntry']);
+
+    Route::get('/medialist', [MediaController::class, 'index']);
 });
 
 // custom routes
@@ -219,3 +217,8 @@ Route::get('/kiosk', 'UserController@kiosk');
 Route::get('/qrcode', 'UserController@downloadQRCode');
 Route::get('/entry/entrychange', 'EntryController@changeEntryForm');
 Route::get('/entry/entryswap', 'EntryController@swapEntryForm');
+
+
+// MEDIA
+Route::get('/media', [MediaController::class, 'createMediaForm']);
+Route::post('/media', [MediaController::class, 'store']);
